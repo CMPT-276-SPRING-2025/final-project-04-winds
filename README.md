@@ -1,6 +1,18 @@
-# Project-Starter
+# CookCompass
 
-Please use the provided folder structure for your docs (proosal, design documenation, communications log, weekly logs and final documentation), source code, tesing, etc. You are free to organize any additional internal folder structure as required by the project. Please use a branching workflow and once an item is ready, do remember to issue a PR, review and merge in into the main brach.
+By Arya Akhavein, Christian Cho, Hannah Lim, Shane Hickson
+
+CookCompass is your one stop shop for all your cooking or baking needs! 
+
+Provide whatever leftover ingredients you currently have on hand and CookCompass will tailor your search to recipes that you can make. No more hassle finding the perfect recipe only to find out you're missing one or two ingredients. No more scrolling through long-winded backstories, CookCompass will only show information you need to make the recipe. 
+
+Here's what makes CookCompass stand out:
+
+Hands free assistance: Got your hands dirty while cooking? No problem! CookCompass has a hands-free mode that reads out the recipe, so you can focus on creating delicious meals without touching your device.
+
+Translate recipes into your desired language: Found a foreign recipe that interests you in another language. Translates the recipe into a desired language.
+
+Unit Conversion: Specify and convert unit measurements you want to use.
 
 ```
 .
