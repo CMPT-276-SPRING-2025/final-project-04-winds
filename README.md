@@ -1,6 +1,6 @@
 # CookCompass
 
-By Arya Akhavein, Christian Cho, Hannah Lim, Shane Hickson
+By Arya Akhavein (301586857), Christian Cho (301578897), Hannah Lim (301586553), Shane Hickson (301583927)
 
 CookCompass is your one stop shop for all your cooking or baking needs! 
 
