@@ -1,6 +1,7 @@
 # CookCompass
 
 https://github.com/Vipplynn/CookCompass
+https://cook-compass.vercel.app/
 
 By Arya Akhavein (301586857), Christian Cho (301578897), Hannah Lim (301586553), Shane Hickson (301583927)
 
