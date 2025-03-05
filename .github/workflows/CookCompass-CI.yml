@@ -1,0 +1,25 @@
+name: CookCompass
+
+#triggered whenever something is pushed/pullrequest made
+on: [push, pull_request]
+
+jobs:
+    test:
+        runs-on: ubuntu-latest
+        steps:
+            # install repo on virutal machine
+          - name: Checkout repository
+            uses: actions/checkout@v2
+
+            # install node.js
+          - name: Setup Node.js
+            uses: actions/setup-node@v2
+            with:
+                node-version: '22'
+            
+          - name: Install dependencies
+            run: npm install
+
+          - name: Run tests
+            run: npm test
+        
