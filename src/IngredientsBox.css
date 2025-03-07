@@ -4,19 +4,17 @@
     color: black;
     padding: 1vh; /* 1% of the viewport height */
     border-radius: 1vh; /* 1% of the viewport height */
-    text-align: center;
-    width: 23vw; /* 25% of the viewport width */
+    width: 23vw; /* 23% of the viewport width */
     height: 80vh; /* 80% of the viewport height */
     margin-left: 4vh; /* 4% of the viewport height */
   }
 
-  .white-box {
-    background-color: #fafafa;
+.white-box {
+    background-color: #ffffff;
     color: black;
     padding: 1vh; /* 1% of the viewport height */
     border-radius: 1vh; /* 1% of the viewport height */
-    text-align: center;
     width: 21vw; /* 21% of the viewport width */
     height: 6vh; /* 6% of the viewport height */
     margin: 1vh; /* 4% of the viewport height */
-  }
+}

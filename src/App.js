@@ -1,6 +1,7 @@
 import './App.css';
 import GlobalStyle from './GlobalStyle';
 import IngredientsBox from './IngredientsBox';
+import RecipeBox from './RecipeBox';
 
 const App = () => {
   return (
@@ -31,7 +32,12 @@ const App = () => {
         />
       </div>
 
-      <IngredientsBox />
+      <div className='container'>
+        <IngredientsBox />
+        <RecipeBox />
+      </div>
+      
+
     </>
   );
 };
