@@ -11,7 +11,24 @@ const App = () => {
           alt="Logo"
           className='logo'
         />
+        
         <Header />
+
+        {/* Spacer to push language boxes to the right */}
+        <div className='spacer'></div>
+
+        <img
+          src={'/Media/Translate.png'}
+          alt="Translate"
+          className='languageBox'
+        />
+
+        <img
+          src={'/Media/Text-To-Speech.png'}
+          alt="TTS"
+          className='languageBox'
+        />
+
       </div>
     </>
   );

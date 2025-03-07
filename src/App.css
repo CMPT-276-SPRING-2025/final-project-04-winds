@@ -8,8 +8,19 @@
 
 /* Logo styles */
 .logo {
-  height: 75px;
+  height: 87px;
   width: auto;
+}
+
+.languageBox {
+  height: 45px;
+  width: auto;
+  margin-left: 30px;
+  padding-right: 10px;
+}
+
+.spacer {
+  flex-grow: 1;
 }
 
 /* Header styles */
@@ -22,7 +33,7 @@
 
 /* Title styles */
 .title {
-  font-size: 3rem;
+  font-size: 4rem;
   margin: 0;
 }
 
