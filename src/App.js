@@ -1,5 +1,6 @@
 import './App.css';
 import GlobalStyle from './GlobalStyle';
+import IngredientsBox from './IngredientsBox';
 
 const App = () => {
   return (
@@ -11,7 +12,7 @@ const App = () => {
           alt="Logo"
           className='logo'
         />
-        
+
         <Header />
 
         {/* Spacer to push language boxes to the right */}
@@ -28,8 +29,9 @@ const App = () => {
           alt="TTS"
           className='languageBox'
         />
-
       </div>
+
+      <IngredientsBox />
     </>
   );
 };
