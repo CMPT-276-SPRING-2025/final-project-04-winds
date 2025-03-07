@@ -11,8 +11,8 @@ const RecipeBox = () => {
         />
 
         <div className='scrollbox'>
-        <div class="box"></div>
-        <div class="box"></div>
+          <div class="box"><div class="title"></div></div>
+          <div class="box"><div class="title"></div></div>
         </div>
     </div>
   );

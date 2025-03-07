@@ -1,11 +1,11 @@
 .recipe-box {
     background-color: #ffffff;
     color: black;
-    padding: 1vh; /* 1% of the viewport height */
-    border-radius: 1vh; /* 1% of the viewport height */
-    width: 72vw; /* 21% of the viewport width */
-    height: 82vh; /* 6% of the viewport height */
-    margin-left: 4vh; /* 4% of the viewport height */
+    padding: 1vh; 
+    border-radius: 1vh; 
+    width: 72vw; 
+    height: 82vh; 
+    margin-left: 4vh; 
     border: 2px solid #85A573;
     box-sizing: border-box;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
@@ -23,18 +23,6 @@
     margin-top: 1vh;
     margin-bottom: 1vh;
     margin-left: 1vw;
-    margin-right: 1vw; /* Adjusted to ensure proper spacing */
-    width: calc(100% - 2vw); /* Adjust width to fit within the recipe box */
-    height: calc(100% - 10vh); /* Adjust height to fit within the recipe box */
-    box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
-}
-
-.scrollbox {
-    overflow-y: scroll; /* Enable vertical scrolling */
-    overflow-x: hidden; /* Disable horizontal scrolling */
-    margin-top: 1vh;
-    margin-bottom: 1vh;
-    margin-left: 1vw;
     margin-right: 1vw;
     width: calc(100% - 2vw); /* Adjust width to fit within the recipe box */
     height: calc(100% - 10vh); /* Adjust height to fit within the recipe box */
@@ -43,11 +31,20 @@
     gap: 1vw; /* Add space between the two boxes */
 }
 
-/* Styles for the two boxes inside the scrollbox */
+/* Styles for the boxes inside the scrollbox */
 .scrollbox .box {
     flex: 1; /* Each box will take equal space */
     background-color: #f0f0f0; /* Light gray background */
     border: 1px solid #ccc; /* Add a border */
+    height: 20vh;
+    margin: 0.5vw;
+    border-radius: 1vh;
+}
+
+.scrollbox .box .title {
+    background-color: #EB5555;
+    border: 1px solid #ccc; /* Add a border */
     padding: 1vh; /* Add some padding */
-    box-sizing: border-box; /* Include padding and border in the box's dimensions */
+    height: 5vh;
+    border-radius: 1vh;
 }
