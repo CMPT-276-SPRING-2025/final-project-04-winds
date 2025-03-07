@@ -5,17 +5,25 @@ const App = () => {
   return (
     <>
       <GlobalStyle />
-      <Header />
+      <div className='container'>
+        <img
+          src={'/Media/Logo.gif'}
+          alt="Logo"
+          className='logo'
+        />
+        <Header />
+      </div>
     </>
   );
 };
 
 const Header = () => {
   return (
-    <header style={{ textAlign: 'center',color: '#85A573',}}>
-      <h1 style={{ fontSize: '3rem'}}>CookCompass</h1>
+    <header className='header'>
+      <h1 className='title'>CookCompass</h1>
     </header>
   );
 };
+
 
 export default App;

@@ -1,0 +1,46 @@
+/* Container styles */
+.container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding: 20px;
+}
+
+/* Logo styles */
+.logo {
+  height: 75px;
+  width: auto;
+}
+
+/* Header styles */
+.header {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #85a573;
+}
+
+/* Title styles */
+.title {
+  font-size: 3rem;
+  margin: 0;
+}
+
+/* Styling for screens smaller than 768px */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .logo {
+    margin-bottom: 10px;
+  }
+
+  .header {
+    position: static;
+    transform: none;
+    text-align: center;
+    width: 100%;
+  }
+}
