@@ -1,20 +1,31 @@
-/* Green box styles */
-.green-box {
+/* ======================
+  Green Box Styles
+  ====================== */
+  .green-box {
+    /* Display & Box Model */
+    width: 23vw;
+    height: 80vh;
+    padding: 1vh;
+    margin-left: 4vh;
+    border-radius: 1vh;
+
+    /* Other */
     background-color: #90d184;
     color: black;
-    padding: 1vh; /* 1% of the viewport height */
-    border-radius: 1vh; /* 1% of the viewport height */
-    width: 23vw; /* 23% of the viewport width */
-    height: 80vh; /* 80% of the viewport height */
-    margin-left: 4vh; /* 4% of the viewport height */
-  }
+}
 
-.white-box {
+/* ======================
+  White Box Styles
+  ====================== */
+  .white-box {
+    /* Display & Box Model */
+    width: 21vw;
+    height: 6vh;
+    padding: 1vh;
+    margin: 1vh;
+    border-radius: 1vh;
+
+    /* Other */
     background-color: #ffffff;
     color: black;
-    padding: 1vh; /* 1% of the viewport height */
-    border-radius: 1vh; /* 1% of the viewport height */
-    width: 21vw; /* 21% of the viewport width */
-    height: 6vh; /* 6% of the viewport height */
-    margin: 1vh; /* 4% of the viewport height */
 }

@@ -1,5 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 
+// sets the font to Inria Sans
 const GlobalStyle = createGlobalStyle`
   body {
     font-family: 'Inria Sans', sans-serif;

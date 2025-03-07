@@ -1,50 +1,83 @@
-.recipe-box {
+/* ======================
+  Recipe Box Styles
+  ====================== */
+  .recipe-box {
+    /* Positioning */
+    position: relative;
+
+    /* Display & Box Model */
+    width: 72vw;
+    height: 82vh;
+    padding: 1vh;
+    margin-left: 4vh;
+    border: 2px solid #85A573;
+    border-radius: 1vh;
+    box-sizing: border-box;
+
+    /* Other */
     background-color: #ffffff;
     color: black;
-    padding: 1vh; 
-    border-radius: 1vh; 
-    width: 72vw; 
-    height: 82vh; 
-    margin-left: 4vh; 
-    border: 2px solid #85A573;
-    box-sizing: border-box;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
-    position: relative;
 }
 
+/* ======================
+  Filter Styles
+  ====================== */
 .filter {
+    /* Display & Box Model */
     height: 6vh;
     margin: 1.5vh;
 }
 
+/* ======================
+  Scrollbox Styles
+  ====================== */
 .scrollbox {
-    overflow-y: scroll; /* Enable vertical scrolling */
-    overflow-x: hidden; /* Disable horizontal scrolling */
+    /* Positioning */
+    position: relative;
+
+    /* Display & Box Model */
+    width: calc(100% - 2vw);
+    height: calc(100% - 10vh);
     margin-top: 1vh;
     margin-bottom: 1vh;
     margin-left: 1vw;
     margin-right: 1vw;
-    width: calc(100% - 2vw); /* Adjust width to fit within the recipe box */
-    height: calc(100% - 10vh); /* Adjust height to fit within the recipe box */
-    box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
-    display: flex; /* Use Flexbox */
-    gap: 1vw; /* Add space between the two boxes */
+    overflow-y: scroll;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    display: flex;
+    gap: 1vw;
+
+    /* Other */
+    background-color: transparent;
 }
 
-/* Styles for the boxes inside the scrollbox */
+/* ======================
+  Box Styles (Inside Scrollbox)
+  ====================== */
 .scrollbox .box {
-    flex: 1; /* Each box will take equal space */
-    background-color: #f0f0f0; /* Light gray background */
-    border: 1px solid #ccc; /* Add a border */
+    /* Display & Box Model */
+    flex: 1;
     height: 20vh;
     margin: 0.5vw;
+    border: 1px solid #ccc;
     border-radius: 1vh;
+
+    /* Other */
+    background-color: #f0f0f0;
 }
 
+/* ======================
+  Title Styles (Inside Box)
+  ====================== */
 .scrollbox .box .title {
-    background-color: #EB5555;
-    border: 1px solid #ccc; /* Add a border */
-    padding: 1vh; /* Add some padding */
+    /* Display & Box Model */
     height: 5vh;
+    padding: 1vh;
+    border: 1px solid #ccc;
     border-radius: 1vh;
+
+    /* Other */
+    background-color: #EB5555;
 }

@@ -1,63 +1,98 @@
-/* Container styles */
-.container {
-  display: flex;
-  align-items: center;
-  position: relative;
-  padding: 2vh; /* 2% of the viewport height */
+/* ======================
+  Container Styles
+  ====================== */
+  .container {
+    /* Positioning */
+    position: relative;
+
+    /* Display & Box Model */
+    display: flex;
+    align-items: center;
+    padding: 2vh;
 }
 
-/* Logo styles */
+/* ======================
+  Logo Styles
+  ====================== */
 .logo {
-  height: 10vh; /* 10% of the viewport height */
-  width: auto;
+    /* Display & Box Model */
+    height: 10vh;
+    width: auto;
 }
 
+/* ======================
+  Language Box Styles
+  (TTS icon and translation icons)
+  ====================== */
 .languageBox {
-  height: 6vh; /* 6% of the viewport height */
-  width: auto;
-  margin-left: 1vw; /* 1% of the viewport width */
-  padding-right: 2vw; /* 2% of the viewport width */
+    /* Display & Box Model */
+    height: 6vh;
+    width: auto;
+    margin-left: 1vw;
+    padding-right: 2vw;
 }
 
+/* ======================
+  Spacer Styles
+  (Used to push elements apart in flex container)
+  ====================== */
 .spacer {
-  flex-grow: 1;
+    /* Display & Box Model */
+    flex-grow: 1;
 }
 
-/* Header styles */
+/* ======================
+  Header Styles
+  ====================== */
 .header {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  color: #85a573;
+    /* Positioning */
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+
+    /* Other */
+    color: #85a573;
 }
 
-/* Title styles */
+/* ======================
+  Title Styles
+  ====================== */
 .title {
-  font-size: 4vw; /* 4% of the viewport width */
-  margin: 0;
-  font-weight: normal;
+    /* Display & Box Model */
+    margin: 0;
+
+    /* Other */
+    font-size: 4vw;
+    font-weight: normal;
 }
 
-/* Styling for screens smaller than 768px */
+/* ======================
+  Responsive Styles for Screens Smaller Than 768px
+  ====================== */
 @media (max-width: 768px) {
   .container {
+    /* Display & Box Model */
     flex-direction: column;
     align-items: flex-start;
   }
 
   .logo {
-    margin-bottom: 2vh; /* 2% of the viewport height */
+    /* Display & Box Model */
+    margin-bottom: 2vh;
   }
 
   .header {
+    /* Positioning */
     position: static;
     transform: none;
+
+    /* Display & Box Model */
     text-align: center;
     width: 100%;
   }
 
   .title {
-    font-size: 8vw; /* Increase font size for smaller screens */
+    /* Other */
+    font-size: 8vw;
   }
 }
-
