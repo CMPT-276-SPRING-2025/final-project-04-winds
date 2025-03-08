@@ -1,38 +1,61 @@
-.App {
-  text-align: center;
+/* ======================
+  Container Styles
+  ====================== */
+  .container {
+    /* Positioning */
+    position: relative;
+
+    /* Display & Box Model */
+    display: flex;
+    align-items: center;
+    padding: 2vh;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* ======================
+  Logo Styles
+  ====================== */
+.logo {
+    /* Display & Box Model */
+    height: 10vh;
+    width: auto;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+/* ======================
+  Spacer Styles
+  (Used to push elements apart in flex container)
+  ====================== */
+.spacer {
+    /* Display & Box Model */
+    flex-grow: 1;
+}
+
+/* ======================
+  Responsive Styles for Screens Smaller Than 768px
+  ====================== */
+@media (max-width: 768px) {
+  .container {
+    /* Display & Box Model */
+    flex-direction: column;
+    align-items: flex-start;
   }
-}
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+  .logo {
+    /* Display & Box Model */
+    margin-bottom: 2vh;
   }
-  to {
-    transform: rotate(360deg);
+
+  .header {
+    /* Positioning */
+    position: static;
+    transform: none;
+
+    /* Display & Box Model */
+    text-align: center;
+    width: 100%;
+  }
+
+  .title {
+    /* Other */
+    font-size: 8vw;
   }
 }

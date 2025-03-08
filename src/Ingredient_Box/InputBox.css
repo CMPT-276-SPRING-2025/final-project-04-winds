@@ -1,0 +1,15 @@
+/* ======================
+  White Box Styles
+  ====================== */
+  .white-box {
+    /* Display & Box Model */
+    width: 21vw;
+    height: 6vh;
+    padding: 1vh;
+    margin: 1vh;
+    border-radius: 1vh;
+
+    /* Other */
+    background-color: #ffffff;
+    color: black;
+}

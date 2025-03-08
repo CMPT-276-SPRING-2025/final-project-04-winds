@@ -1,0 +1,16 @@
+/* ======================
+  Green Box Styles
+  ====================== */
+  .green-box {
+    /* Display & Box Model */
+    width: 23vw;
+    height: 80vh;
+    padding: 1vh;
+    margin-left: 4vh;
+    border-radius: 1vh;
+
+    /* Other */
+    background-color: #90d184;
+    color: black;
+}
+
