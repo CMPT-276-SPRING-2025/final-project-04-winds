@@ -21,49 +21,12 @@
 }
 
 /* ======================
-  Language Box Styles
-  (TTS icon and translation icons)
-  ====================== */
-.languageBox {
-    /* Display & Box Model */
-    height: 6vh;
-    width: auto;
-    margin-left: 1vw;
-    padding-right: 2vw;
-}
-
-/* ======================
   Spacer Styles
   (Used to push elements apart in flex container)
   ====================== */
 .spacer {
     /* Display & Box Model */
     flex-grow: 1;
-}
-
-/* ======================
-  Header Styles
-  ====================== */
-.header {
-    /* Positioning */
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-
-    /* Other */
-    color: #85a573;
-}
-
-/* ======================
-  Title Styles
-  ====================== */
-.title {
-    /* Display & Box Model */
-    margin: 0;
-
-    /* Other */
-    font-size: 4vw;
-    font-weight: normal;
 }
 
 /* ======================

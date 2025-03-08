@@ -1,5 +1,6 @@
 import React from 'react';
 import './RecipeBox.css';
+import Filter from './Filter';
 
 // The Box that takes the ingredients 
 const RecipeBox = () => {
@@ -8,11 +9,7 @@ const RecipeBox = () => {
     // wrapping object
     <div className="recipe-box" >
       {/* The filter icon */}
-      <img
-        src={'/Media/Filter.png'}
-        alt="Filter"
-        className='filter'
-      />
+      <Filter/>
 
       {/* The box that holds all the recipes*/}
       <div className='scrollbox'>

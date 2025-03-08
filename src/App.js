@@ -1,7 +1,10 @@
 import './App.css';
 import GlobalStyle from './GlobalStyle';
-import IngredientsBox from './IngredientsBox';
-import RecipeBox from './RecipeBox';
+import IngredientsBox from './Ingredient_Box/IngredientsBox';
+import RecipeBox from './Recipe_Box/RecipeBox';
+import Header from './Title_Card/Header';
+import TranslateBox from './Title_Card/TranslateBox';
+import TTS from './Title_Card/TTS';
 
 const App = () => {
   return (
@@ -26,18 +29,10 @@ const App = () => {
         <div className='spacer'></div>
 
         {/* The translation box */}
-        <img
-          src={'/Media/Translate.png'}
-          alt="Translate"
-          className='languageBox'
-        />
+        <TranslateBox/>
 
         {/* The TTS box*/}
-        <img
-          src={'/Media/Text-To-Speech.png'}
-          alt="TTS"
-          className='languageBox'
-        />
+        <TTS/>
       </div>
 
       {/* The Ingredients box and the Recipe Box */}
@@ -52,14 +47,7 @@ const App = () => {
 };
 
 
-// The title card for the header
-const Header = () => {
-  return (
-    <header className='header'>
-      <h1 className='title'>CookCompass</h1>
-    </header>
-  );
-};
+
 
 
 export default App;

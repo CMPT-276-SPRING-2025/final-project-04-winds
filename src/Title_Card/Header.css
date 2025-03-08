@@ -1,0 +1,24 @@
+/* ======================
+  Header Styles
+  ====================== */
+  .header {
+    /* Positioning */
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+
+    /* Other */
+    color: #85a573;
+}
+
+/* ======================
+  Title Styles
+  ====================== */
+.title {
+    /* Display & Box Model */
+    margin: 0;
+
+    /* Other */
+    font-size: 4vw;
+    font-weight: normal;
+}

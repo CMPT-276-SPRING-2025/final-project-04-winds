@@ -1,5 +1,6 @@
 import React from 'react';
 import './IngredientsBox.css';
+import InputBox from './InputBox';
 
 // Ingredients box that takes input to add ingredients
 const IngredientsBox = () => {
@@ -7,9 +8,7 @@ const IngredientsBox = () => {
     // Wrapping green box
     <div className="green-box" >
       {/* Input box */}
-      <div className="white-box" >
-      
-      </div>
+      <InputBox/>
     </div>
   );
 };
