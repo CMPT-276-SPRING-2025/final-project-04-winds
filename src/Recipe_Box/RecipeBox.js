@@ -1,6 +1,7 @@
 import React from 'react';
 import './RecipeBox.css';
 import Filter from './Filter';
+import Recipes from './Recipes';
 
 // The Box that takes the ingredients 
 const RecipeBox = () => {
@@ -12,11 +13,7 @@ const RecipeBox = () => {
       <Filter/>
 
       {/* The box that holds all the recipes*/}
-      <div className='scrollbox'>
-        {/* Indiviual recipes */}
-        <div class="box"><div class="title"></div></div>
-        <div class="box"><div class="title"></div></div>
-      </div>
+      <Recipes/>
     </div>
   );
 };
