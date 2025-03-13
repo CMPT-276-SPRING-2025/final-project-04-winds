@@ -3,7 +3,7 @@ import './Recipes.css';
 
 const IndiviualBox = () => {
   return (    
-    <div class="box"><div class="title"></div></div>
+    <div className="box" data-testid="box"><div className="title" data-testid="title"></div></div>
   );
 };
 
