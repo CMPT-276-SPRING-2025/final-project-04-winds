@@ -6,6 +6,8 @@ import '@testing-library/jest-dom'; // Updated import for additional matchers li
 // Import the component to be tested
 import IngredientsBox from '../Ingredient_Box/IngredientsBox';
 
+jest.mock('../Ingredient_Box/InputBox', () => () => <div data-testid="input-box"></div>);
+
 // Describe block to group related tests
 describe('IngredientsBox', () => {
   // Basic test case to check if the component renders without crashing
@@ -28,4 +30,9 @@ describe('IngredientsBox', () => {
     // Example: Check if the component has the correct class
     expect(screen.getByTestId('green-box')).toHaveClass('green-box');
   });
+
+  it('has inputbox inside', () => {
+    expect(screen.getByTestId('input-box')).toBeInTheDocument();
+  });
+  
 });
