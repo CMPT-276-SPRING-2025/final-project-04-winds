@@ -4,7 +4,7 @@ import IndiviualBox from './IndvRecipe';
 
 const Recipes = () => {
   return (
-    <div className='scrollbox'>
+    <div className='scrollbox' data-testid='scrollbox'>
         {/* Indiviual recipes */}
         <IndiviualBox/>
         <IndiviualBox/>
