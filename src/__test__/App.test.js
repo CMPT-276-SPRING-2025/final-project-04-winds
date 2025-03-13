@@ -1,3 +1,4 @@
+/* eslint-disable testing-library/no-node-access, testing-library/no-container */
 import { render, screen } from '@testing-library/react';
 import App from '../App';
 
