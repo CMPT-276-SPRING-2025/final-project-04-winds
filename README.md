@@ -2,8 +2,6 @@
 
 # CookCompass
 
-By Arya Akhavein (301586857), Christian Cho (301578897), Hannah Lim (301586553), Shane Hickson (301583927)
-
 CookCompass is your one stop shop for all your cooking or baking needs! 
 
 Provide whatever leftover ingredients you currently have on hand and CookCompass will tailor your search to recipes that you can make. No more hassle finding the perfect recipe only to find out you're missing one or two ingredients. No more scrolling through long-winded backstories, CookCompass will only show information you need to make the recipe. 
