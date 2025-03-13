@@ -3,7 +3,7 @@ import './InputBox.css'
 
 const InputBox = () => {
   return (
-    <div className="white-box"></div>
+    <div className="white-box" data-testid="white-box"></div>
   );
 };
 

@@ -32,6 +32,7 @@ describe('IngredientsBox', () => {
   });
 
   it('has inputbox inside', () => {
+    render(<IngredientsBox/>)
     expect(screen.getByTestId('input-box')).toBeInTheDocument();
   });
   
