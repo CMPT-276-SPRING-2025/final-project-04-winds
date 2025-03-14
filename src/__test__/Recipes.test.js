@@ -30,9 +30,10 @@ describe('Recipes', () => {
     expect(screen.getByTestId('scrollbox')).toHaveClass('scrollbox');
   });
 
-  test('All Components are loaded', () => {
+  test('At least one IndiviualBox component is loaded', () => {
     render(<Recipes />);
-
-    expect(screen.getByTestId('indiviual-box')).toBeInTheDocument();
+  
+    // Check if at least one element with the test ID exists
+    expect(screen.queryAllByTestId('indiviual-box').length).toBeGreaterThanOrEqual(1);
   });
 });
