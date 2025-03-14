@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1741915870672" clover="3.2.0">
-  <project timestamp="1741915870672" name="All files">
+<coverage generated="1741921604336" clover="3.2.0">
+  <project timestamp="1741921604336" name="All files">
     <metrics statements="32" coveredstatements="20" conditionals="4" coveredconditionals="0" methods="12" coveredmethods="10" elements="48" coveredelements="30" complexity="0" loc="32" ncloc="32" packages="4" files="13" classes="13"/>
     <package name="src">
       <metrics statements="14" coveredstatements="2" conditionals="4" coveredconditionals="0" methods="3" coveredmethods="1"/>
       <file name="App.js" path="C:\Users\Arya\Documents\GitHub\final-project-04-winds\src\App.js">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
         <line num="9" count="1" type="stmt"/>
-        <line num="10" count="2" type="stmt"/>
+        <line num="10" count="3" type="stmt"/>
       </file>
       <file name="GlobalStyle.js" path="C:\Users\Arya\Documents\GitHub\final-project-04-winds\src\GlobalStyle.js">
         <metrics statements="1" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
