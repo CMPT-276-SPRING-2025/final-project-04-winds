@@ -7,6 +7,7 @@ const TTS = () => {
       src={'/Media/Text-To-Speech.png'}
       alt="TTS"
       className='languageBox'
+      data-testid='text-to-speech'
     />
   );
 };

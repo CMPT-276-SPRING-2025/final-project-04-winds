@@ -7,6 +7,7 @@ const TranslateBox = () => {
       src={'/Media/Translate.png'}
       alt="Translate"
       className='languageBox'
+      data-testid='translate'
     />
   );
 };

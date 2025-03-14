@@ -8,7 +8,7 @@ const RecipeBox = () => {
   return (
 
     // wrapping object
-    <div className="recipe-box" >
+    <div className="recipe-box" data-testid='recipe-box' >
       {/* The filter icon */}
       <Filter/>
 

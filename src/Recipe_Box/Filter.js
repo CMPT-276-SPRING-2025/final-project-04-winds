@@ -7,6 +7,7 @@ const Filter = () => {
         src={'/Media/Filter.png'}
         alt="Filter"
         className='filter'
+        data-testid="filter"
       />
   );
 };

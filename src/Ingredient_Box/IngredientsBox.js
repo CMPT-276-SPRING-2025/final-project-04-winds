@@ -6,7 +6,7 @@ import InputBox from './InputBox';
 const IngredientsBox = () => {
   return (
     // Wrapping green box
-    <div className="green-box" >
+    <div className="green-box" data-testid="green-box">
       {/* Input box */}
       <InputBox/>
     </div>
