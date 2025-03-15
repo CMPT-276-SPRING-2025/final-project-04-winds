@@ -14,3 +14,5 @@ const IngredientsBox = () => {
 };
 
 export default IngredientsBox;
+
+
