@@ -3,7 +3,8 @@
   ====================== */
   .white-box {
     /* Display & Box Model */
-    width: 21vw;
+    position: relative;
+    width: 17vw;
     height: 6vh;
     padding: 1vh;
     margin: 1vh;
@@ -12,4 +13,104 @@
     /* Other */
     background-color: #ffffff;
     color: black;
+    box-sizing: border-box;
+    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+
+}
+
+/* Input field styling */
+.white-box input {
+  width: 100%;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #cccccc00;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.white-box input:focus {
+  outline: none;
+
+}
+
+/* Suggestions list styling */
+.suggestions-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #ccc;
+  max-height: 150px;
+  overflow-y: auto;
+  background-color: #fff;
+  z-index: 1;
+}
+
+.suggestions-list li {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.suggestions-list li:hover,
+.suggestions-list li.active {
+  background-color: #f0f0f0;
+}
+
+/* Ingredient list styling */
+.ingredient-list {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 10px 1vh 0 1vh;
+  gap: 8px;
+}
+
+.ingredient-item {
+  background-color: #FFFFF7;
+  padding: 5px 10px;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+
+.ingredient-item button {
+  margin-left: 5px;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+
+
+/* Parent container for the suggestions list */
+.suggestions-list {
+  /* For Firefox */
+  scrollbar-width: thin;                /* "auto" or "thin" */
+  scrollbar-color: #ccc #f5f5f5;        /* thumb color, track color */
+}
+
+/* For WebKit-based browsers (Chrome, Safari, newer Edge) */
+.suggestions-list::-webkit-scrollbar {
+  width: 8px;                           /* Adjust scrollbar width */
+}
+
+/* Scrollbar track */
+.suggestions-list::-webkit-scrollbar-track {
+  background: #f5f5f5;                  /* Track color */
+  border-radius: 4px;                   /* Rounded track corners */
+}
+
+/* Scrollbar thumb */
+.suggestions-list::-webkit-scrollbar-thumb {
+  background-color: #ccc;               /* Thumb color */
+  border-radius: 20px;                   /* Rounded thumb corners */
+  border: 2px solid #f5f5f5;            /* Creates space around thumb */
+}
+
+/* Hover effect on the thumb */
+.suggestions-list::-webkit-scrollbar-thumb:hover {
+  background-color: #bbb;               /* Slightly darker on hover */
 }

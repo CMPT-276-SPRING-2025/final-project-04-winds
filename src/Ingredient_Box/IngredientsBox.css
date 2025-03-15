@@ -3,7 +3,7 @@
   ====================== */
   .green-box {
     /* Display & Box Model */
-    width: 23vw;
+    width: 18vw;
     height: 80vh;
     padding: 1vh;
     margin-left: 4vh;
@@ -12,5 +12,6 @@
     /* Other */
     background-color: #90d184;
     color: black;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
