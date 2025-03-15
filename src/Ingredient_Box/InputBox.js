@@ -1,34 +1,32 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import './InputBox.css';
 
 const InputBox = ({ onIngredientsChange }) => {
   const apiKey = process.env.REACT_APP_SPOONACULAR_API_KEY;
+  const containerRef = useRef(null);
 
   const [inputValue, setInputValue] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [ingredients, setIngredients] = useState([]);
   const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1);
 
-  // 1) Create a ref for the container that holds the input and suggestions
-  const containerRef = useRef(null);
-
-  // Fetch autocomplete suggestions
-  const fetchSuggestions = async (query) => {
+  // Wrap fetchSuggestions in useCallback so it's a stable dependency.
+  const fetchSuggestions = useCallback(async (query) => {
     try {
       const response = await fetch(
         `https://api.spoonacular.com/food/ingredients/autocomplete?apiKey=${apiKey}&query=${query}&number=5`
       );
       const data = await response.json();
       setSuggestions(data);
-      setSelectedSuggestionIndex(-1); // Reset the highlight
+      setSelectedSuggestionIndex(-1);
     } catch (error) {
       console.error("Error fetching suggestions:", error);
     }
-  };
+  }, [apiKey]);
 
   // Debounce input changes
   useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
+    const timer = setTimeout(() => {
       if (inputValue.trim()) {
         fetchSuggestions(inputValue);
       } else {
@@ -36,23 +34,8 @@ const InputBox = ({ onIngredientsChange }) => {
         setSelectedSuggestionIndex(-1);
       }
     }, 300);
-
-    return () => clearTimeout(delayDebounceFn);
-  }, [inputValue]);
-
-  // 2) Hide suggestions if the user clicks outside the container
-  useEffect(() => {
-    function handleClickOutside(e) {
-      // If click is outside of this container, clear suggestions
-      if (containerRef.current && !containerRef.current.contains(e.target)) {
-        setSuggestions([]);
-        setSelectedSuggestionIndex(-1);
-      }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+    return () => clearTimeout(timer);
+  }, [inputValue, fetchSuggestions]);
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
@@ -69,29 +52,18 @@ const InputBox = ({ onIngredientsChange }) => {
     setSelectedSuggestionIndex(-1);
   };
 
-  // 3) If user focuses back on the input and there's still text, re-fetch suggestions
-  const handleFocus = () => {
-    if (inputValue.trim()) {
-      fetchSuggestions(inputValue);
-    }
-  };
-
   const handleKeyDown = (e) => {
     if (e.key === 'ArrowDown') {
       e.preventDefault();
       if (suggestions.length > 0) {
-        setSelectedSuggestionIndex((prevIndex) => {
-          const nextIndex = prevIndex + 1;
-          return nextIndex >= suggestions.length ? 0 : nextIndex;
-        });
+        setSelectedSuggestionIndex((prev) => (prev + 1) % suggestions.length);
       }
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
       if (suggestions.length > 0) {
-        setSelectedSuggestionIndex((prevIndex) => {
-          const nextIndex = prevIndex - 1;
-          return nextIndex < 0 ? suggestions.length - 1 : nextIndex;
-        });
+        setSelectedSuggestionIndex(
+          (prev) => (prev - 1 + suggestions.length) % suggestions.length
+        );
       }
     } else if (e.key === 'Enter') {
       e.preventDefault();
@@ -117,15 +89,34 @@ const InputBox = ({ onIngredientsChange }) => {
     onIngredientsChange && onIngredientsChange(updatedIngredients);
   };
 
+  // When input gains focus, re-fetch suggestions (if there's text)
+  const handleFocus = () => {
+    if (inputValue.trim()) {
+      fetchSuggestions(inputValue);
+    }
+  };
+
+  // When input loses focus, hide suggestions after a short delay to allow clicks to register
+  const handleBlur = () => {
+    setTimeout(() => {
+      // If the newly focused element is not inside our container, clear suggestions.
+      if (containerRef.current && !containerRef.current.contains(document.activeElement)) {
+        setSuggestions([]);
+        setSelectedSuggestionIndex(-1);
+      }
+    }, 150);
+  };
+
   return (
     <>
-      {/* Container for the input & suggestions with a ref */}
+      {/* Container for input and suggestions */}
       <div className="white-box" data-testid="white-box" ref={containerRef}>
         <input
           type="text"
           value={inputValue}
           onChange={handleInputChange}
-          onFocus={handleFocus}  // Re-fetch suggestions on focus
+          onFocus={handleFocus}
+          onBlur={handleBlur}
           onKeyDown={handleKeyDown}
           placeholder="Type an ingredient..."
         />
@@ -143,8 +134,7 @@ const InputBox = ({ onIngredientsChange }) => {
           </ul>
         )}
       </div>
-
-      {/* Ingredient list outside the white box */}
+      {/* Ingredient list rendered outside the white box */}
       <div className="ingredient-list">
         {ingredients.map((ingredient, index) => (
           <div key={ingredient + index} className="ingredient-item">
