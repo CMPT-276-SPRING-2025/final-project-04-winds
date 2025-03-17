@@ -1,16 +1,15 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import './InputBox.css';
 
-const InputBox = ({ onIngredientsChange }) => {
+const InputBox = ({ ingredients, setIngredients, onIngredientsChange }) => {
   const apiKey = process.env.REACT_APP_SPOONACULAR_API_KEY;
   const containerRef = useRef(null);
 
   const [inputValue, setInputValue] = useState('');
   const [suggestions, setSuggestions] = useState([]);
-  const [ingredients, setIngredients] = useState([]);
   const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1);
 
-  // Wrap fetchSuggestions in useCallback so it's a stable dependency.
+  // Wrap fetchSuggestions in useCallback for stability.
   const fetchSuggestions = useCallback(async (query) => {
     try {
       const response = await fetch(
@@ -24,7 +23,6 @@ const InputBox = ({ onIngredientsChange }) => {
     }
   }, [apiKey]);
 
-  // Debounce input changes
   useEffect(() => {
     const timer = setTimeout(() => {
       if (inputValue.trim()) {
@@ -41,11 +39,14 @@ const InputBox = ({ onIngredientsChange }) => {
     setInputValue(e.target.value);
   };
 
+  // Use the parent's ingredients state instead of local state.
   const addIngredient = (ingredientName) => {
     if (ingredientName && !ingredients.includes(ingredientName)) {
       const updatedIngredients = [...ingredients, ingredientName];
       setIngredients(updatedIngredients);
+      // Optionally, call the parent's onIngredientsChange callback if provided.
       onIngredientsChange && onIngredientsChange(updatedIngredients);
+      console.log("Updated ingredients from InputBox:", updatedIngredients);
     }
     setInputValue('');
     setSuggestions([]);
@@ -61,14 +62,11 @@ const InputBox = ({ onIngredientsChange }) => {
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
       if (suggestions.length > 0) {
-        setSelectedSuggestionIndex(
-          (prev) => (prev - 1 + suggestions.length) % suggestions.length
-        );
+        setSelectedSuggestionIndex((prev) => (prev - 1 + suggestions.length) % suggestions.length);
       }
     } else if (e.key === 'Enter') {
       e.preventDefault();
       if (suggestions.length > 0) {
-        // If none is selected, default to the first suggestion
         const indexToAdd = selectedSuggestionIndex === -1 ? 0 : selectedSuggestionIndex;
         addIngredient(suggestions[indexToAdd].name);
       } else if (inputValue.trim() !== '') {
@@ -82,34 +80,26 @@ const InputBox = ({ onIngredientsChange }) => {
   };
 
   const removeIngredient = (ingredientToRemove) => {
-    const updatedIngredients = ingredients.filter(
-      (ingredient) => ingredient !== ingredientToRemove
-    );
+    const updatedIngredients = ingredients.filter(ing => ing !== ingredientToRemove);
     setIngredients(updatedIngredients);
     onIngredientsChange && onIngredientsChange(updatedIngredients);
   };
 
-  // When input gains focus, re-fetch suggestions (if there's text)
   const handleFocus = () => {
     if (inputValue.trim()) {
       fetchSuggestions(inputValue);
     }
   };
 
-  // When input loses focus, hide suggestions after a short delay to allow clicks to register
   const handleBlur = () => {
     setTimeout(() => {
-      // If the newly focused element is not inside our container, clear suggestions.
-      if (containerRef.current && !containerRef.current.contains(document.activeElement)) {
-        setSuggestions([]);
-        setSelectedSuggestionIndex(-1);
-      }
+      setSuggestions([]);
+      setSelectedSuggestionIndex(-1);
     }, 150);
   };
 
   return (
     <>
-      {/* Container for input and suggestions */}
       <div className="white-box" data-testid="white-box" ref={containerRef}>
         <input
           type="text"
@@ -134,7 +124,6 @@ const InputBox = ({ onIngredientsChange }) => {
           </ul>
         )}
       </div>
-      {/* Ingredient list rendered outside the white box */}
       <div className="ingredient-list">
         {ingredients.map((ingredient, index) => (
           <div key={ingredient + index} className="ingredient-item">

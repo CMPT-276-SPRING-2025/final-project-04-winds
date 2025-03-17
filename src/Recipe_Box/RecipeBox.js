@@ -4,16 +4,16 @@ import Filter from './Filter';
 import Recipes from './Recipes';
 
 // The Box that takes the ingredients 
-const RecipeBox = () => {
+const RecipeBox = ({ recipes, onRecipeClick }) => {
   return (
 
     // wrapping object
     <div className="recipe-box" data-testid='recipe-box' >
       {/* The filter icon */}
-      <Filter/>
+      <Filter />
 
       {/* The box that holds all the recipes*/}
-      <Recipes/>
+      <Recipes recipes={recipes} onRecipeClick={onRecipeClick} />
     </div>
   );
 };
