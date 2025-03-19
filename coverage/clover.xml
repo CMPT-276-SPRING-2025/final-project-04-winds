@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1742366131361" clover="3.2.0">
-  <project timestamp="1742366131361" name="All files">
-    <metrics statements="137" coveredstatements="98" conditionals="76" coveredconditionals="42" methods="46" coveredmethods="33" elements="259" coveredelements="173" complexity="0" loc="137" ncloc="137" packages="4" files="14" classes="14"/>
+<coverage generated="1742411248963" clover="3.2.0">
+  <project timestamp="1742411248963" name="All files">
+    <metrics statements="125" coveredstatements="98" conditionals="72" coveredconditionals="42" methods="44" coveredmethods="33" elements="241" coveredelements="173" complexity="0" loc="125" ncloc="125" packages="4" files="11" classes="11"/>
     <package name="src">
-      <metrics statements="32" coveredstatements="19" conditionals="6" coveredconditionals="2" methods="6" coveredmethods="4"/>
-      <file name="App.js" path="C:\Users\Arya\Documents\GitHub\final-project-04-winds\src\App.js">
+      <metrics statements="20" coveredstatements="19" conditionals="2" coveredconditionals="2" methods="4" coveredmethods="4"/>
+      <file name="App.js" path="C:\Users\aryaa\Documents\GitHub\final-project-04-winds\src\App.js">
         <metrics statements="20" coveredstatements="19" conditionals="2" coveredconditionals="2" methods="4" coveredmethods="4"/>
         <line num="12" count="1" type="stmt"/>
         <line num="15" count="8" type="stmt"/>
@@ -27,36 +27,15 @@
         <line num="44" count="1" type="stmt"/>
         <line num="47" count="8" type="stmt"/>
       </file>
-      <file name="GlobalStyle.js" path="C:\Users\Arya\Documents\GitHub\final-project-04-winds\src\GlobalStyle.js">
-        <metrics statements="1" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="4" count="0" type="stmt"/>
-      </file>
-      <file name="index.js" path="C:\Users\Arya\Documents\GitHub\final-project-04-winds\src\index.js">
-        <metrics statements="3" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="7" count="0" type="stmt"/>
-        <line num="8" count="0" type="stmt"/>
-        <line num="17" count="0" type="stmt"/>
-      </file>
-      <file name="reportWebVitals.js" path="C:\Users\Arya\Documents\GitHub\final-project-04-winds\src\reportWebVitals.js">
-        <metrics statements="8" coveredstatements="0" conditionals="4" coveredconditionals="0" methods="2" coveredmethods="0"/>
-        <line num="1" count="0" type="stmt"/>
-        <line num="2" count="0" type="cond" truecount="0" falsecount="4"/>
-        <line num="3" count="0" type="stmt"/>
-        <line num="4" count="0" type="stmt"/>
-        <line num="5" count="0" type="stmt"/>
-        <line num="6" count="0" type="stmt"/>
-        <line num="7" count="0" type="stmt"/>
-        <line num="8" count="0" type="stmt"/>
-      </file>
     </package>
     <package name="src.Ingredient_Box">
       <metrics statements="67" coveredstatements="45" conditionals="34" coveredconditionals="13" methods="21" coveredmethods="13"/>
-      <file name="IngredientsBox.js" path="C:\Users\Arya\Documents\GitHub\final-project-04-winds\src\Ingredient_Box\IngredientsBox.js">
+      <file name="IngredientsBox.js" path="C:\Users\aryaa\Documents\GitHub\final-project-04-winds\src\Ingredient_Box\IngredientsBox.js">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
         <line num="6" count="1" type="stmt"/>
-        <line num="7" count="4" type="stmt"/>
+        <line num="7" count="11" type="stmt"/>
       </file>
-      <file name="InputBox.js" path="C:\Users\Arya\Documents\GitHub\final-project-04-winds\src\Ingredient_Box\InputBox.js">
+      <file name="InputBox.js" path="C:\Users\aryaa\Documents\GitHub\final-project-04-winds\src\Ingredient_Box\InputBox.js">
         <metrics statements="65" coveredstatements="43" conditionals="34" coveredconditionals="13" methods="20" coveredmethods="12"/>
         <line num="4" count="1" type="stmt"/>
         <line num="5" count="15" type="stmt"/>
@@ -127,22 +106,22 @@
     </package>
     <package name="src.Recipe_Box">
       <metrics statements="32" coveredstatements="28" conditionals="36" coveredconditionals="27" methods="16" coveredmethods="13"/>
-      <file name="Filter.js" path="C:\Users\Arya\Documents\GitHub\final-project-04-winds\src\Recipe_Box\Filter.js">
+      <file name="Filter.js" path="C:\Users\aryaa\Documents\GitHub\final-project-04-winds\src\Recipe_Box\Filter.js">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
         <line num="4" count="1" type="stmt"/>
         <line num="5" count="3" type="stmt"/>
       </file>
-      <file name="IndvRecipe.js" path="C:\Users\Arya\Documents\GitHub\final-project-04-winds\src\Recipe_Box\IndvRecipe.js">
+      <file name="IndvRecipe.js" path="C:\Users\aryaa\Documents\GitHub\final-project-04-winds\src\Recipe_Box\IndvRecipe.js">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
         <line num="4" count="1" type="stmt"/>
         <line num="5" count="6" type="stmt"/>
       </file>
-      <file name="RecipeBox.js" path="C:\Users\Arya\Documents\GitHub\final-project-04-winds\src\Recipe_Box\RecipeBox.js">
+      <file name="RecipeBox.js" path="C:\Users\aryaa\Documents\GitHub\final-project-04-winds\src\Recipe_Box\RecipeBox.js">
         <metrics statements="2" coveredstatements="2" conditionals="2" coveredconditionals="1" methods="1" coveredmethods="1"/>
         <line num="7" count="1" type="stmt"/>
         <line num="8" count="4" type="stmt"/>
       </file>
-      <file name="RecipeModal.js" path="C:\Users\Arya\Documents\GitHub\final-project-04-winds\src\Recipe_Box\RecipeModal.js">
+      <file name="RecipeModal.js" path="C:\Users\aryaa\Documents\GitHub\final-project-04-winds\src\Recipe_Box\RecipeModal.js">
         <metrics statements="22" coveredstatements="20" conditionals="28" coveredconditionals="24" methods="10" coveredmethods="9"/>
         <line num="4" count="2" type="stmt"/>
         <line num="5" count="7" type="stmt"/>
@@ -167,7 +146,7 @@
         <line num="92" count="7" type="stmt"/>
         <line num="94" count="0" type="stmt"/>
       </file>
-      <file name="Recipes.js" path="C:\Users\Arya\Documents\GitHub\final-project-04-winds\src\Recipe_Box\Recipes.js">
+      <file name="Recipes.js" path="C:\Users\aryaa\Documents\GitHub\final-project-04-winds\src\Recipe_Box\Recipes.js">
         <metrics statements="4" coveredstatements="2" conditionals="6" coveredconditionals="2" methods="3" coveredmethods="1"/>
         <line num="5" count="1" type="stmt"/>
         <line num="6" count="3" type="stmt"/>
@@ -177,17 +156,17 @@
     </package>
     <package name="src.Title_Card">
       <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="3"/>
-      <file name="Header.js" path="C:\Users\Arya\Documents\GitHub\final-project-04-winds\src\Title_Card\Header.js">
+      <file name="Header.js" path="C:\Users\aryaa\Documents\GitHub\final-project-04-winds\src\Title_Card\Header.js">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
         <line num="5" count="1" type="stmt"/>
         <line num="6" count="4" type="stmt"/>
       </file>
-      <file name="TTS.js" path="C:\Users\Arya\Documents\GitHub\final-project-04-winds\src\Title_Card\TTS.js">
+      <file name="TTS.js" path="C:\Users\aryaa\Documents\GitHub\final-project-04-winds\src\Title_Card\TTS.js">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
         <line num="4" count="1" type="stmt"/>
         <line num="5" count="3" type="stmt"/>
       </file>
-      <file name="TranslateBox.js" path="C:\Users\Arya\Documents\GitHub\final-project-04-winds\src\Title_Card\TranslateBox.js">
+      <file name="TranslateBox.js" path="C:\Users\aryaa\Documents\GitHub\final-project-04-winds\src\Title_Card\TranslateBox.js">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
         <line num="4" count="1" type="stmt"/>
         <line num="5" count="3" type="stmt"/>
