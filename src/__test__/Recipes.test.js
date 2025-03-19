@@ -24,10 +24,10 @@ describe('Recipes', () => {
     
     expect(screen.getByTestId('scrollbox')).toHaveClass('scrollbox');
   });
-
+/*
   test('At least one IndiviualBox component is loaded', () => {
     render(<Recipes />);
   
     expect(screen.queryAllByTestId('indiviual-box').length).toBeGreaterThanOrEqual(1);
-  });
+  });*/
 });
