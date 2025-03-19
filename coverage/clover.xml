@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1742411248963" clover="3.2.0">
-  <project timestamp="1742411248963" name="All files">
+<coverage generated="1742414204557" clover="3.2.0">
+  <project timestamp="1742414204557" name="All files">
     <metrics statements="125" coveredstatements="98" conditionals="72" coveredconditionals="42" methods="44" coveredmethods="33" elements="241" coveredelements="173" complexity="0" loc="125" ncloc="125" packages="4" files="11" classes="11"/>
     <package name="src">
       <metrics statements="20" coveredstatements="19" conditionals="2" coveredconditionals="2" methods="4" coveredmethods="4"/>
@@ -114,7 +114,7 @@
       <file name="IndvRecipe.js" path="C:\Users\aryaa\Documents\GitHub\final-project-04-winds\src\Recipe_Box\IndvRecipe.js">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
         <line num="4" count="1" type="stmt"/>
-        <line num="5" count="6" type="stmt"/>
+        <line num="5" count="12" type="stmt"/>
       </file>
       <file name="RecipeBox.js" path="C:\Users\aryaa\Documents\GitHub\final-project-04-winds\src\Recipe_Box\RecipeBox.js">
         <metrics statements="2" coveredstatements="2" conditionals="2" coveredconditionals="1" methods="1" coveredmethods="1"/>

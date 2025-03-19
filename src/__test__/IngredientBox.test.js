@@ -62,7 +62,7 @@ describe('IngredientsBox', () => {
     expect(mockOnSearch).toHaveBeenCalledTimes(1)
   });
   
-  test('Doesn\'t give an error on search isn\'t provided', () => {
+  test('Doesn\'t give an error when on search isn\'t provided', () => {
     render(<IngredientsBox/>)
     const button = screen.getByRole('button', {name: /get cooking!/i })    
     expect(() => fireEvent.click(button)).not.toThrow()
