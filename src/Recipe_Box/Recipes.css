@@ -73,3 +73,21 @@
     object-fit: cover;
   }
   
+
+
+  /* ======================
+    If no recipes are found
+    ====================== */
+    /* Recipes.css */
+    .no-recipes {
+      column-span: all;
+      display: block;
+      text-align: center;
+      font-size: 1.2rem;
+      color: #555;
+      margin-top: 20px;
+      padding: 10px;
+      background: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }

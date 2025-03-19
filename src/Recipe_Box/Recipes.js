@@ -15,7 +15,7 @@ const Recipes = ({ recipes, onRecipeClick }) => {
           />
         ))
       ) : (
-        <p>No recipes found. Try searching!</p>
+        <p className='no-recipes'>No recipes found. Enter some ingrendients then try searching!</p>
       )}
       </div>
   );
