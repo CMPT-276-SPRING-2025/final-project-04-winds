@@ -21,7 +21,7 @@ const RecipeModal = ({ recipe, onClose }) => {
     if (recipe && recipe.id) {
       fetchRecipeInfo();
     }
-  }, [recipe.id, apiKey]);
+  }, [recipe, apiKey]);
 
   // Toggle the checked state of an ingredient
   const handleIngredientClick = (ingredientName) => {
