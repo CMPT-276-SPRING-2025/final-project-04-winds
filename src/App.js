@@ -24,7 +24,7 @@ const App = () => {
     console.log("Ingredients Query String:", ingredientsQuery);
     try {
       const response = await fetch(
-        `https://api.spoonacular.com/recipes/findByIngredients?apiKey=${apiKey}&ingredients=${ingredientsQuery}&number=5&ignorePantry=true`
+        `https://api.spoonacular.com/recipes/findByIngredients?apiKey=${apiKey}&ingredients=${ingredientsQuery}&number=30&ignorePantry=true`
       );
       const data = await response.json();
       setRecipes(data);
