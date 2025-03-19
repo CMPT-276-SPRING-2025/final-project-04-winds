@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">40% </span>
+                <span class="strong">95% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>8/20</span>
+                <span class='fraction'>19/20</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>1/2</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">25% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/4</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">40% </span>
+                <span class="strong">95% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>8/20</span>
+                <span class='fraction'>19/20</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -176,39 +176,39 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -280,31 +280,31 @@ const App = () =&gt; {
   const [selectedRecipe, setSelectedRecipe] = useState(null);
 &nbsp;
   // Trigger search using current ingredients list
-  const handleSearchRecipes = <span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {
-    const apiKey = <span class="cstat-no" title="statement not covered" >process.env.REACT_APP_SPOONACULAR_API_KEY;</span>
-    const ingredientsQuery = <span class="cstat-no" title="statement not covered" >ingredients.join(',');</span>
-<span class="cstat-no" title="statement not covered" >    console.log("Ingredients:", ingredients);</span>
-<span class="cstat-no" title="statement not covered" >    console.log("Ingredients Query String:", ingredientsQuery);</span>
-<span class="cstat-no" title="statement not covered" >    try {</span>
-      const response = <span class="cstat-no" title="statement not covered" >await fetch(</span>
+  const handleSearchRecipes = async () =&gt; {
+    const apiKey = process.env.REACT_APP_SPOONACULAR_API_KEY;
+    const ingredientsQuery = ingredients.join(',');
+    console.log("Ingredients:", ingredients);
+    console.log("Ingredients Query String:", ingredientsQuery);
+    try {
+      const response = await fetch(
         `https://api.spoonacular.com/recipes/findByIngredients?apiKey=${apiKey}&amp;ingredients=${ingredientsQuery}&amp;number=30&amp;ignorePantry=true`
       );
-      const data = <span class="cstat-no" title="statement not covered" >await response.json();</span>
-<span class="cstat-no" title="statement not covered" >      setRecipes(data);</span>
-<span class="cstat-no" title="statement not covered" >      console.log("Recipes fetched:", data);</span>
+      const data = await response.json();
+      setRecipes(data);
+      console.log("Recipes fetched:", data);
     } catch (error) {
 <span class="cstat-no" title="statement not covered" >      console.error("Error fetching recipes:", error);</span>
     }
   };
 &nbsp;
   // Open modal with selected recipe
-  const handleRecipeClick = <span class="fstat-no" title="function not covered" >(r</span>ecipe) =&gt; {
-<span class="cstat-no" title="statement not covered" >    setSelectedRecipe(recipe);</span>
+  const handleRecipeClick = (recipe) =&gt; {
+    setSelectedRecipe(recipe);
   };
 &nbsp;
   // Close recipe modal
-  const closeModal = <span class="fstat-no" title="function not covered" >()</span> =&gt; {
-<span class="cstat-no" title="statement not covered" >    setSelectedRecipe(null);</span>
+  const closeModal = () =&gt; {
+    setSelectedRecipe(null);
   };
 &nbsp;
   return (
@@ -350,7 +350,7 @@ const App = () =&gt; {
       
       {/* The Recipe Modal */}
       {selectedRecipe &amp;&amp; (
-<span class="branch-1 cbranch-no" title="branch not covered" >        &lt;RecipeModal recipe={selectedRecipe} onClose={closeModal} /&gt;</span>
+        &lt;RecipeModal recipe={selectedRecipe} onClose={closeModal} /&gt;
       )}
     &lt;/&gt;
   );
@@ -367,7 +367,7 @@ export default App;</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-03-19T01:16:23.686Z
+                at 2025-03-19T06:35:31.335Z
             </div>
         <script src="../prettify.js"></script>
         <script>
