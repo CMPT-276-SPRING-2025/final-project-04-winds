@@ -2,18 +2,20 @@ import React from 'react';
 import './RecipeBox.css';
 import Filter from './Filter';
 import Recipes from './Recipes';
+import RecipeModal from './RecipeModal';
 
-// The Box that takes the ingredients 
-const RecipeBox = () => {
+const RecipeBox = ({ recipes, onRecipeClick, selectedRecipe, closeModal }) => {
   return (
-
-    // wrapping object
-    <div className="recipe-box" data-testid='recipe-box' >
-      {/* The filter icon */}
-      <Filter/>
-
-      {/* The box that holds all the recipes*/}
-      <Recipes/>
+    <div className="recipe-box" data-testid="recipe-box">
+      <Filter />
+      <div className="scrollbox-wrapper">
+        <Recipes recipes={recipes} onRecipeClick={onRecipeClick} />
+      </div>
+      {selectedRecipe && (
+        <div className="modal-container">
+          <RecipeModal recipe={selectedRecipe} onClose={closeModal} />
+        </div>
+      )}
     </div>
   );
 };
