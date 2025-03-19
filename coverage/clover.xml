@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1742414204557" clover="3.2.0">
-  <project timestamp="1742414204557" name="All files">
-    <metrics statements="125" coveredstatements="98" conditionals="72" coveredconditionals="42" methods="44" coveredmethods="33" elements="241" coveredelements="173" complexity="0" loc="125" ncloc="125" packages="4" files="11" classes="11"/>
+<coverage generated="1742421400693" clover="3.2.0">
+  <project timestamp="1742421400693" name="All files">
+    <metrics statements="125" coveredstatements="98" conditionals="72" coveredconditionals="43" methods="44" coveredmethods="33" elements="241" coveredelements="174" complexity="0" loc="125" ncloc="125" packages="4" files="11" classes="11"/>
     <package name="src">
       <metrics statements="20" coveredstatements="19" conditionals="2" coveredconditionals="2" methods="4" coveredmethods="4"/>
       <file name="App.js" path="C:\Users\aryaa\Documents\GitHub\final-project-04-winds\src\App.js">
@@ -105,7 +105,7 @@
       </file>
     </package>
     <package name="src.Recipe_Box">
-      <metrics statements="32" coveredstatements="28" conditionals="36" coveredconditionals="27" methods="16" coveredmethods="13"/>
+      <metrics statements="32" coveredstatements="28" conditionals="36" coveredconditionals="28" methods="16" coveredmethods="13"/>
       <file name="Filter.js" path="C:\Users\aryaa\Documents\GitHub\final-project-04-winds\src\Recipe_Box\Filter.js">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
         <line num="4" count="1" type="stmt"/>
@@ -117,13 +117,13 @@
         <line num="5" count="12" type="stmt"/>
       </file>
       <file name="RecipeBox.js" path="C:\Users\aryaa\Documents\GitHub\final-project-04-winds\src\Recipe_Box\RecipeBox.js">
-        <metrics statements="2" coveredstatements="2" conditionals="2" coveredconditionals="1" methods="1" coveredmethods="1"/>
+        <metrics statements="2" coveredstatements="2" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
         <line num="7" count="1" type="stmt"/>
-        <line num="8" count="4" type="stmt"/>
+        <line num="8" count="19" type="stmt"/>
       </file>
       <file name="RecipeModal.js" path="C:\Users\aryaa\Documents\GitHub\final-project-04-winds\src\Recipe_Box\RecipeModal.js">
         <metrics statements="22" coveredstatements="20" conditionals="28" coveredconditionals="24" methods="10" coveredmethods="9"/>
-        <line num="4" count="2" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
         <line num="5" count="7" type="stmt"/>
         <line num="6" count="7" type="stmt"/>
         <line num="7" count="7" type="stmt"/>
