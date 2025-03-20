@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1742457041311" clover="3.2.0">
-  <project timestamp="1742457041311" name="All files">
-    <metrics statements="125" coveredstatements="118" conditionals="72" coveredconditionals="55" methods="44" coveredmethods="40" elements="241" coveredelements="213" complexity="0" loc="125" ncloc="125" packages="4" files="11" classes="11"/>
+<coverage generated="1742457842133" clover="3.2.0">
+  <project timestamp="1742457842133" name="All files">
+    <metrics statements="125" coveredstatements="120" conditionals="72" coveredconditionals="58" methods="44" coveredmethods="42" elements="241" coveredelements="220" complexity="0" loc="125" ncloc="125" packages="4" files="11" classes="11"/>
     <package name="src">
       <metrics statements="20" coveredstatements="19" conditionals="2" coveredconditionals="2" methods="4" coveredmethods="4"/>
       <file name="App.js" path="C:\Users\Arya\Documents\GitHub\final-project-04-winds\src\App.js">
@@ -105,7 +105,7 @@
       </file>
     </package>
     <package name="src.Recipe_Box">
-      <metrics statements="32" coveredstatements="28" conditionals="36" coveredconditionals="28" methods="16" coveredmethods="13"/>
+      <metrics statements="32" coveredstatements="30" conditionals="36" coveredconditionals="31" methods="16" coveredmethods="15"/>
       <file name="Filter.js" path="C:\Users\Arya\Documents\GitHub\final-project-04-winds\src\Recipe_Box\Filter.js">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
         <line num="4" count="1" type="stmt"/>
@@ -147,11 +147,11 @@
         <line num="94" count="0" type="stmt"/>
       </file>
       <file name="Recipes.js" path="C:\Users\Arya\Documents\GitHub\final-project-04-winds\src\Recipe_Box\Recipes.js">
-        <metrics statements="4" coveredstatements="2" conditionals="6" coveredconditionals="2" methods="3" coveredmethods="1"/>
+        <metrics statements="4" coveredstatements="4" conditionals="6" coveredconditionals="5" methods="3" coveredmethods="3"/>
         <line num="5" count="1" type="stmt"/>
-        <line num="6" count="3" type="stmt"/>
-        <line num="11" count="0" type="stmt"/>
-        <line num="14" count="0" type="stmt"/>
+        <line num="6" count="6" type="stmt"/>
+        <line num="11" count="4" type="stmt"/>
+        <line num="14" count="1" type="stmt"/>
       </file>
     </package>
     <package name="src.Title_Card">
