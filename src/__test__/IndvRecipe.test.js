@@ -66,7 +66,7 @@ describe('IndiviualBox', () => {
     const recipeWithoutImage = { ...mockRecipe, image: undefined}
     render(<IndiviualBox recipe={recipeWithoutImage} onClick={mockOnClick} />)
     const image = screen.getByTestId('image')
-    expect(image).toHaveAttribute('src', '')
+    expect(image).toHaveAttribute('src', '/Media/Logo.gif')
   });
 
   test('Image has a valid alt text', () => {
@@ -85,6 +85,6 @@ describe('IndiviualBox', () => {
     render(<IndiviualBox recipe={mockRecipe} onClick={mockOnClick} />)
     const boxElement = screen.getByTestId('box');
     expect(boxElement).toBeEnabled()
-    expect(boxElement).toHaveAttribute('role', 'button')
+    expect(boxElement).toHaveAttribute('type', 'button')
   });
 });

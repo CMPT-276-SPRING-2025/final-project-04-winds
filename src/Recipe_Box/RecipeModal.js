@@ -69,7 +69,11 @@ const RecipeModal = ({ recipe, onClose }) => {
             {recipe.image && (
               <div className="modal-image-container">
                 <img
-                  src={recipe.image}
+                  src={recipe.image || "/Media/Logo.gif"}
+                  onError={(e) => {
+                    e.target.onError = null;
+                    e.target.src = "/Media/Logo.gif";
+                  }}
                   alt={recipe.title}
                   className="modal-image"
                 />
