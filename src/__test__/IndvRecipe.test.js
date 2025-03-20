@@ -6,7 +6,7 @@ import '@testing-library/jest-dom';
 import IndiviualBox from '../Recipe_Box/IndvRecipe';
 
 describe('IndiviualBox', () => {
-  const mockRecipe = {
+  const mockRecipe = {  
     title: 'Test Recipe',
     image: 'https://example.com/test-image.jpg',
   };
@@ -48,5 +48,43 @@ describe('IndiviualBox', () => {
     
     fireEvent.click(screen.getByTestId('box'));
     expect(mockOnClick).toHaveBeenCalledTimes(1);
+  });
+
+  test('Doesn\'t give an error when onclick isn\'t provided', () => {
+    render(<IndiviualBox recipe={mockRecipe}/>)    
+    expect(() => fireEvent.click(screen.getByTestId('box'))).not.toThrow()
+  });
+
+  test('Handles missing recipe titles gracefully', () => {
+    const recipeWithoutTitle = { ...mockRecipe, title: undefined}
+    render(<IndiviualBox recipe={recipeWithoutTitle} onClick={mockOnClick} />)
+    const title = screen.getByTestId('title')
+    expect(title.textContent).toBe('')
+  });
+
+  test('Handles missing recipe images gracefully', () => {
+    const recipeWithoutImage = { ...mockRecipe, image: undefined}
+    render(<IndiviualBox recipe={recipeWithoutImage} onClick={mockOnClick} />)
+    const image = screen.getByTestId('image')
+    expect(image).toHaveAttribute('src', '')
+  });
+
+  test('Image has a valid alt text', () => {
+    render(<IndiviualBox recipe={mockRecipe} onClick={mockOnClick} />)
+    const image = screen.getByTestId('image')
+    expect(image).toHaveAttribute('alt', mockRecipe.title)
+  });
+
+  test('Box is clickable', () => {
+    render(<IndiviualBox recipe={mockRecipe} onClick={mockOnClick} />)
+    const boxElement = screen.getByTestId('box');
+    expect(boxElement).toBeEnabled()
+  });
+
+  test('Box is has a role', () => {
+    render(<IndiviualBox recipe={mockRecipe} onClick={mockOnClick} />)
+    const boxElement = screen.getByTestId('box');
+    expect(boxElement).toBeEnabled()
+    expect(boxElement).toHaveAttribute('role', 'button')
   });
 });

@@ -20,5 +20,3 @@ const IngredientsBox = ({ ingredients, setIngredients, onSearch }) => {
 };
 
 export default IngredientsBox;
-
-
