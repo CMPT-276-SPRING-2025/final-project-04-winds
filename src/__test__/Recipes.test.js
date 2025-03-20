@@ -53,7 +53,7 @@ describe('Recipes', () => {
   test('Displays a message when no recipes are found', () => {
     render(<Recipes recipes={[]} onRecipeClick={mockOnRecipeClick}/>);
 
-    const noRecipeMessage = screen.getByText(/No Recipes found. Enter some ingredients then try searching!/i)
+    const noRecipeMessage = screen.getByText(/No recipes found. Enter some ingrendients then try searching!/i)
     expect(noRecipeMessage).toBeInTheDocument()
   });
 });
