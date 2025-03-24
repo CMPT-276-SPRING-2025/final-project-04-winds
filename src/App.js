@@ -8,6 +8,7 @@ import Header from './Title_Card/Header';
 import TranslateBox from './Title_Card/TranslateBox';
 import TTS from './Title_Card/TTS';
 import RecipeModal from './Recipe_Box/RecipeModal';
+import Filter from './Recipe_Box/Filter';
 
 const App = () => {
 
@@ -15,6 +16,9 @@ const App = () => {
   const [ingredients, setIngredients] = useState([]);
   const [recipes, setRecipes] = useState([]);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
+  const [isToggled, setFilterToggle] = useState(false); 
+  const [selectedFilters, setSelectedFilter] = useState([]); 
+  
 
   // Trigger search using current ingredients list
   const handleSearchRecipes = async () => {
@@ -42,6 +46,24 @@ const App = () => {
   // Close recipe modal
   const closeModal = () => {
     setSelectedRecipe(null);
+  };
+
+  // show or hide filters
+  const filterToggle = () => {
+    setFilterToggle((prev) => !prev);
+  };
+
+  // toggle diet filters
+  const filterOptionToggle = (option, event) => {
+    event.stopPropagation();    
+    setSelectedFilter((prev) => {
+      if(prev.includes(option)){
+        return prev.filter(diet => diet !== option)
+      } else {
+        return prev.concat(option);
+      }
+    });
+    
   };
 
   return (
@@ -78,17 +100,25 @@ const App = () => {
           ingredients={ingredients}
           setIngredients={setIngredients}
           onSearch={handleSearchRecipes}
-        />
+        />     
+
         <RecipeBox 
           recipes={recipes}
           onRecipeClick={handleRecipeClick}
-        />
+          isToggled={isToggled}
+          filterToggle={filterToggle}
+          filterOptionToggle={filterOptionToggle}
+          selectedFilters={selectedFilters}
+        />        
+
       </div>
       
       {/* The Recipe Modal */}
       {selectedRecipe && (
         <RecipeModal recipe={selectedRecipe} onClose={closeModal} />
       )}
+    
+  
     </>
   );
 };
