@@ -72,8 +72,8 @@ const RecipeModal = ({ recipe, onClose }) => {
               recipeInfo.analyzedInstructions[0].steps?.length > 0 ? (
                 <ol>
                   {recipeInfo.analyzedInstructions[0].steps.map((step) => (
-                    <li key={step.number} style={{ marginBottom: "10px" }}>
-                      <strong>Step {step.number}:</strong> {step.step}
+                    <li key={step.number} style={{ marginBottom: "10px" }}> 
+                      {step.step}
                     </li>
                   ))}
                 </ol>
