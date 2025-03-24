@@ -148,3 +148,18 @@
   h3 {
     margin-left: 10px;
   }
+  .toggle-instructions-btn {
+    background-color: #ffb6c1;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    margin: 10px 0;
+    cursor: pointer;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+    transition: background-color 0.3s ease;
+  }
+  
+  .toggle-instructions-btn:hover {
+    background-color: #ff69b4;
+  }
