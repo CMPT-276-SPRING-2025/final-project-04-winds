@@ -9,7 +9,7 @@ const RecipeBox = ({ recipes, onRecipeClick, selectedRecipe, closeModal, isToggl
     <div className="recipe-box" data-testid="recipe-box">
 
       <Filter isToggled={isToggled} filterToggle={filterToggle} filterOptionToggle={filterOptionToggle} selectedFilters={selectedFilters}/>
-
+      
       <div className="scrollbox-wrapper">
         <Recipes recipes={recipes} onRecipeClick={onRecipeClick} />
       </div>
