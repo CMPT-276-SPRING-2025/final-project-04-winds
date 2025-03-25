@@ -8,7 +8,7 @@ import Header from './Title_Card/Header';
 import TranslateBox from './Title_Card/TranslateBox';
 import TTS from './Title_Card/TTS';
 import RecipeModal from './Recipe_Box/RecipeModal';
-import Filter from './Recipe_Box/Filter';
+
 
 const App = () => {
 

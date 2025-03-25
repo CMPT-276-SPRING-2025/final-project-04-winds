@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import './Filter.css'
 
 const Filter = ({isToggled, filterToggle, filterOptionToggle, selectedFilters}) => {
-  const apiKey = process.env.REACT_APP_SPOONACULAR_API_KEY;
   
   const [excludePopupVisible, setPopupVisible] = useState(false);
   const [ingredient, setIngredient] = useState('');

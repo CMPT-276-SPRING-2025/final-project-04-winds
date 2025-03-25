@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1742888726196" clover="3.2.0">
-  <project timestamp="1742888726196" name="All files">
-    <metrics statements="185" coveredstatements="144" conditionals="91" coveredconditionals="65" methods="66" coveredmethods="46" elements="342" coveredelements="255" complexity="0" loc="185" ncloc="185" packages="4" files="14" classes="14"/>
+<coverage generated="1742889173773" clover="3.2.0">
+  <project timestamp="1742889173773" name="All files">
+    <metrics statements="184" coveredstatements="143" conditionals="91" coveredconditionals="65" methods="66" coveredmethods="46" elements="341" coveredelements="254" complexity="0" loc="184" ncloc="184" packages="4" files="14" classes="14"/>
     <package name="src">
       <metrics statements="42" coveredstatements="23" conditionals="8" coveredconditionals="2" methods="11" coveredmethods="4"/>
       <file name="App.js" path="C:\Users\hannah\OneDrive - Simon Fraser University (1sfu)\uni\spring 2025\CMPT276\final-project-04-winds\src\App.js">
@@ -136,39 +136,38 @@
       </file>
     </package>
     <package name="src.Recipe_Box">
-      <metrics statements="70" coveredstatements="50" conditionals="49" coveredconditionals="38" methods="31" coveredmethods="19"/>
+      <metrics statements="69" coveredstatements="49" conditionals="49" coveredconditionals="38" methods="31" coveredmethods="19"/>
       <file name="Filter.js" path="C:\Users\hannah\OneDrive - Simon Fraser University (1sfu)\uni\spring 2025\CMPT276\final-project-04-winds\src\Recipe_Box\Filter.js">
-        <metrics statements="30" coveredstatements="12" conditionals="10" coveredconditionals="2" methods="12" coveredmethods="1"/>
+        <metrics statements="29" coveredstatements="11" conditionals="10" coveredconditionals="2" methods="12" coveredmethods="1"/>
         <line num="4" count="2" type="stmt"/>
-        <line num="5" count="3" type="stmt"/>
+        <line num="6" count="3" type="stmt"/>
         <line num="7" count="3" type="stmt"/>
         <line num="8" count="3" type="stmt"/>
-        <line num="9" count="3" type="stmt"/>
-        <line num="11" count="3" type="stmt"/>
-        <line num="13" count="3" type="stmt"/>
+        <line num="10" count="3" type="stmt"/>
+        <line num="12" count="3" type="stmt"/>
+        <line num="13" count="0" type="stmt"/>
         <line num="14" count="0" type="stmt"/>
-        <line num="15" count="0" type="stmt"/>
-        <line num="17" count="3" type="stmt"/>
+        <line num="16" count="3" type="stmt"/>
+        <line num="17" count="0" type="stmt"/>
         <line num="18" count="0" type="stmt"/>
-        <line num="19" count="0" type="stmt"/>
-        <line num="21" count="3" type="stmt"/>
+        <line num="20" count="3" type="stmt"/>
+        <line num="21" count="0" type="stmt"/>
         <line num="22" count="0" type="stmt"/>
-        <line num="23" count="0" type="stmt"/>
-        <line num="27" count="3" type="stmt"/>
-        <line num="28" count="0" type="stmt"/>
-        <line num="29" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="26" count="3" type="stmt"/>
+        <line num="27" count="0" type="stmt"/>
+        <line num="28" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="29" count="0" type="stmt"/>
         <line num="30" count="0" type="stmt"/>
-        <line num="31" count="0" type="stmt"/>
-        <line num="35" count="3" type="stmt"/>
+        <line num="34" count="3" type="stmt"/>
+        <line num="35" count="0" type="stmt"/>
         <line num="36" count="0" type="stmt"/>
-        <line num="37" count="0" type="stmt"/>
-        <line num="40" count="3" type="stmt"/>
-        <line num="56" count="0" type="stmt"/>
+        <line num="39" count="3" type="stmt"/>
+        <line num="55" count="0" type="stmt"/>
+        <line num="59" count="0" type="stmt"/>
         <line num="60" count="0" type="stmt"/>
-        <line num="61" count="0" type="stmt"/>
-        <line num="72" count="0" type="stmt"/>
-        <line num="75" count="0" type="stmt"/>
-        <line num="87" count="0" type="stmt"/>
+        <line num="71" count="0" type="stmt"/>
+        <line num="74" count="0" type="stmt"/>
+        <line num="86" count="0" type="stmt"/>
       </file>
       <file name="IndvRecipe.js" path="C:\Users\hannah\OneDrive - Simon Fraser University (1sfu)\uni\spring 2025\CMPT276\final-project-04-winds\src\Recipe_Box\IndvRecipe.js">
         <metrics statements="4" coveredstatements="2" conditionals="2" coveredconditionals="2" methods="2" coveredmethods="1"/>
