@@ -28,9 +28,9 @@
 
 .tts-menu {
   position: absolute;
-  right: 0;
+  right: 3.5vh;
   background-color: white;
-  border: 1px solid #ddd;
+  border: 1px solid #85A573;;
   border-radius: 4px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
   z-index: 100;
@@ -38,13 +38,15 @@
 }
 
 .tts-menu-item {
-  display: block;
+  display: flex;
   width: 100%;
   padding: 8px 16px;
   text-align: left;
   background: none;
   border: none;
   cursor: pointer;
+  align-items: center;
+  gap: 8px
 }
 
 .tts-menu-item:hover {
