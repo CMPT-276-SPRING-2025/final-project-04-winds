@@ -34,6 +34,10 @@ const App = () => {
     }
   };
 
+  const handleGoogleAPICall = async () => {
+    const apiKey = process.env.REACT_APP_SPOONACULAR_API_KEY
+  }
+
   // Open modal with selected recipe
   const handleRecipeClick = (recipe) => {
     setSelectedRecipe(recipe);
