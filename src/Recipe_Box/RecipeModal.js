@@ -89,19 +89,17 @@ const RecipeModal = ({ recipe, onClose }) => {
 
           {/* Right Column: Image + Ingredients */}
           <div className="modal-right">
-            {recipe.image && (
               <div className="modal-image-container">
                 <img
                   src={recipe.image || "/Media/Logo.gif"}
+                  alt={recipe.title || "No image available"}
                   onError={(e) => {
                     e.target.onError = null;
                     e.target.src = "/Media/Logo.gif";
                   }}
-                  alt={recipe.title}
                   className="modal-image"
                 />
               </div>
-            )}
             <div className="modal-ingredients">
               <h3>Ingredients:</h3>
               <ul>
