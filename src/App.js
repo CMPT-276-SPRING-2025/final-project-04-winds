@@ -19,6 +19,7 @@ const App = () => {
   const [isToggled, setFilterToggle] = useState(false); 
   const [selectedFilters, setSelectedFilter] = useState([]); 
   
+ 
 
   // Trigger search using current ingredients list
   const handleSearchRecipes = async () => {
@@ -26,13 +27,44 @@ const App = () => {
     const ingredientsQuery = ingredients.join(',');
     console.log("Ingredients:", ingredients);
     console.log("Ingredients Query String:", ingredientsQuery);
+  
     try {
       const response = await fetch(
         `https://api.spoonacular.com/recipes/findByIngredients?apiKey=${apiKey}&ingredients=${ingredientsQuery}&number=30&ignorePantry=true`
       );
-      const data = await response.json();
-      setRecipes(data);
-      console.log("Recipes fetched:", data);
+      let recipes = await response.json();
+
+      // handle filtering for diets when both diets & filters selected
+      if(selectedFilters.length > 0 && ingredients.length > 0){
+        console.log("selected filters", selectedFilters)
+        const recipeIds = recipes.map(recipe => recipe.id).join(',');
+        const informationResponse = await fetch(
+          `https://api.spoonacular.com/recipes/informationBulk?apiKey=${apiKey}&ids=${recipeIds}`
+        );
+        const informationData = await informationResponse.json();
+
+        const dietMap = {
+          'Vegan': 'vegan',
+          'Vegetarian': 'vegetarian',
+          'Gluten Free': 'glutenFree',
+          'Ketogenic': 'ketogenic',
+          'Paleo': 'paleo'
+        };
+
+        // filter recipes with selected diets
+        recipes = informationData.filter(recipe => {
+          return selectedFilters.every(diet => recipe[dietMap[diet]])
+        });
+
+        recipes = recipes.map(recipe => ({
+          id: recipe.id,
+          title: recipe.title,
+          image: recipe.image,
+        }));
+      }
+
+      setRecipes(recipes);
+      console.log("Recipes fetched:", recipes);
     } catch (error) {
       console.error("Error fetching recipes:", error);
     }
