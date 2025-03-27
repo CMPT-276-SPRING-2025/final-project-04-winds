@@ -7,6 +7,8 @@ const TTS = ({analyzedInstructions}) => {
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [currentStepIndex, setCurrentStepIndex] = useState(0);
+  const [audioUrl, setAudioUrl] = useState(null);
 
   // ===== REFS =====
   const menuRef = useRef(null);
@@ -16,15 +18,147 @@ const TTS = ({analyzedInstructions}) => {
   const lastCommandTime = useRef(0);
   const processingInterval = useRef(null);
   const streamRef = useRef(null);
+  const audioRef = useRef(null);
 
   // ===== GOOGLE CLOUD CONFIG =====
   const API_KEY = process.env.REACT_APP_GOOGLE_CLOUD_API_KEY;
   const SPEECH_API_URL = `https://speech.googleapis.com/v1/speech:recognize?key=${API_KEY}`;
 
-  const tts_api_key = process.env.REACT_APP_GOOGLE_CLOUD_TTS_CREDENTIALS;
-  const TEXT_API_URL = `https://texttospeech.googleapis.com/v1/text:synthesize?key=${tts_api_key}`;
+  const TEXT_API_URL = `https://texttospeech.googleapis.com/v1/text:synthesize`;
 
-  // ===== REAL-TIME PROCESSING =====
+  // ===== INSTRUCTION PROCESSING =====
+  const processInstructions = () => {
+    if (!analyzedInstructions || !analyzedInstructions[0]?.steps) return [];
+    
+    return analyzedInstructions[0].steps.map(step => 
+      `Step ${step.number}: ${step.step}`
+    );
+  };
+
+
+
+  // ===== TEXT-TO-SPEECH METHODS =====
+  const synthesizeSpeech = async (text) => {
+    try {
+      // Validate inputs
+      if (!text) {
+        console.error('No text provided for speech synthesis');
+        return null;
+      }
+
+      // Ensure API key is correctly formatted
+      if (!API_KEY) {
+        console.error('Missing Google Cloud TTS API key');
+        return null;
+      }
+
+      const response = await fetch(`${TEXT_API_URL}?key=${API_KEY}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          input: { text: text },
+          voice: {
+            languageCode: 'en-US',
+            name: 'en-US-Standard-C'
+          },
+          audioConfig: {
+            audioEncoding: 'MP3'
+          }
+        })
+      });
+
+      // Detailed error handling
+      if (!response.ok) {
+        const errorBody = await response.text();
+        console.error('Speech synthesis API error:', {
+          status: response.status,
+          statusText: response.statusText,
+          body: errorBody
+        });
+        throw new Error(`Speech synthesis failed: ${response.status}`);
+      }
+
+      const data = await response.json();
+      
+      // Validate audio content
+      if (!data.audioContent) {
+        console.error('No audio content received');
+        return null;
+      }
+
+      // Decode base64 audio content
+      const audioContent = data.audioContent;
+      
+      // Replace Buffer with atob and Uint8Array
+      const binaryString = atob(audioContent);
+      const bytes = new Uint8Array(binaryString.length);
+      for (let i = 0; i < binaryString.length; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      const blob = new Blob([bytes], { type: 'audio/mp3' });
+      
+      const audioUrl = URL.createObjectURL(blob);
+      return audioUrl;
+    } catch (error) {
+      console.error('Comprehensive Text-to-Speech Error:', error);
+      return null;
+    }
+  };
+
+  const playCurrentStep = async () => {
+    const steps = processInstructions();
+    if (steps.length === 0) return;
+
+    // Stop any existing audio
+    if (audioRef.current) {
+      audioRef.current.pause();
+    }
+
+    try {
+      // Synthesize and play current step
+      const audioUrl = await synthesizeSpeech(steps[currentStepIndex]);
+      if (audioUrl) {
+        setAudioUrl(audioUrl);
+        setIsPlayingAudio(true);
+      } else {
+        console.error('Failed to generate audio for step');
+      }
+    } catch (error) {
+      console.error('Error playing current step:', error);
+    }
+  };
+
+
+  const nextStep = () => {
+    const steps = processInstructions();
+    if (currentStepIndex < steps.length - 1) {
+      // Stop current audio
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+      
+      // Move to next step
+      setCurrentStepIndex(prev => prev + 1);
+      setIsPlayingAudio(false);
+    }
+  };
+
+  const previousStep = () => {
+    if (currentStepIndex > 0) {
+      // Stop current audio
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+      
+      // Move to previous step
+      setCurrentStepIndex(prev => prev - 1);
+      setIsPlayingAudio(false);
+    }
+  };
+
+  // ===== SPEECH RECOGNITION METHODS =====
   const startListening = useCallback(async () => {
     try {
       // Stop any existing streams
@@ -169,28 +303,26 @@ const TTS = ({analyzedInstructions}) => {
     const normalized = transcript.toLowerCase().trim();
 
     if (normalized.includes('play')) {
-      setIsPlayingAudio(false);
-      console.log('EXECUTE COMMAND PLAY');
+      setIsPlayingAudio(true);
+      playCurrentStep();
     }
     else if (normalized.includes('pause')) {
-      setIsPlayingAudio(true);
-      console.log('EXECUTE COMMAND PAUSE');
+      setIsPlayingAudio(false);
+      if (audioRef.current) audioRef.current.pause();
     }
-    else if (normalized.includes('skip')) {
-      console.log('EXECUTE COMMAND SKIP');
+    else if (normalized.includes('skip') || normalized.includes('next')) {
+      nextStep();
     }
-    else if (normalized.includes('go back')) {
-      console.log('EXECUTE COMMAND GO BACK');
+    else if (normalized.includes('go back') || normalized.includes('previous')) {
+      previousStep();
     }
     else if (normalized.includes('stop listening')) {
       stopListening();
-      console.log('EXECUTE COMMAND STOP LISTENING');
     }
-  }, [stopListening]);
+  }, [stopListening, currentStepIndex]);
 
   // ===== UI TOGGLES =====
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-  const togglePlaying = () => setIsPlayingAudio(!isPlayingAudio);
   const toggleListening = async () => {
     if (!isListening) await startListening();
     else stopListening();
@@ -219,7 +351,22 @@ const TTS = ({analyzedInstructions}) => {
 
   // ===== RENDER =====
   return (
-    <div className="tts-container" >
+    <div className="tts-container">
+      {audioUrl && (
+        <audio 
+          ref={audioRef} 
+          src={audioUrl}
+          onEnded={() => setIsPlayingAudio(false)}
+          autoPlay={isPlayingAudio}
+        />
+      )}
+
+      {!API_KEY && (
+        <div className="error-message">
+          Google Cloud TTS API key is missing. Please check your configuration.
+        </div>
+      )}
+
       <div className="tts-controls">
         <button className='image-button' onClick={toggleMenu}>
           <img
@@ -231,22 +378,46 @@ const TTS = ({analyzedInstructions}) => {
         </button>
         
         <button 
-        className="tts-menu-item-list" 
-        onClick={toggleListening}
-        disabled={isProcessing}        
+          className="tts-menu-item-list" 
+          onClick={toggleListening}
+          disabled={isProcessing}        
         >
-          <svg viewBox="0 0 24 24" width="16" height="16" >
+          <svg viewBox="0 0 24 24" width="16" height="16">
             <path fill="currentColor" d="M12,2A3,3 0 0,1 15,5V11A3,3 0 0,1 12,14A3,3 0 0,1 9,11V5A3,3 0 0,1 12,2M19,11C19,14.53 16.39,17.44 13,17.93V21H11V17.93C7.61,17.44 5,14.53 5,11H7A5,5 0 0,0 12,16A5,5 0 0,0 17,11H19Z" />
           </svg>
           {isProcessing ? 'Processing...' : isListening ? 'Stop Listening' : 'Start Listening'}            
         </button>
       </div>
-  
+
       {isMenuOpen && (
         <div className="tts-menu" ref={menuRef}>
-          {analyzedInstructions?.length > 0 && (
+          {processInstructions().length > 0 && (
             <>
-              <button className="tts-menu-item" onClick={togglePlaying}>
+              {/* Go Back Button */}
+              <button 
+                className="tts-menu-item" 
+                onClick={previousStep}
+                disabled={currentStepIndex === 0}
+              >
+                <svg className="menu-icon" viewBox="0 0 24 24" width="16" height="16">
+                  <path fill="currentColor" d="M6,18.14V5.14H8V18.14H6Z" />
+                  <path fill="currentColor" d="M9.5,12.14L16,5.64V18.64L9.5,12.14Z" />
+                </svg>
+                Go Back
+              </button>
+
+              {/* Play/Pause Button */}
+              <button 
+                className="tts-menu-item" 
+                onClick={() => {
+                  if (isPlayingAudio) {
+                    if (audioRef.current) audioRef.current.pause();
+                    setIsPlayingAudio(false);
+                  } else {
+                    playCurrentStep();
+                  }
+                }}
+              >
                 <svg className="menu-icon" viewBox="0 0 24 24" width="16" height="16">
                   {isPlayingAudio ? (
                     <path fill="currentColor" d="M14,19H18V5H14M6,19H10V5H6V19Z" />
@@ -256,23 +427,26 @@ const TTS = ({analyzedInstructions}) => {
                 </svg>
                 {isPlayingAudio ? 'Pause' : 'Play'}
               </button>
-              <button className="tts-menu-item">
+
+              {/* Skip Button */}
+              <button 
+                className="tts-menu-item" 
+                onClick={nextStep}
+                disabled={currentStepIndex === processInstructions().length - 1}
+              >
                 <svg className="menu-icon" viewBox="0 0 24 24" width="16" height="16">
                   <path fill="currentColor" d="M8,5.14V19.14L19,12.14L8,5.14Z" />
                   <path fill="currentColor" d="M15,5.14V19.14L19,12.14L15,5.14Z" />
                 </svg>
                 Skip
               </button>
-              <button className="tts-menu-item">
-                <svg className="menu-icon" viewBox="0 0 24 24" width="16" height="16">
-                  <path fill="currentColor" d="M6,18.14V5.14H8V18.14H6Z" />
-                  <path fill="currentColor" d="M9.5,12.14L16,5.64V18.64L9.5,12.14Z" />
-                </svg>
-                Go Back
-              </button>
+
+              {/* Current Step Display */}
+              <div className="tts-menu-item">
+                Step {currentStepIndex + 1} of {processInstructions().length}
+              </div>
             </>
           )}
-                  
         </div>
       )}
     </div>
