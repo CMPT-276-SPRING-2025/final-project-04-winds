@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './RecipeModal.css';
+import TTS from '../Title_Card/TTS';
 
 const RecipeModal = ({ recipe, onClose }) => {
   const apiKey = process.env.REACT_APP_SPOONACULAR_API_KEY;
@@ -39,14 +40,19 @@ const RecipeModal = ({ recipe, onClose }) => {
     }));
   };
 
-  return (
+  return (   
     <div className="modal-overlay">
       <div className="modal-content">
         <button className="modal-close" onClick={onClose}>X</button>
-
-        {/* Header */}
+        
+        {/* Header with TTS Component */}
         <div className="modal-header">
-          <h1>{recipe.title}</h1>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <h1>{recipe.title}</h1>
+            <div className="languageBox">
+              <TTS />
+            </div>
+          </div>
           <p style={{ color: 'black' }}>
             Cooking Time: {recipeInfo?.readyInMinutes || recipe.readyInMinutes || 'N/A'} minutes
           </p>

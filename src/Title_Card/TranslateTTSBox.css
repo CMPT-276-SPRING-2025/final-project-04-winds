@@ -13,6 +13,7 @@
 .tts-container {
   position: relative;
   display: inline-block;
+  z-index: 1001;
 }
 
 .tts-controls {
@@ -51,7 +52,7 @@
   background-repeat: no-repeat;
   cursor: pointer;
   padding: 0; 
-  background-color: white;
+  background-color: #EB5555;
 }
 
 .image-button:hover {
@@ -65,7 +66,7 @@
   border: 1px solid #85A573;
   border-radius: 4px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-  z-index: 100;
+  z-index: 1002;
   min-width: 150px;
 }
 
@@ -74,7 +75,19 @@
   width: 100%;
   padding: 8px 16px;
   text-align: left;
-  background: none;
+  background: white;
+  border: none;
+  cursor: pointer;
+  align-items: center;
+  gap: 8px;
+}
+
+.tts-menu-item-list {
+  display: flex;
+  width: 100%;
+  padding: 8px 16px;
+  text-align: left;
+  background: #EB5555;
   border: none;
   cursor: pointer;
   align-items: center;
@@ -82,5 +95,5 @@
 }
 
 .tts-menu-item:hover {
-  background-color: #f5f5f5;
+  background-color: #b85757;
 }

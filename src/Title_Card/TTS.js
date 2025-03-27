@@ -6,9 +6,7 @@ const TTS = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
   const [isListening, setIsListening] = useState(false);
-  const [transcript, setTranscript] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
-  const [volume, setVolume] = useState(0);
 
   // ===== REFS =====
   const menuRef = useRef(null);
@@ -22,6 +20,9 @@ const TTS = () => {
   // ===== GOOGLE CLOUD CONFIG =====
   const API_KEY = process.env.REACT_APP_GOOGLE_CLOUD_API_KEY;
   const SPEECH_API_URL = `https://speech.googleapis.com/v1/speech:recognize?key=${API_KEY}`;
+
+  const tts_api_key = process.env.REACT_APP_GOOGLE_CLOUD_TTS_CREDENTIALS;
+  const TEXT_API_URL = `https://texttospeech.googleapis.com/v1/text:synthesize?key=${tts_api_key}`;
 
   // ===== REAL-TIME PROCESSING =====
   const startListening = useCallback(async () => {
@@ -56,7 +57,6 @@ const TTS = () => {
         const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount);
         analyserRef.current.getByteFrequencyData(dataArray);
         const currentVolume = Math.max(...dataArray) / 255;
-        setVolume(currentVolume);
   
         // Speech detection logic
         if (currentVolume > VOLUME_THRESHOLD) {
@@ -124,7 +124,6 @@ const TTS = () => {
     }
   
     setIsListening(false);
-    setVolume(0);
   }, []);
 
   const recognizeSpeech = async (audioData) => {
@@ -168,7 +167,6 @@ const TTS = () => {
     lastCommandTime.current = now;
 
     const normalized = transcript.toLowerCase().trim();
-    setTranscript(normalized);
 
     if (normalized.includes('play')) {
       setIsPlayingAudio(false);
@@ -221,7 +219,7 @@ const TTS = () => {
 
   // ===== RENDER =====
   return (
-    <div className="tts-container">
+    <div className="tts-container" >
       <div className="tts-controls">
         <button className='image-button' onClick={toggleMenu}>
           <img
@@ -233,11 +231,13 @@ const TTS = () => {
         </button>
         
         <button 
-        className="tts-menu-item listen-button" 
+        className="tts-menu-item-list" 
         onClick={toggleListening}
         disabled={isProcessing}
+
+        
       >
-        <svg className="menu-icon" viewBox="0 0 24 24" width="16" height="16">
+        <svg viewBox="0 0 24 24" width="16" height="16" >
           <path fill="currentColor" d="M12,2A3,3 0 0,1 15,5V11A3,3 0 0,1 12,14A3,3 0 0,1 9,11V5A3,3 0 0,1 12,2M19,11C19,14.53 16.39,17.44 13,17.93V21H11V17.93C7.61,17.44 5,14.53 5,11H7A5,5 0 0,0 12,16A5,5 0 0,0 17,11H19Z" />
         </svg>
         {isProcessing ? 'Processing...' : isListening ? 'Stop Listening' : 'Start Listening'}            
