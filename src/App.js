@@ -18,15 +18,18 @@ const App = () => {
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [isToggled, setFilterToggle] = useState(false); 
   const [selectedFilters, setSelectedFilter] = useState([]); 
-  
- 
+  const [excludedIngredients, setExcludedIngredients] = useState([]);
+
 
   // Trigger search using current ingredients list
   const handleSearchRecipes = async () => {
     const apiKey = process.env.REACT_APP_SPOONACULAR_API_KEY;
     const ingredientsQuery = ingredients.join(',');
+    const excludeQuery = excludedIngredients.join(',');
     console.log("Ingredients:", ingredients);
     console.log("Ingredients Query String:", ingredientsQuery);
+    console.log("Excluded Ingredients Query String:", excludeQuery);
+   
   
     try {
       const response = await fetch(
@@ -34,29 +37,43 @@ const App = () => {
       );
       let recipes = await response.json();
 
-      // handle filtering for diets when both diets & filters selected
-      if(selectedFilters.length > 0 && ingredients.length > 0){
-        console.log("selected filters", selectedFilters)
+      if (excludedIngredients.length > 0 || selectedFilters.length > 0) {
         const recipeIds = recipes.map(recipe => recipe.id).join(',');
         const informationResponse = await fetch(
           `https://api.spoonacular.com/recipes/informationBulk?apiKey=${apiKey}&ids=${recipeIds}`
         );
-        const informationData = await informationResponse.json();
+        let detailedRecipes = await informationResponse.json();
+  
+        // Apply excluded ingredients filter if needed
+        if (excludedIngredients.length > 0) {
+          detailedRecipes = detailedRecipes.filter(recipe => {
+            return !recipe.extendedIngredients.some(ingredient => 
+              excludedIngredients.some(excluded => 
+                ingredient.name.toLowerCase().includes(excluded.toLowerCase())
+              )
+            );
+          });
+        }
 
-        const dietMap = {
-          'Vegan': 'vegan',
-          'Vegetarian': 'vegetarian',
-          'Gluten Free': 'glutenFree',
-          'Ketogenic': 'ketogenic',
-          'Paleo': 'paleo'
-        };
+        // handle filtering for diets when selected
+        if(selectedFilters.length > 0){
+          console.log("selected filters", selectedFilters)
 
-        // filter recipes with selected diets
-        recipes = informationData.filter(recipe => {
-          return selectedFilters.every(diet => recipe[dietMap[diet]])
-        });
+          const dietMap = {
+            'Vegan': 'vegan',
+            'Vegetarian': 'vegetarian',
+            'Gluten Free': 'glutenFree',
+            'Ketogenic': 'ketogenic',
+            'Paleo': 'paleo'
+          };
 
-        recipes = recipes.map(recipe => ({
+          // filter recipes with selected diets
+          detailedRecipes = detailedRecipes.filter(recipe => {
+            return selectedFilters.every(diet => recipe[dietMap[diet]])
+          });
+        }
+
+        recipes = detailedRecipes.map(recipe => ({
           id: recipe.id,
           title: recipe.title,
           image: recipe.image,
@@ -141,6 +158,8 @@ const App = () => {
           filterToggle={filterToggle}
           filterOptionToggle={filterOptionToggle}
           selectedFilters={selectedFilters}
+          excludedIngredients={excludedIngredients}
+          setExcludedIngredients={setExcludedIngredients}
         />        
 
       </div>

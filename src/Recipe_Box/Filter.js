@@ -1,11 +1,14 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './Filter.css'
 
-const Filter = ({isToggled, filterToggle, filterOptionToggle, selectedFilters}) => {
+const Filter = ({isToggled, filterToggle, filterOptionToggle, selectedFilters, excludedIngredients, setExcludedIngredients}) => {
   
+  const apiKey = process.env.REACT_APP_SPOONACULAR_API_KEY;
+
   const [excludePopupVisible, setPopupVisible] = useState(false);
   const [ingredient, setIngredient] = useState('');
-  const [ingredientsList, setIngredientsList] = useState([]);
+  const [suggestions, setSuggestions] = useState([]);
+  const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1);
 
   const dietOptions = ['Vegan', 'Vegetarian', 'Gluten Free', 'Ketogenic', 'Paleo'];
 
@@ -21,19 +24,78 @@ const Filter = ({isToggled, filterToggle, filterOptionToggle, selectedFilters}) 
     event.stopPropagation();
     setIngredient(event.target.value);
   }
-    
 
-  const addIngredient = (event) => {
-    event.stopPropagation();
+  const addIngredient = (ingredient) => {
+    // event.stopPropagation();
     if (ingredient.trim()) {
-      setIngredientsList([...ingredientsList, ingredient]); //add ingredient to list
-      setIngredient(''); // clear input field after adding
+      setExcludedIngredients([...excludedIngredients, ingredient.trim()]);
+      setIngredient('');
     }
   };
 
   const removeIngredient = (removedIngredient) => {
-    const updatedIngredientList = ingredientsList.filter(ingredient => ingredient !== removedIngredient);
-    setIngredientsList(updatedIngredientList);
+    setExcludedIngredients(
+      excludedIngredients.filter(item => item !== removedIngredient)
+    );
+  };
+
+  const fetchSuggestions = useCallback(async (query) => {
+    if (!query.trim()) {
+      setSuggestions([]);
+      return;
+    }
+    
+    try {
+      const response = await fetch(
+        `https://api.spoonacular.com/food/ingredients/autocomplete?apiKey=${apiKey}&query=${query}&number=5`
+      );
+      const data = await response.json();
+      setSuggestions(data);
+      setSelectedSuggestionIndex(-1);
+    } catch (error) {
+      console.error("Error fetching suggestions:", error);
+    }
+  }, [apiKey]);
+  
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (ingredient.trim()) {
+        fetchSuggestions(ingredient);
+      } else {
+        setSuggestions([]);
+        setSelectedSuggestionIndex(-1);
+      }
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [ingredient, fetchSuggestions]);
+  
+  const handleKeyDown = (e) => {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setSelectedSuggestionIndex((prev) => (prev + 1) % suggestions.length);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setSelectedSuggestionIndex((prev) => (prev - 1 + suggestions.length) % suggestions.length);
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (suggestions.length > 0) {
+        const indexToAdd = selectedSuggestionIndex === -1 ? 0 : selectedSuggestionIndex;
+        addIngredient(suggestions[indexToAdd].name);
+      } else if (ingredient.trim() !== '') {
+        addIngredient(ingredient.trim());
+      }
+      setSuggestions([]);
+    }
+  };
+  
+  const handleSuggestionClick = (suggestion) => {
+    addIngredient(suggestion.name);
+  };
+
+  const handleBlur = () => {
+    setTimeout(() => {
+      setSuggestions([]);
+    }, 150);
   };
 
   return (
@@ -67,7 +129,7 @@ const Filter = ({isToggled, filterToggle, filterOptionToggle, selectedFilters}) 
                 <button className="exclude-button" onClick={openPopup}>+</button>
 
                 <div className="ingredient-list">
-                  {ingredientsList.map((ingredient, index) => (
+                  {excludedIngredients.map((ingredient, index) => (
                     <div key={`${ingredient}-${index}`} className="ingredient-item">
                       {ingredient}
                       <button 
@@ -90,10 +152,25 @@ const Filter = ({isToggled, filterToggle, filterOptionToggle, selectedFilters}) 
                       type="text"
                       value={ingredient}
                       onChange={handleInputChange}
-                      placeholder="Type an ingredient"
+                      placeholder="Type an ingredient..."
+                      onKeyDown={handleKeyDown}
+                      onBlur={handleBlur}
                     />
-                    <button onClick={addIngredient}>Add</button>
-                    
+                    {/* <button onClick={addIngredient}>Add</button> */}
+
+                    {suggestions.length > 0 && (
+                      <ul className="suggestions-list">
+                        {suggestions.map((sugg, index) => (
+                          <li
+                            key={sugg.id || index}
+                            onClick={() => handleSuggestionClick(sugg)}
+                            className={index === selectedSuggestionIndex ? 'active' : ''}
+                          >
+                            {sugg.name}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
 
                   </div>
                 </div>
