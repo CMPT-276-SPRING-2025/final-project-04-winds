@@ -5,8 +5,7 @@ import GlobalStyle from './GlobalStyle';
 import IngredientsBox from './Ingredient_Box/IngredientsBox';
 import RecipeBox from './Recipe_Box/RecipeBox';
 import Header from './Title_Card/Header';
-import TranslateBox from './Title_Card/TranslateBox';
-import TTS from './Title_Card/TTS';
+
 import RecipeModal from './Recipe_Box/RecipeModal';
 
 
@@ -135,12 +134,6 @@ const App = () => {
 
         {/* Spacer to push language boxes to the right */}
         <div className='spacer'></div>
-
-        {/* The translation box */}
-        <TranslateBox/>
-
-        {/* The TTS box*/}
-        <TTS/>
       </div>
 
       {/* The Ingredients box and the Recipe Box */}
