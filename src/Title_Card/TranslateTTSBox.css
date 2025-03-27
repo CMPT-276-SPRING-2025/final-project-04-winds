@@ -7,7 +7,8 @@
     height: 6vh;
     width: auto;
     margin-left: 1vw;
-    padding-right: 2vw;
+    padding-right: 1vw;
+    margin-top: 1vh;
 }
 
 .tts-container {
@@ -52,7 +53,7 @@
   background-repeat: no-repeat;
   cursor: pointer;
   padding: 0; 
-  background-color: #EB5555;
+  background-color: white;
 }
 
 .image-button:hover {
@@ -87,13 +88,17 @@
   width: 100%;
   padding: 8px 16px;
   text-align: left;
-  background: #EB5555;
+  background: white;
   border: none;
   cursor: pointer;
   align-items: center;
   gap: 8px;
 }
 
+.tts-menu-item-list:hover {
+  background-color: #c0c0c0;
+}
+
 .tts-menu-item:hover {
-  background-color: #b85757;
+  background-color: #c0c0c0;
 }

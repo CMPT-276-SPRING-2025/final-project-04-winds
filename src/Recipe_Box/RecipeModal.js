@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './RecipeModal.css';
 import TTS from '../Title_Card/TTS';
+import TranslateBox from '../Title_Card/TranslateBox';
 
 const RecipeModal = ({ recipe, onClose }) => {
   const apiKey = process.env.REACT_APP_SPOONACULAR_API_KEY;
@@ -49,9 +50,7 @@ const RecipeModal = ({ recipe, onClose }) => {
         <div className="modal-header">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <h1>{recipe.title}</h1>
-            <div className="languageBox">
-              <TTS />
-            </div>
+            
           </div>
           <p style={{ color: 'black' }}>
             Cooking Time: {recipeInfo?.readyInMinutes || recipe.readyInMinutes || 'N/A'} minutes
@@ -60,6 +59,15 @@ const RecipeModal = ({ recipe, onClose }) => {
             Calories:{' '}
             {recipeInfo?.nutrition?.nutrients.find(n => n.name.toLowerCase() === "calories")?.amount || 'N/A'}
           </p>
+        </div>
+
+        <div className="languageBox">              
+          <TranslateBox />
+          {recipeInfo?.analyzedInstructions && (
+            <TTS 
+              analyzedInstructions={recipeInfo.analyzedInstructions}
+            />
+          )}
         </div>
 
         {/* Body */}
