@@ -145,7 +145,7 @@ const Filter = ({isToggled, filterToggle, filterOptionToggle, selectedFilters, e
 
               {excludePopupVisible && (
                 <div className="popup" onClick={closePopup}>
-                  <div className="popup-content" onClick={(e) => e.stopPropagation()}>
+                  <div className="popup-content" onClick={(e) => e.stopPropagation()} data-testid="popup-content">
                   <button onClick={closePopup} className='close-popup'>x</button>
                     <h2>Exclude Ingredients</h2>
                     <input
