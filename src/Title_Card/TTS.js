@@ -183,7 +183,7 @@ const TTS = ({analyzedInstructions}) => {
   
     setIsListening(false);
   }, []);
-  
+
   const handleVoiceCommand = useCallback((transcript) => {
     const now = Date.now();
     if (now - lastCommandTime.current < 2000) return;
@@ -208,10 +208,10 @@ const TTS = ({analyzedInstructions}) => {
     else if (normalized.includes('stop listening')) {
       stopListening();
     }
-  }, [stopListening, currentStepIndex, playCurrentStep, nextStep, previousStep]);
+  }, [stopListening, playCurrentStep, nextStep, previousStep]);
 
   
-  const recognizeSpeech = async (audioData) => {
+  const recognizeSpeech = useCallback(async (audioData) => {
     const audioBlob = new Blob([audioData], { type: 'audio/webm' });
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -244,7 +244,7 @@ const TTS = ({analyzedInstructions}) => {
       reader.onerror = () => reject(new Error('FileReader error'));
       reader.readAsDataURL(audioBlob);
     });
-  };
+  }, [])
 
   const startListening = useCallback(async () => {
     try {
