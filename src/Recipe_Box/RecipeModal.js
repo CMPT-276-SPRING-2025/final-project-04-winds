@@ -8,6 +8,7 @@ const RecipeModal = ({ recipe, onClose }) => {
   const [recipeInfo, setRecipeInfo] = useState(null);
   const [checkedIngredients, setCheckedIngredients] = useState({});
   const [showDetailed, setShowDetailed] = useState(false);
+  const [completedSteps, setCompletedSteps] = useState({});
 
   useEffect(() => {
     const fetchRecipeInfo = async () => {
@@ -41,6 +42,13 @@ const RecipeModal = ({ recipe, onClose }) => {
     }));
   };
 
+  const toggleStepCompletion = (stepNumber) => {
+    setCompletedSteps(prev => ({
+      ...prev,
+      [stepNumber]: !prev[stepNumber],
+    }));
+  };
+
   return (   
     <div className="modal-overlay">
       <div className="modal-content">
@@ -48,10 +56,19 @@ const RecipeModal = ({ recipe, onClose }) => {
         
         {/* Header with TTS Component */}
         <div className="modal-header">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <h1>{recipe.title}</h1>
-            
-          </div>
+          <div className='header-top'>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', maxWidth: '600px' }}>
+              <h1>{recipe.title}</h1>
+            </div>
+            <div className="languageBox">              
+              <TranslateBox />
+              {recipeInfo?.analyzedInstructions && (
+                <TTS 
+                  analyzedInstructions={recipeInfo.analyzedInstructions}
+                />
+              )}
+              </div>
+            </div>
           <p style={{ color: 'black' }}>
             Cooking Time: {recipeInfo?.readyInMinutes || recipe.readyInMinutes || 'N/A'} minutes
           </p>
@@ -59,16 +76,11 @@ const RecipeModal = ({ recipe, onClose }) => {
             Calories:{' '}
             {recipeInfo?.nutrition?.nutrients.find(n => n.name.toLowerCase() === "calories")?.amount || 'N/A'}
           </p>
+
+
         </div>
 
-        <div className="languageBox">              
-          <TranslateBox />
-          {recipeInfo?.analyzedInstructions && (
-            <TTS 
-              analyzedInstructions={recipeInfo.analyzedInstructions}
-            />
-          )}
-        </div>
+
 
         {/* Body */}
         <div className="modal-body">
@@ -86,7 +98,7 @@ const RecipeModal = ({ recipe, onClose }) => {
               recipeInfo.analyzedInstructions[0].steps?.length > 0 ? (
                 <ol>
                   {recipeInfo.analyzedInstructions[0].steps.map((step) => (
-                    <li key={step.number} style={{ marginBottom: "10px" }}> 
+                    <li key={step.number} onClick={() => toggleStepCompletion(step.number)} className={completedSteps[step.number] ? "completed-step" : ""} style={{ marginBottom: "10px", cursor: "pointer" }}> 
                       {step.step}
                     </li>
                   ))}

@@ -10,7 +10,7 @@
     border-radius: 1vh;
     display: flex;
     flex-direction: column;
-
+    overflow-y: hidden;
     /* Other */
     background-color: #90d184;
     color: black;
@@ -39,4 +39,5 @@
 
 .search-button:hover {
   transform: scale(1.02);
+  
 }

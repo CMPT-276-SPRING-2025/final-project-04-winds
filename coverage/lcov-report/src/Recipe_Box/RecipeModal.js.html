@@ -30,9 +30,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">93.1% </span>
+                <span class="strong">93.54% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>27/29</span>
+                <span class='fraction'>29/31</span>
             </div>
         
             
@@ -198,7 +198,22 @@
 <a name='L133'></a><a href='#L133'>133</a>
 <a name='L134'></a><a href='#L134'>134</a>
 <a name='L135'></a><a href='#L135'>135</a>
-<a name='L136'></a><a href='#L136'>136</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L136'></a><a href='#L136'>136</a>
+<a name='L137'></a><a href='#L137'>137</a>
+<a name='L138'></a><a href='#L138'>138</a>
+<a name='L139'></a><a href='#L139'>139</a>
+<a name='L140'></a><a href='#L140'>140</a>
+<a name='L141'></a><a href='#L141'>141</a>
+<a name='L142'></a><a href='#L142'>142</a>
+<a name='L143'></a><a href='#L143'>143</a>
+<a name='L144'></a><a href='#L144'>144</a>
+<a name='L145'></a><a href='#L145'>145</a>
+<a name='L146'></a><a href='#L146'>146</a>
+<a name='L147'></a><a href='#L147'>147</a>
+<a name='L148'></a><a href='#L148'>148</a>
+<a name='L149'></a><a href='#L149'>149</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -252,6 +267,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -261,6 +279,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -317,7 +344,6 @@
 <span class="cline-any cline-yes">44x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -335,6 +361,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useState, useEffect } from 'react';
 import './RecipeModal.css';
+import TTS from '../Title_Card/TTS';
+import TranslateBox from '../Title_Card/TranslateBox';
 &nbsp;
 const RecipeModal = ({ recipe, onClose }) =&gt; {
   const apiKey = process.env.REACT_APP_SPOONACULAR_API_KEY;
@@ -374,14 +402,17 @@ const RecipeModal = ({ recipe, onClose }) =&gt; {
     }));
   };
 &nbsp;
-  return (
+  return (   
     &lt;div className="modal-overlay"&gt;
       &lt;div className="modal-content"&gt;
         &lt;button className="modal-close" onClick={onClose}&gt;X&lt;/button&gt;
-&nbsp;
-        {/* Header */}
+        
+        {/* Header with TTS Component */}
         &lt;div className="modal-header"&gt;
-          &lt;h1&gt;{recipe.title}&lt;/h1&gt;
+          &lt;div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}&gt;
+            &lt;h1&gt;{recipe.title}&lt;/h1&gt;
+            
+          &lt;/div&gt;
           &lt;p style={{ color: 'black' }}&gt;
             Cooking Time: {recipeInfo?.readyInMinutes || recipe.readyInMinutes || 'N/A'} minutes
           &lt;/p&gt;
@@ -389,6 +420,15 @@ const RecipeModal = ({ recipe, onClose }) =&gt; {
             Calories:{' '}
             {recipeInfo?.nutrition?.nutrients.find(n =&gt; n.name.toLowerCase() === "calories")?.amount || 'N/A'}
           &lt;/p&gt;
+        &lt;/div&gt;
+&nbsp;
+        &lt;div className="languageBox"&gt;              
+          &lt;TranslateBox /&gt;
+          {recipeInfo?.analyzedInstructions &amp;&amp; (
+            &lt;TTS 
+              analyzedInstructions={recipeInfo.analyzedInstructions}
+            /&gt;
+          )}
         &lt;/div&gt;
 &nbsp;
         {/* Body */}
@@ -467,15 +507,14 @@ const RecipeModal = ({ recipe, onClose }) =&gt; {
   );
 };
 &nbsp;
-export default RecipeModal;
-&nbsp;</pre></td></tr></table></pre>
+export default RecipeModal;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-03-27T04:03:34.841Z
+                at 2025-03-28T20:54:39.545Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

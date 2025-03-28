@@ -366,13 +366,15 @@ const TTS = ({analyzedInstructions}) => {
       )}
 
       <div className="tts-controls">
-        <button className='image-button' onClick={toggleMenu}>
-          <img
-            src={'/Media/Text-To-Speech.png'}
-            alt="TTS"
-            className='image-button'
-            data-testid='text-to-speech'
-          />
+        <button className={`image-button ${isMenuOpen ? 'active' : ''}`} onClick={toggleMenu}>
+          <div className='image-container'>
+            <img
+              src={'/Media/Text-To-Speech.png'}
+              alt="TTS"
+              className='image-button'
+              data-testid='text-to-speech'
+            />
+          </div>
         </button>
         
         <button 
@@ -440,7 +442,7 @@ const TTS = ({analyzedInstructions}) => {
               </button>
 
               {/* Current Step Display */}
-              <div className="tts-menu-item">
+              <div className="tts-menu-step">
                 Step {currentStepIndex + 1} of {processInstructions().length}
               </div>
             </>
