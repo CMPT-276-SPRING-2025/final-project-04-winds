@@ -159,6 +159,93 @@ const TTS = ({analyzedInstructions}) => {
   };
 
   // ===== SPEECH RECOGNITION METHODS =====
+  const stopListening = useCallback(() => {
+    if (processingInterval.current) clearInterval(processingInterval.current);
+    
+    if (mediaRecorderRef.current?.state === 'recording') {
+      mediaRecorderRef.current.stop();
+    }
+  
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(track => track.stop());
+      streamRef.current = null;
+    }
+  
+    if (audioContextRef.current?.state !== 'closed') {
+      audioContextRef.current?.close();
+    }
+  
+    // Explicitly disconnect and nullify the analyser
+    if (analyserRef.current) {
+      analyserRef.current.disconnect();
+      analyserRef.current = null;
+    }
+  
+    setIsListening(false);
+  }, []);
+  
+  const handleVoiceCommand = useCallback((transcript) => {
+    const now = Date.now();
+    if (now - lastCommandTime.current < 2000) return;
+    lastCommandTime.current = now;
+
+    const normalized = transcript.toLowerCase().trim();
+
+    if (normalized.includes('play')) {
+      setIsPlayingAudio(true);
+      playCurrentStep();
+    }
+    else if (normalized.includes('pause')) {
+      setIsPlayingAudio(false);
+      if (audioRef.current) audioRef.current.pause();
+    }
+    else if (normalized.includes('skip') || normalized.includes('next')) {
+      nextStep();
+    }
+    else if (normalized.includes('go back') || normalized.includes('previous')) {
+      previousStep();
+    }
+    else if (normalized.includes('stop listening')) {
+      stopListening();
+    }
+  }, [stopListening, currentStepIndex, playCurrentStep, nextStep, previousStep]);
+
+  
+  const recognizeSpeech = async (audioData) => {
+    const audioBlob = new Blob([audioData], { type: 'audio/webm' });
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        try {
+          if (!reader.result) {
+            reject(new Error('Failed to read audio data'));
+            return;
+          }
+          const audioContent = reader.result.split(',')[1];
+          const response = await fetch(SPEECH_API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              config: {
+                encoding: 'WEBM_OPUS',
+                sampleRateHertz: 48000,
+                languageCode: 'en-US',
+                model: 'command_and_search'
+              },
+              audio: { content: audioContent }
+            })
+          });
+          const data = await response.json();
+          resolve(data.results?.[0]?.alternatives?.[0]?.transcript || '');
+        } catch (error) {
+          reject(error);
+        }
+      };
+      reader.onerror = () => reject(new Error('FileReader error'));
+      reader.readAsDataURL(audioBlob);
+    });
+  };
+
   const startListening = useCallback(async () => {
     try {
       // Stop any existing streams
@@ -233,93 +320,9 @@ const TTS = ({analyzedInstructions}) => {
       console.error('Error starting microphone:', error);
       setIsListening(false);
     }
-  }, []);
+  }, [recognizeSpeech, handleVoiceCommand]);
 
-  const stopListening = useCallback(() => {
-    if (processingInterval.current) clearInterval(processingInterval.current);
-    
-    if (mediaRecorderRef.current?.state === 'recording') {
-      mediaRecorderRef.current.stop();
-    }
   
-    if (streamRef.current) {
-      streamRef.current.getTracks().forEach(track => track.stop());
-      streamRef.current = null;
-    }
-  
-    if (audioContextRef.current?.state !== 'closed') {
-      audioContextRef.current?.close();
-    }
-  
-    // Explicitly disconnect and nullify the analyser
-    if (analyserRef.current) {
-      analyserRef.current.disconnect();
-      analyserRef.current = null;
-    }
-  
-    setIsListening(false);
-  }, []);
-
-  const recognizeSpeech = async (audioData) => {
-    const audioBlob = new Blob([audioData], { type: 'audio/webm' });
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onloadend = async () => {
-        try {
-          if (!reader.result) {
-            reject(new Error('Failed to read audio data'));
-            return;
-          }
-          const audioContent = reader.result.split(',')[1];
-          const response = await fetch(SPEECH_API_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              config: {
-                encoding: 'WEBM_OPUS',
-                sampleRateHertz: 48000,
-                languageCode: 'en-US',
-                model: 'command_and_search'
-              },
-              audio: { content: audioContent }
-            })
-          });
-          const data = await response.json();
-          resolve(data.results?.[0]?.alternatives?.[0]?.transcript || '');
-        } catch (error) {
-          reject(error);
-        }
-      };
-      reader.onerror = () => reject(new Error('FileReader error'));
-      reader.readAsDataURL(audioBlob);
-    });
-  };
-
-  const handleVoiceCommand = useCallback((transcript) => {
-    const now = Date.now();
-    if (now - lastCommandTime.current < 2000) return;
-    lastCommandTime.current = now;
-
-    const normalized = transcript.toLowerCase().trim();
-
-    if (normalized.includes('play')) {
-      setIsPlayingAudio(true);
-      playCurrentStep();
-    }
-    else if (normalized.includes('pause')) {
-      setIsPlayingAudio(false);
-      if (audioRef.current) audioRef.current.pause();
-    }
-    else if (normalized.includes('skip') || normalized.includes('next')) {
-      nextStep();
-    }
-    else if (normalized.includes('go back') || normalized.includes('previous')) {
-      previousStep();
-    }
-    else if (normalized.includes('stop listening')) {
-      stopListening();
-    }
-  }, [stopListening, currentStepIndex]);
 
   // ===== UI TOGGLES =====
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
