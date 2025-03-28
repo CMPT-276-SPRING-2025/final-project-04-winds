@@ -26,8 +26,7 @@ const Filter = ({isToggled, filterToggle, filterOptionToggle, selectedFilters, e
   }
 
   const addIngredient = (ingredient) => {
-    // event.stopPropagation();
-    if (ingredient.trim()) {
+    if (ingredient.trim() && !excludedIngredients.includes(ingredient.trim())) {
       setExcludedIngredients([...excludedIngredients, ingredient.trim()]);
       setIngredient('');
     }
