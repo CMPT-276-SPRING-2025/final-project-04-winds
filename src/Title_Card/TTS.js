@@ -23,22 +23,19 @@ const TTS = ({analyzedInstructions}) => {
   // ===== GOOGLE CLOUD CONFIG =====
   const API_KEY = process.env.REACT_APP_GOOGLE_CLOUD_API_KEY;
   const SPEECH_API_URL = `https://speech.googleapis.com/v1/speech:recognize?key=${API_KEY}`;
-
   const TEXT_API_URL = `https://texttospeech.googleapis.com/v1/text:synthesize`;
 
   // ===== INSTRUCTION PROCESSING =====
-  const processInstructions = () => {
+  const processInstructions = useCallback(() => {
     if (!analyzedInstructions || !analyzedInstructions[0]?.steps) return [];
     
     return analyzedInstructions[0].steps.map(step => 
       `Step ${step.number}: ${step.step}`
     );
-  };
-
-
+  }, [analyzedInstructions]);
 
   // ===== TEXT-TO-SPEECH METHODS =====
-  const synthesizeSpeech = async (text) => {
+  const synthesizeSpeech = useCallback(async (text) => {
     try {
       // Validate inputs
       if (!text) {
@@ -105,9 +102,9 @@ const TTS = ({analyzedInstructions}) => {
       console.error('Comprehensive Text-to-Speech Error:', error);
       return null;
     }
-  };
+  }, [API_KEY, TEXT_API_URL]);
 
-  const playCurrentStep = async () => {
+  const playCurrentStep = useCallback(async () => {
     const steps = processInstructions();
     if (steps.length === 0) return;
 
@@ -128,10 +125,9 @@ const TTS = ({analyzedInstructions}) => {
     } catch (error) {
       console.error('Error playing current step:', error);
     }
-  };
+  }, [currentStepIndex, processInstructions, synthesizeSpeech]);
 
-
-  const nextStep = () => {
+  const nextStep = useCallback(() => {
     const steps = processInstructions();
     if (currentStepIndex < steps.length - 1) {
       // Stop current audio
@@ -143,9 +139,9 @@ const TTS = ({analyzedInstructions}) => {
       setCurrentStepIndex(prev => prev + 1);
       setIsPlayingAudio(false);
     }
-  };
+  }, [currentStepIndex, processInstructions]);
 
-  const previousStep = () => {
+  const previousStep = useCallback(() => {
     if (currentStepIndex > 0) {
       // Stop current audio
       if (audioRef.current) {
@@ -156,7 +152,7 @@ const TTS = ({analyzedInstructions}) => {
       setCurrentStepIndex(prev => prev - 1);
       setIsPlayingAudio(false);
     }
-  };
+  }, [currentStepIndex]);
 
   // ===== SPEECH RECOGNITION METHODS =====
   const stopListening = useCallback(() => {
@@ -210,7 +206,6 @@ const TTS = ({analyzedInstructions}) => {
     }
   }, [stopListening, playCurrentStep, nextStep, previousStep]);
 
-  
   const recognizeSpeech = useCallback(async (audioData) => {
     const audioBlob = new Blob([audioData], { type: 'audio/webm' });
     return new Promise((resolve, reject) => {
@@ -244,7 +239,7 @@ const TTS = ({analyzedInstructions}) => {
       reader.onerror = () => reject(new Error('FileReader error'));
       reader.readAsDataURL(audioBlob);
     });
-  }, [])
+  }, [SPEECH_API_URL]);
 
   const startListening = useCallback(async () => {
     try {
