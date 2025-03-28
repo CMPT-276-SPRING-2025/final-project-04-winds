@@ -8,6 +8,7 @@ const RecipeModal = ({ recipe, onClose }) => {
   const [recipeInfo, setRecipeInfo] = useState(null);
   const [checkedIngredients, setCheckedIngredients] = useState({});
   const [showDetailed, setShowDetailed] = useState(false);
+  const [completedSteps, setCompletedSteps] = useState({});
 
   useEffect(() => {
     const fetchRecipeInfo = async () => {
@@ -38,6 +39,13 @@ const RecipeModal = ({ recipe, onClose }) => {
     setCheckedIngredients((prevState) => ({
       ...prevState,
       [ingredientName]: !prevState[ingredientName],
+    }));
+  };
+
+  const toggleStepCompletion = (stepNumber) => {
+    setCompletedSteps(prev => ({
+      ...prev,
+      [stepNumber]: !prev[stepNumber],
     }));
   };
 
@@ -90,7 +98,7 @@ const RecipeModal = ({ recipe, onClose }) => {
               recipeInfo.analyzedInstructions[0].steps?.length > 0 ? (
                 <ol>
                   {recipeInfo.analyzedInstructions[0].steps.map((step) => (
-                    <li key={step.number} style={{ marginBottom: "10px" }}> 
+                    <li key={step.number} onClick={() => toggleStepCompletion(step.number)} className={completedSteps[step.number] ? "completed-step" : ""} style={{ marginBottom: "10px", cursor: "pointer" }}> 
                       {step.step}
                     </li>
                   ))}

@@ -175,3 +175,8 @@
   .toggle-instructions-btn:hover {
     transform: scale(1.02);
   }
+
+  .completed-step {
+    text-decoration: line-through;
+    color: gray;
+  }
