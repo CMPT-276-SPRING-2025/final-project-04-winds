@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1743048214885" clover="3.2.0">
-  <project timestamp="1743048214885" name="All files">
-    <metrics statements="242" coveredstatements="156" conditionals="121" coveredconditionals="68" methods="85" coveredmethods="48" elements="448" coveredelements="272" complexity="0" loc="242" ncloc="242" packages="4" files="14" classes="14"/>
+<coverage generated="1743212043346" clover="3.2.0">
+  <project timestamp="1743212043346" name="All files">
+    <metrics statements="244" coveredstatements="156" conditionals="125" coveredconditionals="68" methods="86" coveredmethods="48" elements="455" coveredelements="272" complexity="0" loc="244" ncloc="244" packages="4" files="14" classes="14"/>
     <package name="src">
-      <metrics statements="60" coveredstatements="27" conditionals="16" coveredconditionals="5" methods="18" coveredmethods="4"/>
+      <metrics statements="62" coveredstatements="27" conditionals="20" coveredconditionals="5" methods="19" coveredmethods="4"/>
       <file name="App.js" path="C:\Users\hannah\OneDrive - Simon Fraser University (1sfu)\uni\spring 2025\CMPT276\final-project-04-winds\src\App.js">
-        <metrics statements="48" coveredstatements="27" conditionals="12" coveredconditionals="5" methods="16" coveredmethods="4"/>
+        <metrics statements="50" coveredstatements="27" conditionals="16" coveredconditionals="5" methods="17" coveredmethods="4"/>
         <line num="13" count="1" type="stmt"/>
         <line num="16" count="8" type="stmt"/>
         <line num="17" count="8" type="stmt"/>
@@ -38,22 +38,24 @@
         <line num="71" count="0" type="stmt"/>
         <line num="72" count="0" type="stmt"/>
         <line num="76" count="0" type="stmt"/>
-        <line num="83" count="2" type="stmt"/>
-        <line num="84" count="2" type="stmt"/>
-        <line num="86" count="0" type="stmt"/>
-        <line num="91" count="8" type="stmt"/>
-        <line num="92" count="1" type="stmt"/>
+        <line num="77" count="0" type="stmt"/>
+        <line num="78" count="0" type="stmt"/>
+        <line num="88" count="2" type="stmt"/>
+        <line num="89" count="2" type="stmt"/>
+        <line num="91" count="0" type="stmt"/>
         <line num="96" count="8" type="stmt"/>
         <line num="97" count="1" type="stmt"/>
         <line num="101" count="8" type="stmt"/>
-        <line num="102" count="0" type="stmt"/>
+        <line num="102" count="1" type="stmt"/>
         <line num="106" count="8" type="stmt"/>
         <line num="107" count="0" type="stmt"/>
-        <line num="108" count="0" type="stmt"/>
-        <line num="109" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="110" count="0" type="stmt"/>
+        <line num="111" count="8" type="stmt"/>
         <line num="112" count="0" type="stmt"/>
-        <line num="118" count="8" type="stmt"/>
+        <line num="113" count="0" type="stmt"/>
+        <line num="114" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="115" count="0" type="stmt"/>
+        <line num="117" count="0" type="stmt"/>
+        <line num="123" count="8" type="stmt"/>
       </file>
       <file name="GlobalStyle.js" path="C:\Users\hannah\OneDrive - Simon Fraser University (1sfu)\uni\spring 2025\CMPT276\final-project-04-winds\src\GlobalStyle.js">
         <metrics statements="1" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>

@@ -73,11 +73,16 @@ const App = () => {
           });
         }
 
-        recipes = detailedRecipes.map(recipe => ({
-          id: recipe.id,
-          title: recipe.title,
-          image: recipe.image,
-        }));
+        recipes = detailedRecipes.map(detailedRecipe => {
+          let originalRecipe = recipes.find(r => r.id === detailedRecipe.id);
+          return {
+            id: detailedRecipe.id,
+            title: detailedRecipe.title,
+            image: detailedRecipe.image,
+            usedIngredients: originalRecipe?.usedIngredients || [],
+            missedIngredients: originalRecipe?.missedIngredients || [],
+          };
+        });
       }
 
       setRecipes(recipes);
