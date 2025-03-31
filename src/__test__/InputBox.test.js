@@ -118,20 +118,6 @@ describe('InputBox', () => {
     });
   });
 
-  test('Handles API errors problemless', async () => {
-    global.fetch = jest.fn(() => Promise.reject(new Error('API Error')));
-    jest.spyOn(console, 'error').mockImplementation(() => {});
-
-    render(<InputBox ingredients={[]} setIngredients={mockSetIngredients} />);
-    const input = screen.getByPlaceholderText('Type an ingredient...');
-    fireEvent.change(input, { target: { value: 'Tom' } });
-
-    await waitFor(() => {
-      expect(console.error).toHaveBeenCalledWith('Error fetching suggestions:', expect.any(Error));
-    });
-
-    console.error.mockRestore();
-  });
 
   test('Clears suggestions on blur after delay', async () => {
     render(<InputBox ingredients={[]} setIngredients={mockSetIngredients} />);

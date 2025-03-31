@@ -39,13 +39,13 @@ const TTS = ({analyzedInstructions}) => {
     try {
       // Validate inputs
       if (!text) {
-        console.error('No text provided for speech synthesis');
+        // console.error('No text provided for speech synthesis');
         return null;
       }
 
       // Ensure API key is correctly formatted
       if (!API_KEY) {
-        console.error('Missing Google Cloud TTS API key');
+        // console.error('Missing Google Cloud TTS API key');
         return null;
       }
 
@@ -69,11 +69,11 @@ const TTS = ({analyzedInstructions}) => {
       // Detailed error handling
       if (!response.ok) {
         const errorBody = await response.text();
-        console.error('Speech synthesis API error:', {
+        /*console.error('Speech synthesis API error:', {
           status: response.status,
           statusText: response.statusText,
           body: errorBody
-        });
+        });*/
         throw new Error(`Speech synthesis failed: ${response.status}`);
       }
 
@@ -81,7 +81,7 @@ const TTS = ({analyzedInstructions}) => {
       
       // Validate audio content
       if (!data.audioContent) {
-        console.error('No audio content received');
+        // console.error('No audio content received');
         return null;
       }
 
@@ -99,7 +99,7 @@ const TTS = ({analyzedInstructions}) => {
       const audioUrl = URL.createObjectURL(blob);
       return audioUrl;
     } catch (error) {
-      console.error('Comprehensive Text-to-Speech Error:', error);
+      // console.error('Comprehensive Text-to-Speech Error:', error);
       return null;
     }
   }, [API_KEY, TEXT_API_URL]);
@@ -120,10 +120,10 @@ const TTS = ({analyzedInstructions}) => {
         setAudioUrl(audioUrl);
         setIsPlayingAudio(true);
       } else {
-        console.error('Failed to generate audio for step');
+        //console.error('Failed to generate audio for step');
       }
     } catch (error) {
-      console.error('Error playing current step:', error);
+      // console.error('Error playing current step:', error);
     }
   }, [currentStepIndex, processInstructions, synthesizeSpeech]);
 
@@ -278,7 +278,7 @@ const TTS = ({analyzedInstructions}) => {
         if (currentVolume > VOLUME_THRESHOLD) {
           if (!isSpeaking) {
             isSpeaking = true;
-            console.log("Speech started");
+            // console.log("Speech started");
           }
           silenceStart = 0;
         } else if (isSpeaking) {
@@ -286,7 +286,7 @@ const TTS = ({analyzedInstructions}) => {
           if (Date.now() - silenceStart > SPEECH_TIMEOUT) {
             isSpeaking = false;
             mediaRecorderRef.current?.requestData(); // Trigger processing
-            console.log("Speech ended - processing");
+            // console.log("Speech ended - processing");
           }
         }
   
@@ -300,7 +300,7 @@ const TTS = ({analyzedInstructions}) => {
             const transcript = await recognizeSpeech(event.data);
             if (transcript) handleVoiceCommand(transcript);
           } catch (error) {
-            console.error('Speech recognition error:', error);
+            // console.error('Speech recognition error:', error);
           } finally {
             setIsProcessing(false);
           }
@@ -312,7 +312,7 @@ const TTS = ({analyzedInstructions}) => {
       setIsListening(true);
   
     } catch (error) {
-      console.error('Error starting microphone:', error);
+      // console.error('Error starting microphone:', error);
       setIsListening(false);
     }
   }, [recognizeSpeech, handleVoiceCommand]);
@@ -390,7 +390,7 @@ const TTS = ({analyzedInstructions}) => {
       </div>
 
       {isMenuOpen && (
-        <div className="tts-menu" ref={menuRef}>
+        <div className="tts-menu" ref={menuRef} role="menu">
           {processInstructions().length > 0 && (
             <>
               {/* Go Back Button */}
@@ -409,12 +409,15 @@ const TTS = ({analyzedInstructions}) => {
               {/* Play/Pause Button */}
               <button 
                 className="tts-menu-item" 
+                role="button"
+                data-testid="pause-button"
                 onClick={() => {
                   if (isPlayingAudio) {
                     if (audioRef.current) audioRef.current.pause();
                     setIsPlayingAudio(false);
                   } else {
                     playCurrentStep();
+                    setIsPlayingAudio(true);
                   }
                 }}
               >
