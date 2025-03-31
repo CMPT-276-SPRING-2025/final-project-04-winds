@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import userEvent from '@testing-library/user-event';
 
 // Component to be tested
 import TTS from '../Title_Card/TTS';
@@ -90,12 +89,6 @@ describe('TTS Component', () => {
       ]
     }
   ];
-  let mockStopFn;
-  let mockTrack;
-  let mockStream;
-  let mockMediaRecorderInstance;
-  let mockAudioContextInstance;
-
   beforeEach(() => {
     // Reset mocks
     jest.clearAllMocks();
@@ -722,7 +715,7 @@ describe('TTS Component', () => {
         stop: jest.fn(),
         requestData: jest.fn(),
         state: 'recording',
-        ondataavailable: null, // Let the component set this later
+        ondataavailable: null, 
       };
       return mediaRecorderInstance;
     });
@@ -735,7 +728,7 @@ describe('TTS Component', () => {
   
     // 6. Wait briefly for the component to set `ondataavailable`
     await act(async () => {
-      await new Promise(resolve => setTimeout(resolve, 10)); // Short delay
+      await new Promise(resolve => setTimeout(resolve, 10)); 
     });
   
     // 7. Only trigger if the handler exists
@@ -790,8 +783,6 @@ describe('TTS Component', () => {
     const skipButton = await screen.findByRole('button', { name: /skip/i });
     fireEvent.click(skipButton);
 
-    
-    // expect(HTMLMediaElement.prototype.pause).toHaveBeenCalled();
     expect(await screen.findByRole('button', { name: /play/i })).toBeInTheDocument();
   });
 });
@@ -866,15 +857,13 @@ describe('TTS Component', () => {
            sampleRate: 48000
       };
       global.AudioContext = jest.fn(() => mockAudioContextInstance);
-      // For window.webkitAudioContext if needed
-      // global.webkitAudioContext = global.AudioContext;
+
 
       // --- Mock URL Object ---
       global.URL.createObjectURL = jest.fn(() => 'mock://blob-url');
       global.URL.revokeObjectURL = jest.fn();
 
-      // --- Mock fetch (optional but good practice) ---
-      // Mock minimally for this test - assume speech synth/recog aren't focus
+
       global.fetch = jest.fn(() => Promise.resolve({
           ok: true,
           json: () => Promise.resolve({ /* minimal success response */ }),
@@ -934,7 +923,6 @@ describe('TTS Component', () => {
     
     // Media APIs should be called
     expect(navigator.mediaDevices.getUserMedia).toHaveBeenCalledWith({ audio: true });
-    //expect(global.MediaRecorder).toHaveBeenCalled();
     
     // Button should now show "Stop Listening"
     await waitFor(() => {
