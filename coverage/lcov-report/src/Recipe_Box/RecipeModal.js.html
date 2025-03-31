@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">91.66% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>31/31</span>
+                <span class='fraction'>33/36</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">93.54% </span>
+                <span class="strong">90.9% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>29/31</span>
+                <span class='fraction'>30/33</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">81.25% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>13/13</span>
+                <span class='fraction'>13/16</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">96.96% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>30/30</span>
+                <span class='fraction'>32/33</span>
             </div>
         
             
@@ -211,12 +211,25 @@
 <a name='L146'></a><a href='#L146'>146</a>
 <a name='L147'></a><a href='#L147'>147</a>
 <a name='L148'></a><a href='#L148'>148</a>
-<a name='L149'></a><a href='#L149'>149</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L149'></a><a href='#L149'>149</a>
+<a name='L150'></a><a href='#L150'>150</a>
+<a name='L151'></a><a href='#L151'>151</a>
+<a name='L152'></a><a href='#L152'>152</a>
+<a name='L153'></a><a href='#L153'>153</a>
+<a name='L154'></a><a href='#L154'>154</a>
+<a name='L155'></a><a href='#L155'>155</a>
+<a name='L156'></a><a href='#L156'>156</a>
+<a name='L157'></a><a href='#L157'>157</a>
+<a name='L158'></a><a href='#L158'>158</a>
+<a name='L159'></a><a href='#L159'>159</a>
+<a name='L160'></a><a href='#L160'>160</a>
+<a name='L161'></a><a href='#L161'>161</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">23x</span>
 <span class="cline-any cline-yes">23x</span>
 <span class="cline-any cline-yes">23x</span>
 <span class="cline-any cline-yes">23x</span>
@@ -255,6 +268,22 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">23x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">23x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -271,11 +300,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -369,6 +393,7 @@ const RecipeModal = ({ recipe, onClose }) =&gt; {
   const [recipeInfo, setRecipeInfo] = useState(null);
   const [checkedIngredients, setCheckedIngredients] = useState({});
   const [showDetailed, setShowDetailed] = useState(false);
+  const [completedSteps, setCompletedSteps] = useState({});
 &nbsp;
   useEffect(() =&gt; {
     const fetchRecipeInfo = async () =&gt; {
@@ -402,6 +427,13 @@ const RecipeModal = ({ recipe, onClose }) =&gt; {
     }));
   };
 &nbsp;
+  const toggleStepCompletion = <span class="fstat-no" title="function not covered" >(s</span>tepNumber) =&gt; {
+<span class="cstat-no" title="statement not covered" >    setCompletedSteps(<span class="fstat-no" title="function not covered" >pr</span>ev =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
+      ...prev,
+      [stepNumber]: !prev[stepNumber],
+    }));
+  };
+&nbsp;
   return (   
     &lt;div className="modal-overlay"&gt;
       &lt;div className="modal-content"&gt;
@@ -409,10 +441,19 @@ const RecipeModal = ({ recipe, onClose }) =&gt; {
         
         {/* Header with TTS Component */}
         &lt;div className="modal-header"&gt;
-          &lt;div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}&gt;
-            &lt;h1&gt;{recipe.title}&lt;/h1&gt;
-            
-          &lt;/div&gt;
+          &lt;div className='header-top'&gt;
+            &lt;div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', maxWidth: '600px' }}&gt;
+              &lt;h1&gt;{recipe.title}&lt;/h1&gt;
+            &lt;/div&gt;
+            &lt;div className="languageBox"&gt;              
+              &lt;TranslateBox /&gt;
+              {recipeInfo?.analyzedInstructions &amp;&amp; (
+                &lt;TTS 
+                  analyzedInstructions={recipeInfo.analyzedInstructions}
+                /&gt;
+              )}
+              &lt;/div&gt;
+            &lt;/div&gt;
           &lt;p style={{ color: 'black' }}&gt;
             Cooking Time: {recipeInfo?.readyInMinutes || recipe.readyInMinutes || 'N/A'} minutes
           &lt;/p&gt;
@@ -420,16 +461,11 @@ const RecipeModal = ({ recipe, onClose }) =&gt; {
             Calories:{' '}
             {recipeInfo?.nutrition?.nutrients.find(n =&gt; n.name.toLowerCase() === "calories")?.amount || 'N/A'}
           &lt;/p&gt;
+&nbsp;
+&nbsp;
         &lt;/div&gt;
 &nbsp;
-        &lt;div className="languageBox"&gt;              
-          &lt;TranslateBox /&gt;
-          {recipeInfo?.analyzedInstructions &amp;&amp; (
-            &lt;TTS 
-              analyzedInstructions={recipeInfo.analyzedInstructions}
-            /&gt;
-          )}
-        &lt;/div&gt;
+&nbsp;
 &nbsp;
         {/* Body */}
         &lt;div className="modal-body"&gt;
@@ -447,7 +483,7 @@ const RecipeModal = ({ recipe, onClose }) =&gt; {
               recipeInfo.analyzedInstructions[0].steps?.length &gt; 0 ? (
                 &lt;ol&gt;
                   {recipeInfo.analyzedInstructions[0].steps.map((step) =&gt; (
-                    &lt;li key={step.number} style={{ marginBottom: "10px" }}&gt; 
+                    &lt;li key={step.number} onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >toggleStepCompletion(step.number)}</span> className={completedSteps[step.number] ? <span class="branch-0 cbranch-no" title="branch not covered" >"completed-step" </span>: ""} style={{ marginBottom: "10px", cursor: "pointer" }}&gt; 
                       {step.step}
                     &lt;/li&gt;
                   ))}
@@ -514,7 +550,7 @@ export default RecipeModal;</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-03-28T20:54:39.545Z
+                at 2025-03-31T23:40:22.313Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

@@ -59,6 +59,7 @@ const mockRecipeWithoutInstructions = {
 
 describe('RecipeModal Component', () => {
   beforeEach(() => {
+    global.IS_REACT_ACT_ENVIRONMENT = false;
     global.fetch = jest.fn((url) => {
       if (url.includes('analyzedInstructions')) {
         return Promise.resolve({
