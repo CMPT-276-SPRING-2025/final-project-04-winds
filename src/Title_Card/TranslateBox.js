@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, lazy } from 'react';
+import React, { useState, useRef, useEffect} from 'react';
 import Languages from '../data/Languages';
 import './TranslateTTSBox.css'
 
