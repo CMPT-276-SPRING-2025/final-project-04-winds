@@ -68,7 +68,7 @@ const TTS = ({analyzedInstructions}) => {
 
       // Detailed error handling
       if (!response.ok) {
-        const errorBody = await response.text();
+        //const errorBody = await response.text();
         /*console.error('Speech synthesis API error:', {
           status: response.status,
           statusText: response.statusText,
@@ -411,7 +411,7 @@ const TTS = ({analyzedInstructions}) => {
               {/* Play/Pause Button */}
               <button 
                 className="tts-menu-item" 
-                role="button"
+                
                 data-testid="pause-button"
                 onClick={() => {
                   if (isPlayingAudio) {
