@@ -90,6 +90,7 @@ describe('TTS Component', () => {
     }
   ];
   beforeEach(() => {
+    global.IS_REACT_ACT_ENVIRONMENT = false;
     // Reset mocks
     jest.clearAllMocks();
 
@@ -314,7 +315,8 @@ describe('TTS Component', () => {
         statusText: 'Internal Server Error',
         text: () => Promise.resolve('Server Error')
       })
-    );
+    )
+    
     
     render(<TTS analyzedInstructions={sampleInstructions} />);
     
@@ -353,9 +355,7 @@ describe('TTS Component', () => {
     });
   });
 
-  // === VOICE RECOGNITION TESTS ===
-
- 
+  // === VOICE RECOGNITION TESTS === 
 
   test('Handles getUserMedia errors', async () => {
     // Make getUserMedia fail
