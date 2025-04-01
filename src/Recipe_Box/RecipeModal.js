@@ -14,6 +14,8 @@ const RecipeModal = ({ recipe, onClose }) => {
   const [selectedLanguageOut, setSelectedLanguageOut] = useState('en');
   const [selectedLanguageIn, setSelectedLanguageIn] = useState('en');
   const [analyzedInstructions, setAnalyzedInstructions] = useState(null);
+  const [regularInstructions, setRegularInstructions] = useState(null);
+
   // const [isTranslating, setIsTranslating] = useState(false);
 
   // update translation whenever recipe or selected language changes
@@ -27,20 +29,31 @@ const RecipeModal = ({ recipe, onClose }) => {
       
       if (selectedLanguageOut === selectedLanguageIn) {
         setAnalyzedInstructions(recipeInfo.analyzedInstructions);
+        setRegularInstructions(recipeInfo.instructions);
         return;
       }
       else {
           // setIsTranslating(true);
           try {
-            
+            if(recipeInfo.analyzedInstructions){
               const translated = await Translation(
-                  recipeInfo.analyzedInstructions, 
-                  selectedLanguageOut
+                recipeInfo.analyzedInstructions, 
+                selectedLanguageOut
               );
               setAnalyzedInstructions(translated);
+            }
+            if(recipeInfo.instructions){
+              const regularTranslated = await Translation(
+                recipeInfo.instructions,
+                selectedLanguageOut
+              );
+              setRegularInstructions(regularTranslated);
+            }
+          
           } catch (error) {
               console.error("Translation failed:", error);
               setAnalyzedInstructions(recipeInfo.analyzedInstructions);
+              setRegularInstructions(recipeInfo.instructions);
           } 
           // setIsTranslating(false);
         }         
@@ -64,6 +77,7 @@ const RecipeModal = ({ recipe, onClose }) => {
           analyzedInstructions: stepsData
         });
         setAnalyzedInstructions(stepsData); //initialize with original info
+        setRegularInstructions(infoData.instructions);
       } catch (error) {
         console.error("Error fetching recipe info:", error);
       }
@@ -111,6 +125,7 @@ const RecipeModal = ({ recipe, onClose }) => {
               {recipeInfo?.analyzedInstructions && (
                 <TTS 
                   analyzedInstructions={analyzedInstructions}
+
                 />
               )}
               </div>
@@ -152,8 +167,8 @@ const RecipeModal = ({ recipe, onClose }) => {
               ) : (
                 <p>Detailed instructions not available.</p>
               )
-            ) : recipeInfo.instructions ? (
-              <div dangerouslySetInnerHTML={{ __html: recipeInfo.instructions }} />
+            ) : regularInstructions ? (
+              <div dangerouslySetInnerHTML={{ __html: regularInstructions }} />
             ) : (
               <p>Instructions not available.</p>
             )}
