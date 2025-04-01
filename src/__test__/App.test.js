@@ -202,6 +202,7 @@ describe('App Component', () => {
       fireEvent.click(screen.getByText('Search'))
 
       await waitFor(() => {
+        // eslint-disable-next-line testing-library/no-wait-for-side-effects
         fireEvent.click(screen.getByText('Test Recipe'))
       })
 
