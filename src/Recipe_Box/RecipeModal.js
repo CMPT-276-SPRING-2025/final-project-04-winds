@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './RecipeModal.css';
 import TTS from '../Title_Card/TTS';
 import TranslateBox from '../Title_Card/TranslateBox';
+import Translation from '../Title_Card/Translation';
 
 const RecipeModal = ({ recipe, onClose }) => {
   const apiKey = process.env.REACT_APP_SPOONACULAR_API_KEY;
@@ -9,6 +10,43 @@ const RecipeModal = ({ recipe, onClose }) => {
   const [checkedIngredients, setCheckedIngredients] = useState({});
   const [showDetailed, setShowDetailed] = useState(false);
   const [completedSteps, setCompletedSteps] = useState({});
+  
+  const [selectedLanguageOut, setSelectedLanguageOut] = useState('en');
+  const [selectedLanguageIn, setSelectedLanguageIn] = useState('en');
+  const [analyzedInstructions, setAnalyzedInstructions] = useState(null);
+  const [isTranslating, setIsTranslating] = useState(false);
+
+  // update translation whenever recipe or selected language changes
+  useEffect(() => {
+    const translateRecipe = async () => {
+      if (!recipeInfo?.analyzedInstructions) 
+        {
+          console.log("No instructions to translate");
+          return;
+        };
+      
+      if (selectedLanguageOut === selectedLanguageIn) {
+        setAnalyzedInstructions(recipeInfo.analyzedInstructions);
+        return;
+      }
+      else {
+          setIsTranslating(true);
+          try {
+            
+              const translated = await Translation(
+                  recipeInfo.analyzedInstructions, 
+                  selectedLanguageOut
+              );
+              setAnalyzedInstructions(translated);
+          } catch (error) {
+              console.error("Translation failed:", error);
+              setAnalyzedInstructions(recipeInfo.analyzedInstructions);
+          } 
+          setIsTranslating(false);
+        }         
+    };
+    translateRecipe();
+}, [recipeInfo, selectedLanguageOut, selectedLanguageIn]);
 
   useEffect(() => {
     const fetchRecipeInfo = async () => {
@@ -25,6 +63,7 @@ const RecipeModal = ({ recipe, onClose }) => {
           ...infoData,
           analyzedInstructions: stepsData
         });
+        setAnalyzedInstructions(stepsData); //initialize with original info
       } catch (error) {
         console.error("Error fetching recipe info:", error);
       }
@@ -49,6 +88,8 @@ const RecipeModal = ({ recipe, onClose }) => {
     }));
   };
 
+  
+
   return (   
     <div className="modal-overlay">
       <div className="modal-content">
@@ -61,10 +102,15 @@ const RecipeModal = ({ recipe, onClose }) => {
               <h1>{recipe.title}</h1>
             </div>
             <div className="languageBox">              
-              <TranslateBox />
+              <TranslateBox 
+                selectedLanguageOut = {selectedLanguageOut}
+                setSelectedLanguageOut = {setSelectedLanguageOut}
+                setSelectedLanguageIn = {setSelectedLanguageIn}
+                selectedLanguageIn = {selectedLanguageIn}
+              />
               {recipeInfo?.analyzedInstructions && (
                 <TTS 
-                  analyzedInstructions={recipeInfo.analyzedInstructions}
+                  analyzedInstructions={analyzedInstructions}
                 />
               )}
               </div>
@@ -94,10 +140,10 @@ const RecipeModal = ({ recipe, onClose }) => {
             {recipeInfo === null ? (
               <p>Loading instructions...</p>
             ) : showDetailed ? (
-              recipeInfo.analyzedInstructions?.length > 0 &&
-              recipeInfo.analyzedInstructions[0].steps?.length > 0 ? (
+              analyzedInstructions?.length > 0 &&
+              analyzedInstructions[0].steps?.length > 0 ? (
                 <ol>
-                  {recipeInfo.analyzedInstructions[0].steps.map((step) => (
+                  {analyzedInstructions[0].steps.map((step) => (
                     <li key={step.number} onClick={() => toggleStepCompletion(step.number)} className={completedSteps[step.number] ? "completed-step" : ""} style={{ marginBottom: "10px", cursor: "pointer" }}> 
                       {step.step}
                     </li>
