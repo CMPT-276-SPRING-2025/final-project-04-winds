@@ -2,16 +2,114 @@
   Language Box Styles
   (TTS icon and translation icons)
   ====================== */
-  .languageBox {
-    /* Display & Box Model */
-    height: 6vh;
-    width: auto;
-    margin-left: -20px;
-    padding-right: 1vw;
-    margin-top: 1vh;
-    z-index: 10;
+/* TRANSLATION STYLING */
+
+.languageBox {
+  /* Display & Box Model */
+  display: flex;
+  gap: 10px;
+  height: 6vh;
+  width: auto;
+  margin-left: -50px;
+  padding-right: 1vw;
+  margin-top: 1vh;
+  z-index: 10;
 }
 
+.translate-button{
+position: relative;
+display: inline-block;
+z-index: 0;
+}
+
+.translate-container{
+position: relative;
+text-align: right;
+display: inline-block;
+width: 200px;  
+}
+
+.translate-menu{
+position: absolute;
+display: flex;
+padding: 10px;
+gap: 1vw;
+height: 10vh;
+width: 35vh;
+right: 0;
+margin-top: -4px;
+background-color: white;
+border: none;
+border-radius: 10px;
+
+
+z-index: 1002;
+align-items: center;
+justify-content: center;
+text-align: center;
+
+color:black;
+box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+
+.language-dropdown-container {
+position: relative; 
+display: inline-block; 
+margin-top: -0.3vh;
+}
+
+.language-dropdown {
+position: absolute;
+top: 100%; /* Places it directly below "select" */
+left: 0;
+background-color: white;
+box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+border-radius: 5px;
+padding: 5px;
+min-width: 100%; /* Ensures it aligns with "select" */
+z-index: 1000;
+}
+
+.select-language{
+display: flex;
+gap: 5px;
+width: auto;
+text-align: center;
+/* height: 2vh; */
+
+padding: 10px 5px;
+background-color: #ededed;
+border-radius: 10px;
+}
+
+.translate-arrow{
+max-width: 15%;
+background-color: white;
+}
+
+.dropdown-arrow{
+height: 2vh;
+}
+
+.language-list{
+max-height: 25vh;
+
+list-style: none;
+padding-left: 0 0;
+margin: auto;
+margin-left: -20px;
+text-align: left;
+padding-top: 0;
+overflow-y: auto;
+}
+
+.language-item:hover{
+background-color: rgb(238, 238, 238);
+cursor: pointer;
+}
+
+/* TTS STYLING */
 .tts-container {
   position: relative;
   display: inline-block;
@@ -56,7 +154,7 @@
   background-position: center;
   background-repeat: no-repeat;
   cursor: pointer;
-  padding: 0; 
+  padding: 1px 1px;
   background-color: white;
   border-radius: 10px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
