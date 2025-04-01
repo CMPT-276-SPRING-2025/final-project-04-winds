@@ -10,11 +10,12 @@ const TranslateBox = () => {
   const [selectedLanguageOut, setSelectedLanguageOut] = useState('en');
   const menuRef = useRef(null);
   
-
+// handle menu visibility 
   const toggleMenu = () => {
     setMenuOpen(!isMenuOpen);
   }
 
+// handle language dropdown visibility
   const toggleDropdown = (type) => {
     if (type === 'in'){
       setDropdownIn(!isDropdownIn);
@@ -25,11 +26,13 @@ const TranslateBox = () => {
     }
   }
 
+  // get language name for display from code
   const getLanguageName = (code) => {
     const language = Languages.find(language => language.code === code);
     return language ? language.name : 'Unknown';
   }
 
+  // handle input from dropdown
   const handleLanguageSelect = (languageCode, type) => {
     if (type === 'in'){
       setSelectedLanguageIn(languageCode);
