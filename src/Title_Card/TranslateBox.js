@@ -2,12 +2,12 @@ import React, { useState, useRef, useEffect} from 'react';
 import Languages from '../data/Languages';
 import './TranslateTTSBox.css'
 
-const TranslateBox = () => {
+const TranslateBox = ({selectedLanguageOut, setSelectedLanguageOut, selectedLanguageIn, setSelectedLanguageIn}) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [isDropdownIn, setDropdownIn] = useState(false);
   const [isDropdownOut, setDropdownOut] = useState(false);
-  const [selectedLanguageIn, setSelectedLanguageIn] = useState('en');
-  const [selectedLanguageOut, setSelectedLanguageOut] = useState('en');
+  // const [selectedLanguageIn, setSelectedLanguageIn] = useState('en');
+ 
   const menuRef = useRef(null);
   
 // handle menu visibility 
