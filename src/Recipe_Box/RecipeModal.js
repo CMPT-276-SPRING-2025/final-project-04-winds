@@ -14,7 +14,7 @@ const RecipeModal = ({ recipe, onClose }) => {
   const [selectedLanguageOut, setSelectedLanguageOut] = useState('en');
   const [selectedLanguageIn, setSelectedLanguageIn] = useState('en');
   const [analyzedInstructions, setAnalyzedInstructions] = useState(null);
-  const [isTranslating, setIsTranslating] = useState(false);
+  // const [isTranslating, setIsTranslating] = useState(false);
 
   // update translation whenever recipe or selected language changes
   useEffect(() => {
@@ -30,7 +30,7 @@ const RecipeModal = ({ recipe, onClose }) => {
         return;
       }
       else {
-          setIsTranslating(true);
+          // setIsTranslating(true);
           try {
             
               const translated = await Translation(
@@ -42,7 +42,7 @@ const RecipeModal = ({ recipe, onClose }) => {
               console.error("Translation failed:", error);
               setAnalyzedInstructions(recipeInfo.analyzedInstructions);
           } 
-          setIsTranslating(false);
+          // setIsTranslating(false);
         }         
     };
     translateRecipe();
