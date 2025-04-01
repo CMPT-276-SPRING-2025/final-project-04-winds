@@ -1,6 +1,7 @@
 node_modules/
 .vercel
 .env
+coverage/
 /coverage
 cookcompass-453619-a3edba4ec40f.json
 cookcompass-453619-2cfc7760151d.json
