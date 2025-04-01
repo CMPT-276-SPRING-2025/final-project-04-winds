@@ -159,8 +159,6 @@ const TranslateBox = () => {
           </div>
             
         </div>
-         
-         
       )}
 
     </div>
