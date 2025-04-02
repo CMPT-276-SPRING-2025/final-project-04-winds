@@ -4,9 +4,7 @@ import './TranslateTTSBox.css'
 
 const TranslateBox = ({selectedLanguageOut, setSelectedLanguageOut, selectedLanguageIn, setSelectedLanguageIn}) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
-  const [isDropdownIn, setDropdownIn] = useState(false);
   const [isDropdownOut, setDropdownOut] = useState(false);
-  // const [selectedLanguageIn, setSelectedLanguageIn] = useState('en');
  
   const menuRef = useRef(null);
   
@@ -16,14 +14,8 @@ const TranslateBox = ({selectedLanguageOut, setSelectedLanguageOut, selectedLang
   }
 
 // handle language dropdown visibility
-  const toggleDropdown = (type) => {
-    if (type === 'in'){
-      setDropdownIn(!isDropdownIn);
-      setDropdownOut(false); // close other dropdown
-    } else {
+  const toggleDropdown = () => {
       setDropdownOut(!isDropdownOut);
-      setDropdownIn(false);
-    }
   }
 
   // get language name for display from code
@@ -75,44 +67,8 @@ const TranslateBox = ({selectedLanguageOut, setSelectedLanguageOut, selectedLang
       {isMenuOpen && (
         <div className='translate-menu'> 
           {/* left language */}
-          <div className='language-dropdown-container'>
-            <span className="select-language" onClick={() => toggleDropdown('in')}>
-                {getLanguageName(selectedLanguageIn) ? 
-                Languages.find(lang => lang.code === selectedLanguageIn)?.name : 
-                'Select Language'}
-
-                {isDropdownIn ? 
-                  <img
-                      src="/Media/arrowUp.png"
-                      alt="Arrow"
-                      className='dropdown-arrow'
-                  />  : 
-                  <img
-                      src="/Media/arrowDown.png"
-                      alt="Arrow"
-                      className='dropdown-arrow'
-                  />  }
-            </span>
-
-            {isDropdownIn && (
-              <div className="language-dropdown">
-                <ul className="language-list" >
-                  {Languages.map((lang) => (
-                    <li
-                      key={lang.code}
-                      className={`language-item ${
-                        selectedLanguageIn === lang.code ? 'selected' : ''
-                      }`}
-                      onClick={() => handleLanguageSelect(lang.code, 'in')}
-                    >
-                      <span className="language-name">{lang.name}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            
-            )}
-          </div>
+          <span className="language-name">{getLanguageName(selectedLanguageIn)}</span>
+              
 
           {/* middle arrow */}
           <img
@@ -124,7 +80,7 @@ const TranslateBox = ({selectedLanguageOut, setSelectedLanguageOut, selectedLang
 
           {/* right language */}
           <div className='language-dropdown-container'>
-            <span className="select-language"  onClick={() => toggleDropdown('out')}>
+            <span className="select-language"  onClick={() => toggleDropdown()}>
                 {getLanguageName(selectedLanguageOut) ? 
                 Languages.find(lang => lang.code === selectedLanguageOut)?.name : 
                 'Select Language'}
