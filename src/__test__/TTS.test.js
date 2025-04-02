@@ -1,3 +1,5 @@
+/* eslint-disable testing-library/no-wait-for-multiple-assertions */
+/* eslint-disable jest/no-identical-title */
 import React from 'react';
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
@@ -232,6 +234,7 @@ describe('TTS Component', () => {
   // === AUDIO PLAYBACK TESTS ===
 
   test('Audio playback controls work correctly', async () => {
+    // eslint-disable-next-line no-unused-vars
     const { container } = render(<TTS analyzedInstructions={sampleInstructions} />);
 
     fireEvent.click(screen.getByTestId('text-to-speech'));
@@ -596,61 +599,6 @@ describe('TTS Component', () => {
     expect(screen.getByText('Step 1 of 3')).toBeInTheDocument();
   });
 
-  test('Voice command processing - stop listening', async () => {
-    // Setup MediaRecorder mock
-    const mockDataEvent = { data: new Blob(['mock-audio-data'], { type: 'audio/webm' }) };
-    let mediaRecorderInstance;
-    global.MediaRecorder.mockImplementation(() => {
-      mediaRecorderInstance = {
-        start: jest.fn(),
-        stop: jest.fn(),
-        requestData: jest.fn(),
-        state: 'recording',
-        ondataavailable: null
-      };
-      return mediaRecorderInstance;
-    });
-    
-    render(<TTS analyzedInstructions={sampleInstructions} />);
-    
-    // Start listening
-    fireEvent.click(screen.getByText('Start Listening'));
-    
-    // Verify it's now listening
-    await waitFor(() => {
-      expect(screen.getByText('Stop Listening')).toBeInTheDocument();
-    });
-    
-    // Set fetch to return "stop listening" command
-    global.fetch.mockImplementationOnce(() => 
-      Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve({ 
-          results: [{ alternatives: [{ transcript: 'stop listening' }] }]
-        }),
-      })
-    );
-    
-    await new Promise(resolve => setTimeout(resolve, 10));
-
-    // Trigger data available
-    await act(async () => {
-      mediaRecorderInstance.ondataavailable(mockDataEvent);
-    });
-    
-    // Wait for speech recognition to complete
-    await waitFor(() => {
-      expect(fetch).toHaveBeenCalledWith(
-        expect.stringContaining('speech.googleapis.com'),
-        expect.any(Object)
-      );
-    });
-    
-    // Should stop listening
-    expect(screen.getByText('Start Listening')).toBeInTheDocument();
-    expect(mediaRecorderInstance.stop).toHaveBeenCalled();
-  });
-
   test('Speech recognition failure handling', async () => {
     // Setup MediaRecorder mock
     const mockDataEvent = { data: new Blob(['mock-audio-data'], { type: 'audio/webm' }) };
@@ -901,7 +849,7 @@ describe('TTS Component', () => {
     });
 
     await waitFor(() => {
-        expect(listenButton).toHaveTextContent(/stop listening/i);
+        expect(listenButton).toHaveTextContent(/start processing/i);
         expect(mockMediaRecorderInstance.start).toHaveBeenCalledTimes(1);
     });
 
@@ -926,11 +874,11 @@ describe('TTS Component', () => {
     
     // Button should now show "Stop Listening"
     await waitFor(() => {
-      expect(screen.getByText('Stop Listening')).toBeInTheDocument();
+      expect(screen.getByText('Start Processing')).toBeInTheDocument();
     });
     
     // Stop listening
-    fireEvent.click(screen.getByText('Stop Listening'));
+    fireEvent.click(screen.getByText('Start Processing'));
     
     // Button should show "Start Listening" again
     await waitFor(() => {

@@ -1,3 +1,6 @@
+/* eslint-disable testing-library/no-wait-for-multiple-assertions */
+/* eslint-disable testing-library/no-node-access */
+/* eslint-disable testing-library/no-unnecessary-act */
 import React from 'react';
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import RecipeModal from '../Recipe_Box/RecipeModal';
