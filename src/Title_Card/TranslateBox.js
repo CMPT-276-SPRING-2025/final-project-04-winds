@@ -4,7 +4,6 @@ import './TranslateTTSBox.css'
 
 const TranslateBox = ({selectedLanguageOut, setSelectedLanguageOut, selectedLanguageIn, setSelectedLanguageIn}) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
-  const [isDropdownIn, setDropdownIn] = useState(false);
   const [isDropdownOut, setDropdownOut] = useState(false);
  
   const menuRef = useRef(null);
