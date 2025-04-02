@@ -14,18 +14,25 @@
   padding-right: 1vw;
   margin-top: 1vh;
   z-index: 10;
+  align-items: center;
 }
 
 .translate-button{
-position: relative;
-display: inline-block;
-z-index: 0;
+  position: relative;
+  display: flex;
+  z-index: 0;
+
 }
 
 .translate-container{
+align-items: center;
+display: flex;
 position: relative;
 text-align: right;
 display: inline-block;
+margin: 0;
+padding: 0;
+height: 100%;
 width: 200px;  
 }
 
@@ -148,7 +155,8 @@ cursor: pointer;
 /* Keep all your existing styles below */
 .image-button {
   width: auto;
-  height: 6vh;
+  height: 4vh;
+  min-height: 50px;
   border: none;
   background-size: cover;
   background-position: center;
@@ -179,6 +187,8 @@ cursor: pointer;
 
 .tts-menu {
   position: absolute;
+  left: auto;
+  right: 0;
   background-color: white;
   border: 1px solid #85A573;
   border-radius: 10px;

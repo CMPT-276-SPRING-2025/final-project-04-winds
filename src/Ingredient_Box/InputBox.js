@@ -35,6 +35,16 @@ const InputBox = ({ ingredients, setIngredients, onIngredientsChange }) => {
     return () => clearTimeout(timer);
   }, [inputValue, fetchSuggestions]);
 
+  useEffect(() => {
+    if (selectedSuggestionIndex !== -1) {
+      const activeItem = document.querySelector('.suggestions-list li.active');
+      if (activeItem) {
+        activeItem.scrollIntoView({ block: 'nearest' });
+      }
+    }
+  }, [selectedSuggestionIndex]);
+  
+
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
   };
