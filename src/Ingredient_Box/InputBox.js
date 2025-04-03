@@ -13,7 +13,7 @@ const InputBox = ({ ingredients, setIngredients, onIngredientsChange }) => {
   const [inputLang, setInputLang] = useState('en'); // Default to English
 
   // eslint-disable-next-line
-  const translateText = async (text) => {
+  const translateText = useCallback(async (text) => {
     if (!text.trim()) return text;
   
     try {
@@ -47,7 +47,7 @@ const InputBox = ({ ingredients, setIngredients, onIngredientsChange }) => {
       console.error('Translation error:', error);
       return text;
     }
-  };
+  }, [googleApiKey, inputLang]);
   
 
   const fetchSuggestions = useCallback(async (query) => {
