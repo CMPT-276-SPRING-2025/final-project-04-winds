@@ -12,6 +12,7 @@ const InputBox = ({ ingredients, setIngredients, onIngredientsChange }) => {
   const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1);
   const [inputLang, setInputLang] = useState('en'); // Default to English
 
+  // eslint-disable-next-line
   const translateText = async (text) => {
     if (!text.trim()) return text;
   
@@ -62,7 +63,7 @@ const InputBox = ({ ingredients, setIngredients, onIngredientsChange }) => {
     } catch (error) {
       console.error('Error fetching suggestions:', error);
     }
-  }, [apiKey, inputLang]);
+  }, [apiKey, translateText ]);
 
   useEffect(() => {
     if (!inputValue.trim()) {
