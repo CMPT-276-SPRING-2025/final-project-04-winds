@@ -276,3 +276,427 @@ describe('InputBox', () => {
     });
   });
 });
+
+describe('InputBox Translation Functionality', () => {
+  const mockSetIngredients = jest.fn();
+  
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  test('Translates non-English input to English for API call', async () => {
+    // Mock fetch for both translation and ingredient suggestions
+    global.fetch = jest.fn((url) => {
+      if (url.includes('translation.googleapis.com')) {
+        return Promise.resolve({
+          json: () => Promise.resolve({
+            data: {
+              translations: [
+                { translatedText: 'tomato', detectedSourceLanguage: 'es' }
+              ]
+            }
+          })
+        });
+      } else if (url.includes('spoonacular.com')) {
+        // Verify that the translated term is used in the API call
+        expect(url).toContain('query=tomato');
+        return Promise.resolve({
+          json: () => Promise.resolve([
+            { id: 1, name: 'Tomato' }
+          ])
+        });
+      }
+      return Promise.reject(new Error('Unexpected URL'));
+    });
+
+    render(<InputBox ingredients={[]} setIngredients={mockSetIngredients} />);
+    
+    // Change language to Spanish
+    const languageSelector = screen.getByRole('combobox');
+    fireEvent.change(languageSelector, { target: { value: 'es' } });
+    
+    // Type a Spanish word
+    const input = screen.getByPlaceholderText('Type an ingredient...');
+    act(() => {
+      fireEvent.change(input, { target: { value: 'tomate' } });
+    });
+
+    // Wait for translation and suggestions
+    await waitFor(() => {
+      expect(global.fetch).toHaveBeenCalledWith(
+        expect.stringContaining('translation.googleapis.com'),
+        expect.any(Object)
+      );
+      expect(global.fetch).toHaveBeenCalledWith(
+        expect.stringContaining('spoonacular.com'),
+        expect.any(Object)
+      );
+    });
+    
+    // Verify that suggestions are shown for the translated term
+    await waitFor(() => {
+      expect(screen.getByText('Tomato')).toBeInTheDocument();
+    });
+  });
+
+  test('Handles translation API errors gracefully', async () => {
+    // Mock a failed translation but successful ingredients API
+    global.fetch = jest.fn((url) => {
+      if (url.includes('translation.googleapis.com')) {
+        return Promise.reject(new Error('Translation API Error'));
+      } else if (url.includes('spoonacular.com')) {
+        // Should fall back to using original text
+        expect(url).toContain('query=tomate');
+        return Promise.resolve({
+          json: () => Promise.resolve([
+            { id: 1, name: 'Tomato' }
+          ])
+        });
+      }
+      return Promise.reject(new Error('Unexpected URL'));
+    });
+
+    render(<InputBox ingredients={[]} setIngredients={mockSetIngredients} />);
+    
+    // Change language to Spanish
+    const languageSelector = screen.getByRole('combobox');
+    fireEvent.change(languageSelector, { target: { value: 'es' } });
+    
+    // Type a Spanish word
+    const input = screen.getByPlaceholderText('Type an ingredient...');
+    act(() => {
+      fireEvent.change(input, { target: { value: 'tomate' } });
+    });
+
+    // Should still show suggestions using the original input
+    await waitFor(() => {
+      expect(screen.getByText('Tomato')).toBeInTheDocument();
+    });
+  });
+
+  test('Handles invalid translation response gracefully', async () => {
+    // Mock an invalid translation response format
+    global.fetch = jest.fn((url) => {
+      if (url.includes('translation.googleapis.com')) {
+        return Promise.resolve({
+          json: () => Promise.resolve({ data: {} }) // Missing translations
+        });
+      } else if (url.includes('spoonacular.com')) {
+        // Should fall back to using original text
+        expect(url).toContain('query=tomate');
+        return Promise.resolve({
+          json: () => Promise.resolve([
+            { id: 1, name: 'Tomato' }
+          ])
+        });
+      }
+      return Promise.reject(new Error('Unexpected URL'));
+    });
+
+    render(<InputBox ingredients={[]} setIngredients={mockSetIngredients} />);
+    
+    // Change language to Spanish
+    const languageSelector = screen.getByRole('combobox');
+    fireEvent.change(languageSelector, { target: { value: 'es' } });
+    
+    // Type a Spanish word
+    const input = screen.getByPlaceholderText('Type an ingredient...');
+    act(() => {
+      fireEvent.change(input, { target: { value: 'tomate' } });
+    });
+
+    // Component should still work without crashing
+    await waitFor(() => {
+      expect(input).toBeInTheDocument();
+    });
+  });
+
+  test('Does not translate when input language is set to English', async () => {
+    global.fetch = jest.fn((url) => {
+      if (url.includes('translation.googleapis.com')) {
+        return Promise.resolve({
+          json: () => Promise.resolve({
+            data: {
+              translations: [
+                { translatedText: 'tomato', detectedSourceLanguage: 'en' }
+              ]
+            }
+          })
+        });
+      } else if (url.includes('spoonacular.com')) {
+        return Promise.resolve({
+          json: () => Promise.resolve([
+            { id: 1, name: 'Tomato' }
+          ])
+        });
+      }
+      return Promise.reject(new Error('Unexpected URL'));
+    });
+
+    render(<InputBox ingredients={[]} setIngredients={mockSetIngredients} />);
+    
+    // Ensure language is set to English
+    const languageSelector = screen.getByRole('combobox');
+    fireEvent.change(languageSelector, { target: { value: 'en' } });
+    
+    const input = screen.getByPlaceholderText('Type an ingredient...');
+    act(() => {
+      fireEvent.change(input, { target: { value: 'tomato' } });
+    });
+
+    await waitFor(() => {
+      // Should skip translation API
+      expect(global.fetch).not.toHaveBeenCalledWith(
+        expect.stringContaining('translation.googleapis.com'),
+        expect.any(Object)
+      );
+      // Should directly call ingredients API
+      expect(global.fetch).toHaveBeenCalledWith(
+        expect.stringContaining('spoonacular.com'),
+        expect.any(Object)
+      );
+    });
+  });
+});
+
+describe('InputBox Edge Cases', () => {
+  const mockSetIngredients = jest.fn();
+  
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  test('Handles empty API response gracefully', async () => {
+    global.fetch = jest.fn(() => 
+      Promise.resolve({
+        json: () => Promise.resolve([])
+      })
+    );
+
+    render(<InputBox ingredients={[]} setIngredients={mockSetIngredients} />);
+    const input = screen.getByPlaceholderText('Type an ingredient...');
+    
+    act(() => {
+      fireEvent.change(input, { target: { value: 'nonexistentingredient' } });
+    });
+
+    // Should not display any suggestions
+    await waitFor(() => {
+      expect(screen.queryByRole('listitem')).not.toBeInTheDocument();
+    });
+    
+    // Should still allow manual entry
+    fireEvent.keyDown(input, { key: 'Enter' });
+    expect(mockSetIngredients).toHaveBeenCalledWith(['nonexistentingredient']);
+  });
+
+  test('Handles malformed API response gracefully', async () => {
+    global.fetch = jest.fn(() => 
+      Promise.resolve({
+        json: () => Promise.resolve(null) // Unexpected null response
+      })
+    );
+
+    render(<InputBox ingredients={[]} setIngredients={mockSetIngredients} />);
+    const input = screen.getByPlaceholderText('Type an ingredient...');
+    
+    act(() => {
+      fireEvent.change(input, { target: { value: 'tomato' } });
+    });
+
+    // Should handle the error and not crash
+    await waitFor(() => {
+      expect(screen.queryByRole('listitem')).not.toBeInTheDocument();
+      expect(input).toBeInTheDocument(); // Component still exists
+    });
+  });
+
+  test('Debounces API calls when typing quickly', async () => {
+    jest.useFakeTimers();
+    global.fetch = jest.fn(() => 
+      Promise.resolve({
+        json: () => Promise.resolve([{ id: 1, name: 'Tomato' }])
+      })
+    );
+
+    render(<InputBox ingredients={[]} setIngredients={mockSetIngredients} />);
+    const input = screen.getByPlaceholderText('Type an ingredient...');
+    
+    // Type "t"
+    act(() => {
+      fireEvent.change(input, { target: { value: 't' } });
+    });
+    
+    // Type "to" quickly before debounce period
+    act(() => {
+      fireEvent.change(input, { target: { value: 'to' } });
+    });
+    
+    // Type "tom" quickly before debounce period
+    act(() => {
+      fireEvent.change(input, { target: { value: 'tom' } });
+    });
+    
+    // API should not be called yet before timeout
+    expect(global.fetch).not.toHaveBeenCalled();
+    
+    // Advance timer to trigger the debounced function
+    act(() => {
+      jest.advanceTimersByTime(300);
+    });
+    
+    // Should only make two API call with the final value
+    await waitFor(() => {
+      expect(global.fetch).toHaveBeenCalledTimes(2);
+      expect(global.fetch).toHaveBeenCalledWithSanitized(
+        expect.stringContaining('query=tom'),
+        expect.any(Object)
+      );
+    });
+    
+    jest.useRealTimers();
+  });
+
+  test('Handles long ingredient names properly', async () => {
+    global.fetch = jest.fn(() => 
+      Promise.resolve({
+        json: () => Promise.resolve([
+          { id: 1, name: 'Very long ingredient name that might cause UI issues when displayed in the suggestions list' }
+        ])
+      })
+    );
+
+    render(<InputBox ingredients={[]} setIngredients={mockSetIngredients} />);
+    const input = screen.getByPlaceholderText('Type an ingredient...');
+    
+    act(() => {
+      fireEvent.change(input, { target: { value: 'long' } });
+    });
+
+    await waitFor(() => {
+      const suggestion = screen.getByText('Very long ingredient name that might cause UI issues when displayed in the suggestions list');
+      expect(suggestion).toBeInTheDocument();
+    });
+    
+    // Should be able to add the long ingredient name
+    fireEvent.keyDown(input, { key: 'Enter' });
+    expect(mockSetIngredients).toHaveBeenCalledWith([
+      'Very long ingredient name that might cause UI issues when displayed in the suggestions list'
+    ]);
+  });
+
+  test('Scrolls active suggestion into view when navigating with keyboard', async () => {
+    // Mock scrollIntoView function
+    const scrollIntoViewMock = jest.fn();
+    Element.prototype.scrollIntoView = scrollIntoViewMock;
+    
+    global.fetch = jest.fn(() => 
+      Promise.resolve({
+        json: () => Promise.resolve([
+          { id: 1, name: 'Item 1' },
+          { id: 2, name: 'Item 2' },
+          { id: 3, name: 'Item 3' },
+          { id: 4, name: 'Item 4' },
+          { id: 5, name: 'Item 5' }
+        ])
+      })
+    );
+
+    render(<InputBox ingredients={[]} setIngredients={mockSetIngredients} />);
+    const input = screen.getByPlaceholderText('Type an ingredient...');
+    
+    act(() => {
+      fireEvent.change(input, { target: { value: 'item' } });
+    });
+
+    await waitFor(() => {
+      expect(screen.getAllByRole('listitem').length).toBe(5);
+    });
+    
+    // Navigate down to select an item
+    fireEvent.keyDown(input, { key: 'ArrowDown' });
+    
+    // Check if scrollIntoView was called
+    expect(scrollIntoViewMock).toHaveBeenCalledWith({ block: 'nearest' });
+  });
+
+  test('Handles API rate limiting or timeouts gracefully', async () => {
+    // Simulate a timeout
+    global.fetch = jest.fn(() => 
+      new Promise((resolve) => {
+        setTimeout(() => {
+          resolve({
+            json: () => Promise.resolve([{ id: 1, name: 'Tomato' }])
+          });
+        }, 5000); // Long timeout
+      })
+    );
+
+    render(<InputBox ingredients={[]} setIngredients={mockSetIngredients} />);
+    const input = screen.getByPlaceholderText('Type an ingredient...');
+    
+    act(() => {
+      fireEvent.change(input, { target: { value: 'tomato' } });
+    });
+    
+    // Try adding the ingredient while the API call is still pending
+    fireEvent.keyDown(input, { key: 'Enter' });
+    
+    // Should add the manually entered value without waiting for API
+    expect(mockSetIngredients).toHaveBeenCalledWith(['tomato']);
+  });
+
+  test('Updates ingredients in parent component when removing an ingredient', () => {
+    const initialIngredients = ['Apple', 'Banana', 'Orange'];
+    render(
+      <InputBox 
+        ingredients={initialIngredients} 
+        setIngredients={mockSetIngredients}
+        onIngredientsChange={mockSetIngredients} // Same function to verify
+      />
+    );
+    
+    // Find and click the remove button for "Banana"
+    const removeButtons = screen.getAllByText('x', { selector: 'button' });
+    fireEvent.click(removeButtons[1]); // Remove "Banana"
+    
+    // Should call both state update functions
+    expect(mockSetIngredients).toHaveBeenCalledWith(['Apple', 'Orange']);
+    expect(mockSetIngredients).toHaveBeenCalledTimes(2); // Called twice (setIngredients and onIngredientsChange)
+  });
+
+  test('Handles special characters in ingredient names', async () => {
+    global.fetch = jest.fn(() => 
+      Promise.resolve({
+        json: () => Promise.resolve([
+          { id: 1, name: 'Café' },
+          { id: 2, name: 'Jalapeño' }
+        ])
+      })
+    );
+
+    render(<InputBox ingredients={[]} setIngredients={mockSetIngredients} />);
+    const input = screen.getByPlaceholderText('Type an ingredient...');
+    
+    act(() => {
+      fireEvent.change(input, { target: { value: 'special' } });
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText('Café')).toBeInTheDocument();
+      expect(screen.getByText('Jalapeño')).toBeInTheDocument();
+    });
+    
+    // Should be able to add ingredients with special characters
+    fireEvent.click(screen.getByText('Jalapeño'));
+    expect(mockSetIngredients).toHaveBeenCalledWith(['Jalapeño']);
+  });
+});

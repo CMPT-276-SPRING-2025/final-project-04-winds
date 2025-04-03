@@ -39,8 +39,8 @@ const InputBox = ({ ingredients, setIngredients, onIngredientsChange }) => {
       let detectedLang = data.data.translations[0].detectedSourceLanguage;
       let translatedText = data.data.translations[0].translatedText;
 
-      console.log(`Detected language: ${detectedLang} (User selected: ${inputLang})`);
-      console.log(`Translated "${text}" to "${translatedText}"`);
+      //console.log(`Detected language: ${detectedLang} (User selected: ${inputLang})`);
+      //console.log(`Translated "${text}" to "${translatedText}"`);
 
       return translatedText;
     } catch (error) {
