@@ -9,6 +9,7 @@ describe('InputBox', () => {
   const mockOnIngredientsChange = jest.fn();
 
   beforeEach(() => {
+    
     jest.clearAllMocks();
     // Mock the fetch API for ingredient suggestions
     global.fetch = jest.fn((url) => {
@@ -216,6 +217,7 @@ describe('InputBox', () => {
     expect(screen.getByText('Tomato Soup')).toHaveClass('active');
   });
 
+  // Test will work once autocomplete is fixed
   test('Adds highlighted suggestion on Enter key press', async () => {
     render(<InputBox ingredients={[]} setIngredients={mockSetIngredients} />);
     const input = screen.getByPlaceholderText('Type an ingredient...');
@@ -281,6 +283,7 @@ describe('InputBox Translation Functionality', () => {
   const mockSetIngredients = jest.fn();
   
   beforeEach(() => {
+    
     jest.clearAllMocks();
   });
 
@@ -329,14 +332,18 @@ describe('InputBox Translation Functionality', () => {
 
     // Wait for translation and suggestions
     await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalledWith(
-        expect.stringContaining('translation.googleapis.com'),
-        expect.any(Object)
-      );
-      expect(global.fetch).toHaveBeenCalledWith(
-        expect.stringContaining('spoonacular.com'),
-        expect.any(Object)
-      );
+      expect(global.fetch).toHaveBeenCalledTimes(2);
+      expect(global.fetch.mock.calls[0][1]).toEqual({
+        body: JSON.stringify({
+          q: "tomate",
+          target: "en",
+          source: "es",
+          format: "text"
+        }),
+        headers: { "Content-Type": "application/json" },
+        method: "POST"
+      });
+      expect(global.fetch.mock.calls[1][0]).toContain("tomato");
     });
     
     // Verify that suggestions are shown for the translated term
@@ -423,7 +430,7 @@ describe('InputBox Translation Functionality', () => {
 describe('InputBox Edge Cases', () => {
   const mockSetIngredients = jest.fn();
   
-  beforeEach(() => {
+  beforeEach(() => {    
     jest.clearAllMocks();
   });
 
