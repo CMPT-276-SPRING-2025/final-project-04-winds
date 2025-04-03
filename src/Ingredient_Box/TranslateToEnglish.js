@@ -24,8 +24,9 @@ const TranslateToEnglish = ({ setSelectedLanguageIn }) => {
   return (
     <div className="translate-container">
       <span className="select-language" data-testid="language-selector" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
-        {getLanguageName(selectedLanguage)}
-        <img src="/Media/arrowDown.png" alt="Arrow" className='dropdown-arrow' />
+        <strong>Input Language:</strong> 
+        <span className="language-name">{getLanguageName(selectedLanguage)}</span>
+        <img src="/Media/arrowDown.png" alt="Arrow" className="dropdown-arrow" />
       </span>
 
       {isDropdownOpen && (

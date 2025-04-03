@@ -4,21 +4,24 @@
   }
   
   .select-language {
-    cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 5px;
-    padding: 10px 15px;
+    justify-content: space-between;
+    width: 250px;  /* Fixed width to keep everything consistent */
+    padding: 8px 12px;
     border: 1px solid #ccc;
+    border-radius: 5px;
     background-color: white;
-    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
     white-space: nowrap;
+    overflow: hidden;
   }
   
   .dropdown-arrow {
+    margin-left: auto;
     width: 12px;
     height: 12px;
-    transition: transform 0.2s ease-in-out;
   }
   
   .language-dropdown {
@@ -55,4 +58,11 @@
   .language-list li:hover {
     background-color: #f0f0f0;
   }
-  
+  .language-name {
+    display: inline-block;
+    width: 100px; /* Fixed width so it doesn't resize */
+    text-align: left; /* Keeps text aligned nicely */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Truncate if too long */
+    white-space: nowrap;
+  }

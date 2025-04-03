@@ -15,7 +15,12 @@ const InputBox = ({ ingredients, setIngredients, onIngredientsChange }) => {
   // eslint-disable-next-line
   const translateText = useCallback(async (text) => {
     if (!text.trim()) return text;
-  
+    
+    if (inputLang === 'en') {
+      // console.log(`Skipping translation, input is already in English: "${text}"`);
+      return text;
+    }
+
     try {
       const response = await fetch(
         `https://translation.googleapis.com/language/translate/v2?key=${googleApiKey}`,
@@ -36,11 +41,11 @@ const InputBox = ({ ingredients, setIngredients, onIngredientsChange }) => {
         throw new Error('Invalid translation response');
       }
 
-      let detectedLang = data.data.translations[0].detectedSourceLanguage;
+      // let detectedLang = data.data.translations[0].detectedSourceLanguage;
       let translatedText = data.data.translations[0].translatedText;
 
-      console.log(`Detected language: ${detectedLang} (User selected: ${inputLang})`);
-      console.log(`Translated "${text}" to "${translatedText}"`);
+      //console.log(`Detected language: ${detectedLang} (User selected: ${inputLang})`);
+      //console.log(`Translated "${text}" to "${translatedText}"`);
 
       return translatedText;
     } catch (error) {
@@ -57,7 +62,7 @@ const InputBox = ({ ingredients, setIngredients, onIngredientsChange }) => {
         `https://api.spoonacular.com/food/ingredients/autocomplete?apiKey=${apiKey}&query=${translatedQuery}&number=5`
       );
       const data = await response.json();
-      console.log('Suggestions received:', data);  // Debugging line
+      //console.log('Suggestions received:', data);  // Debugging line
       setSuggestions(data);
       setSelectedSuggestionIndex(-1);
     } catch (error) {
@@ -97,7 +102,7 @@ const InputBox = ({ ingredients, setIngredients, onIngredientsChange }) => {
       setIngredients(updatedIngredients);
       // Optionally, call the parent's onIngredientsChange callback if provided.
       onIngredientsChange && onIngredientsChange(updatedIngredients);
-      console.log("Updated ingredients from InputBox:", updatedIngredients);
+      // console.log("Updated ingredients from InputBox:", updatedIngredients);
     }
     setInputValue('');
     setSuggestions([]);
