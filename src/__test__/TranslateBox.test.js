@@ -19,8 +19,8 @@ describe('TranslateBox', () => {
   });
 
   test('Applies the correct styling', () => {
-    render(<TranslateBox className='languageBox' />);
+    render(<TranslateBox className='image-button' />);
     
-    expect(screen.getByTestId('translate')).toHaveClass('languageBox');
+    expect(screen.getByTestId('translate')).toHaveClass('image-button');
   });
 });
