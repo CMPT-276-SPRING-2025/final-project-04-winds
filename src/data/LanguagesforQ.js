@@ -1,4 +1,4 @@
-const languages = [
+const Languages = [
     { code: 'auto', name: 'Auto-detect' },
     { code: 'ab', name: 'Abkhaz' },
     { code: 'ace', name: 'Acehnese' },

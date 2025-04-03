@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Languages from '../data/LanguagesforQ';
+import './TranslateToEnglish.css'
 
 const TranslateToEnglish = ({ setSelectedLanguageIn }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
