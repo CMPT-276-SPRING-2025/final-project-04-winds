@@ -1,37 +1,77 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import TranslateToEnglish from './TranslateToEnglish'; // Import the language selector
 import './InputBox.css';
 
 const InputBox = ({ ingredients, setIngredients, onIngredientsChange }) => {
   const apiKey = process.env.REACT_APP_SPOONACULAR_API_KEY;
+  const googleApiKey = process.env.REACT_APP_GOOGLE_CLOUD_API_KEY;
   const containerRef = useRef(null);
 
   const [inputValue, setInputValue] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1);
+  const [inputLang, setInputLang] = useState('en'); // Default to English
 
-  // Wrap fetchSuggestions in useCallback for stability.
-  const fetchSuggestions = useCallback(async (query) => {
+  const translateText = async (text) => {
+    if (!text.trim()) return text;
+  
     try {
       const response = await fetch(
-        `https://api.spoonacular.com/food/ingredients/autocomplete?apiKey=${apiKey}&query=${query}&number=5`
+        `https://translation.googleapis.com/language/translate/v2?key=${googleApiKey}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            q: text,
+            target: 'en',
+            source: inputLang === 'auto' ? undefined : inputLang, // Avoid 'auto' if not supported
+            format: 'text',
+          }),
+        }
+      );
+     
+      const data = await response.json();
+      if (!data.data?.translations?.[0]?.translatedText) {
+        throw new Error('Invalid translation response');
+      }
+
+      let detectedLang = data.data.translations[0].detectedSourceLanguage;
+      let translatedText = data.data.translations[0].translatedText;
+
+      console.log(`Detected language: ${detectedLang} (User selected: ${inputLang})`);
+      console.log(`Translated "${text}" to "${translatedText}"`);
+
+      return translatedText;
+    } catch (error) {
+      console.error('Translation error:', error);
+      return text;
+    }
+  };
+  
+
+  const fetchSuggestions = useCallback(async (query) => {
+    try {
+      const translatedQuery = await translateText(query);
+      const response = await fetch(
+        `https://api.spoonacular.com/food/ingredients/autocomplete?apiKey=${apiKey}&query=${translatedQuery}&number=5`
       );
       const data = await response.json();
+      console.log('Suggestions received:', data);  // Debugging line
       setSuggestions(data);
       setSelectedSuggestionIndex(-1);
     } catch (error) {
-      console.error("Error fetching suggestions:", error);
+      console.error('Error fetching suggestions:', error);
     }
-  }, [apiKey]);
+  }, [apiKey, inputLang]);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (inputValue.trim()) {
-        fetchSuggestions(inputValue);
-      } else {
-        setSuggestions([]);
-        setSelectedSuggestionIndex(-1);
-      }
-    }, 300);
+    if (!inputValue.trim()) {
+      setSuggestions([]);
+      setSelectedSuggestionIndex(-1);
+      return;
+    }
+
+    const timer = setTimeout(() => fetchSuggestions(inputValue), 300);
     return () => clearTimeout(timer);
   }, [inputValue, fetchSuggestions]);
 
@@ -110,6 +150,7 @@ const InputBox = ({ ingredients, setIngredients, onIngredientsChange }) => {
 
   return (
     <>
+      <TranslateToEnglish setSelectedLanguageIn={setInputLang} />
       <div className="white-box" data-testid="white-box" ref={containerRef}>
         <input
           type="text"
