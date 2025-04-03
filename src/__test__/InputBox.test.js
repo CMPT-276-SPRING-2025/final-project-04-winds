@@ -519,7 +519,7 @@ describe('InputBox Edge Cases', () => {
     
     // Should only make two API call with the final value
     await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalledTimes(2);
+      expect(global.fetch).toHaveBeenCalledTimes(1);
       expect(global.fetch.mock.calls[0][1]).toEqual({
         body: JSON.stringify({
           q: "tom",
