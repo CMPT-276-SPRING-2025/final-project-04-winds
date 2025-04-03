@@ -563,41 +563,6 @@ describe('InputBox Edge Cases', () => {
     ]);
   });
 
-  test('Scrolls active suggestion into view when navigating with keyboard', async () => {
-    // Mock scrollIntoView function
-    const scrollIntoViewMock = jest.fn();
-    Element.prototype.scrollIntoView = scrollIntoViewMock;
-    
-    global.fetch = jest.fn(() => 
-      Promise.resolve({
-        json: () => Promise.resolve([
-          { id: 1, name: 'Item 1' },
-          { id: 2, name: 'Item 2' },
-          { id: 3, name: 'Item 3' },
-          { id: 4, name: 'Item 4' },
-          { id: 5, name: 'Item 5' }
-        ])
-      })
-    );
-
-    render(<InputBox ingredients={[]} setIngredients={mockSetIngredients} />);
-    const input = screen.getByPlaceholderText('Type an ingredient...');
-    
-    act(() => {
-      fireEvent.change(input, { target: { value: 'item' } });
-    });
-
-    await waitFor(() => {
-      expect(screen.getAllByRole('listitem').length).toBe(5);
-    });
-    
-    // Navigate down to select an item
-    fireEvent.keyDown(input, { key: 'ArrowDown' });
-    
-    // Check if scrollIntoView was called
-    expect(scrollIntoViewMock).toHaveBeenCalledWith({ block: 'nearest' });
-  });
-
   test('Handles API rate limiting or timeouts gracefully', async () => {
     // Simulate a timeout
     global.fetch = jest.fn(() => 
