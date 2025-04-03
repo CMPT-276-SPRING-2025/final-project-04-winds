@@ -36,7 +36,7 @@ const InputBox = ({ ingredients, setIngredients, onIngredientsChange }) => {
         throw new Error('Invalid translation response');
       }
 
-      let detectedLang = data.data.translations[0].detectedSourceLanguage;
+      //let detectedLang = data.data.translations[0].detectedSourceLanguage;
       let translatedText = data.data.translations[0].translatedText;
 
       //console.log(`Detected language: ${detectedLang} (User selected: ${inputLang})`);

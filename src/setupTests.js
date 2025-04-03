@@ -6,28 +6,47 @@ import '@testing-library/jest-dom';
 
 expect.extend({
     toHaveBeenCalledWithSanitized(received, expected) {
-      // Safely sanitize URLs without breaking non-string arguments
       const sanitize = (arg) => {
         if (typeof arg !== 'string') return arg;
-        return arg
-          .replace(/([?&](key|apiKey|api_key)=)([^&]+)/g, '$1MOCK_KEY') // Handles ?key=, &apiKey=, etc.
+        return arg.replace(/([?&](key|apiKey|api_key)=)([^&]+)/g, '$1MOCK_KEY');
       };
   
-      const sanitizedCalls = received.mock.calls.map(call => [
-        sanitize(call[0]), // First argument (URL)
-        call[1]            // Second argument (options)
-      ]);
+      const sanitizedCalls = received.mock.calls.map(call => {
+        // Handle cases where options might be undefined
+        const options = call[1] || {};
+        
+        // Deep sanitize options.body if it exists
+        if (options.body && typeof options.body === 'string') {
+          try {
+            const parsedBody = JSON.parse(options.body);
+            options.body = JSON.stringify(parsedBody); // Normalize JSON formatting
+          } catch (e) {
+            // Not JSON, leave as-is
+          }
+        }
   
-      // Check if any call matches the expected arguments
-      const pass = sanitizedCalls.some(call => 
+        return [
+          sanitize(call[0]),
+          options
+        ];
+      });
+  
+      // Find matching calls instead of just checking "some"
+      const matchingCalls = sanitizedCalls.filter(call => 
         this.equals(call[0], expected[0]) && 
         this.equals(call[1], expected[1])
       );
   
       return {
-        pass,
-        message: () => `Expected sanitized call: ${this.utils.printExpected(expected)}\n` +
-          `Received sanitized calls: ${this.utils.printReceived(sanitizedCalls)}`
+        pass: matchingCalls.length > 0,
+        message: () => {
+          const printCall = (call) => `- ${this.utils.printReceived(call)}`;
+          return [
+            `Expected sanitized call: ${this.utils.printExpected(expected)}`,
+            `Received ${sanitizedCalls.length} sanitized calls:`,
+            ...sanitizedCalls.map(printCall)
+          ].join('\n');
+        }
       };
     }
   });

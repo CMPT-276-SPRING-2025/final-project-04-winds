@@ -23,14 +23,14 @@ const TranslateToEnglish = ({ setSelectedLanguageIn }) => {
 
   return (
     <div className="translate-container">
-      <span className="select-language" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+      <span className="select-language" data-testid="language-selector" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
         {getLanguageName(selectedLanguage)}
         <img src="/Media/arrowDown.png" alt="Arrow" className='dropdown-arrow' />
       </span>
 
       {isDropdownOpen && (
         <div className="language-dropdown">
-          <ul className="language-list">
+          <ul className="language-list" >
             {Languages.map((lang) => (
               <li key={lang.code} onClick={() => handleLanguageSelect(lang.code)}>
                 {lang.name}
