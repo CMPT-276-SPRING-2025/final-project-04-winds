@@ -1,13 +1,11 @@
 import React, { useState, useRef, useEffect} from 'react';
 import Languages from '../data/Languages';
-import './TranslateTTSBox.css'
+import './TranslateTTSBox.css';
 
-const TranslateBox = () => {
+const TranslateBox = ({selectedLanguageOut, setSelectedLanguageOut, selectedLanguageIn, setSelectedLanguageIn}) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
-  const [isDropdownIn, setDropdownIn] = useState(false);
   const [isDropdownOut, setDropdownOut] = useState(false);
-  const [selectedLanguageIn, setSelectedLanguageIn] = useState('en');
-  const [selectedLanguageOut, setSelectedLanguageOut] = useState('en');
+ 
   const menuRef = useRef(null);
   
 // handle menu visibility 
@@ -16,14 +14,8 @@ const TranslateBox = () => {
   }
 
 // handle language dropdown visibility
-  const toggleDropdown = (type) => {
-    if (type === 'in'){
-      setDropdownIn(!isDropdownIn);
-      setDropdownOut(false); // close other dropdown
-    } else {
+  const toggleDropdown = () => {
       setDropdownOut(!isDropdownOut);
-      setDropdownIn(false);
-    }
   }
 
   // get language name for display from code
@@ -57,94 +49,55 @@ const TranslateBox = () => {
 
   // render
   return (
-    <div className='translate-container' ref={menuRef}>
-      <div className='translate-button'>
-        {/* translate icon button */}
-        <button className={`image-button ${isMenuOpen ? 'active' : ''}`} onClick={toggleMenu}>
-            <img
-              src={'/Media/Translate.png'}
-              alt="Translate"
-              className='image-button'
-              data-testid='translate'
-            />
-          </button>
-
-      </div>
-        
+    <div className='translate-container'>
+    <div className="translate-button" ref={menuRef} style={{ position: 'relative', display:'inline-block'}}>
+      {/* translate icon button */}
+      <button className={`image-button ${isMenuOpen ? 'active' : ''}`} onClick={toggleMenu}>
+        <div className='image-container'>
+          <img
+            src={'/Media/Translate.png'}
+            alt="Translate"
+            data-testid="translate"
+            className='image-button'
+          />
+        </div>
+      </button>
+  
       {/* translate menu */}
       {isMenuOpen && (
-        <div className='translate-menu'> 
+        <div className="translate-menu">
           {/* left language */}
-          <div className='language-dropdown-container'>
-            <span className="select-language" onClick={() => toggleDropdown('in')}>
-                {getLanguageName(selectedLanguageIn) ? 
-                Languages.find(lang => lang.code === selectedLanguageIn)?.name : 
-                'Select Language'}
-
-                {isDropdownIn ? 
-                  <img
-                      src="/Media/arrowUp.png"
-                      alt="Arrow"
-                      className='dropdown-arrow'
-                  />  : 
-                  <img
-                      src="/Media/arrowDown.png"
-                      alt="Arrow"
-                      className='dropdown-arrow'
-                  />  }
-            </span>
-
-            {isDropdownIn && (
-              <div className="language-dropdown">
-                <ul className="language-list" >
-                  {Languages.map((lang) => (
-                    <li
-                      key={lang.code}
-                      className={`language-item ${
-                        selectedLanguageIn === lang.code ? 'selected' : ''
-                      }`}
-                      onClick={() => handleLanguageSelect(lang.code, 'in')}
-                    >
-                      <span className="language-name">{lang.name}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            
-            )}
-          </div>
-
+          <span className="language-name">{getLanguageName(selectedLanguageIn)}</span>
+  
           {/* middle arrow */}
           <img
-              src="/Media/Arrow.png"
-              alt="Arrow"
-              className='select-language translate-arrow'
-          /> 
-          
-
+            src="/Media/Arrow.png"
+            alt="Arrow"
+            className="select-language translate-arrow"
+          />
+  
           {/* right language */}
-          <div className='language-dropdown-container'>
-            <span className="select-language"  onClick={() => toggleDropdown('out')}>
-                {getLanguageName(selectedLanguageOut) ? 
-                Languages.find(lang => lang.code === selectedLanguageOut)?.name : 
+          <div className="language-dropdown-container">
+            <span className="select-language" onClick={() => toggleDropdown()}>
+              {getLanguageName(selectedLanguageOut) ||
                 'Select Language'}
-
-                {isDropdownOut ? 
-                  <img
-                      src="/Media/arrowUp.png"
-                      alt="Arrow"
-                      className='dropdown-arrow'
-                  />  : 
-                  <img
-                      src="/Media/arrowDown.png"
-                      alt="Arrow"
-                      className='dropdown-arrow'
-                  />  }
+              {isDropdownOut ? (
+                <img
+                  src="/Media/arrowUp.png"
+                  alt="Arrow"
+                  className="dropdown-arrow"
+                />
+              ) : (
+                <img
+                  src="/Media/arrowDown.png"
+                  alt="Arrow"
+                  className="dropdown-arrow"
+                />
+              )}
             </span>
-
             {isDropdownOut && (
               <div className="language-dropdown">
-                <ul className="language-list" >
+                <ul className="language-list">
                   {Languages.map((lang) => (
                     <li
                       key={lang.code}
@@ -160,10 +113,9 @@ const TranslateBox = () => {
               </div>
             )}
           </div>
-            
         </div>
       )}
-
+    </div>
     </div>
   );
 };

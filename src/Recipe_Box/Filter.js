@@ -127,16 +127,13 @@ const Filter = ({isToggled, filterToggle, filterOptionToggle, selectedFilters, e
                 <h3>Ingredients to exclude:</h3>
                 <button className="exclude-button" onClick={openPopup}>+</button>
 
-                <div className="ingredient-list">
+                <div className="excludedIngredient-list">
                   {excludedIngredients.map((ingredient, index) => (
-                    <div key={`${ingredient}-${index}`} className="ingredient-item">
+                    <div key={`${ingredient}-${index}`} className="excludedIngredient-item">
                       {ingredient}
                       <button 
                         onClick={() => removeIngredient(ingredient)}
-                       
-                      >
-                        x
-                      </button>
+                      >x</button>
                     </div>
                   ))}
                 </div>

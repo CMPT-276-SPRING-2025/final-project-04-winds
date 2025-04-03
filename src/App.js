@@ -19,7 +19,6 @@ const App = () => {
   const [selectedFilters, setSelectedFilter] = useState([]); 
   const [excludedIngredients, setExcludedIngredients] = useState([]);
 
-
   // Trigger search using current ingredients list
   const handleSearchRecipes = async () => {
     const apiKey = process.env.REACT_APP_SPOONACULAR_API_KEY;

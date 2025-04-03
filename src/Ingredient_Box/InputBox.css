@@ -4,17 +4,15 @@
   .white-box {
     /* Display & Box Model */
     position: relative;
-    width: 17vw;
-    min-height: 6vh;
+    min-height: 3vh;
     padding: 1vh;
-    margin: 0 0 8px 0;
+    padding-bottom: 0%;
     border-radius: 1vh;
 
     /* Other */
     background-color: transparent;
     color: black;
     align-items: center;
-
 
 }
 
@@ -68,6 +66,7 @@
   display: flex;
   flex-wrap: wrap;
   margin: 10px 1vh 0 1vh;
+  padding-top: 5%;
   gap: 8px;
 }
 
