@@ -1,68 +1,83 @@
 .translate-container {
-    position: relative;
-    display: inline-block;
-  }
+  position: relative;
+  display: block;       /* Use block so it fills the parent's width */
+  margin: 0 auto;       /* Center it horizontally if its parent has a fixed width */
+  width: calc(100% - 15px);         /* Fill the container’s width */
+}
   
-  .select-language {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 250px;  /* Fixed width to keep everything consistent */
-    padding: 8px 12px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: white;
-    cursor: pointer;
-    font-weight: bold;
-    white-space: nowrap;
-    overflow: hidden;
-  }
+.select-language {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;          /* Fill the container’s width */
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: white;
+  cursor: pointer;
+
+  white-space: nowrap;
+  overflow: hidden;
+}
   
-  .dropdown-arrow {
-    margin-left: auto;
-    width: 12px;
-    height: 12px;
-  }
+.dropdown-arrow {
+  margin-left: auto;
+  width: 12px;
+  height: 12px;
+}
   
-  .language-dropdown {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 260px; /* Slightly wider for longer text */
-    background: white;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    padding: 5px 0;
-    overflow: hidden;
-  }
+.language-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;           
+  box-sizing: border-box;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  padding: 5px 0;
+  overflow: hidden;
+}
+
+.language-list {
+  width: 100%;
+  box-sizing: border-box;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 250px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.language-list li {
+  padding: 12px 18px;
+  cursor: pointer;
+  white-space: nowrap;
+  text-align: left;
+  font-size: 16px;
+}
+
   
-  .language-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    max-height: 250px;
-    overflow-y: auto; /* Allows vertical scrolling */
-    overflow-x: hidden; /* Removes horizontal scrollbar */
-  }
+.language-list li:hover {
+  background-color: #f0f0f0;
+  border-radius: 10px;
+}
   
-  .language-list li {
-    padding: 12px 18px; /* More padding for readability */
-    cursor: pointer;
-    white-space: nowrap;
-    text-align: left;
-    font-size: 16px; /* Slightly larger text */
-  }
-  
-  .language-list li:hover {
-    background-color: #f0f0f0;
-  }
-  .language-name {
-    display: inline-block;
-    width: 100px; /* Fixed width so it doesn't resize */
-    text-align: left; /* Keeps text aligned nicely */
-    overflow: hidden;
-    text-overflow: ellipsis; /* Truncate if too long */
-    white-space: nowrap;
-  }
+.language-name {
+  display: inline-block;
+  /* Remove the fixed width so it won’t force a specific size */
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dropdown-arrow {
+  transition: transform 0.3s ease;
+}
+.dropdown-arrow.open {
+  transform: rotate(180deg);
+}

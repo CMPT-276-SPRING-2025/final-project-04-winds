@@ -7,6 +7,7 @@ const TranslateBox = ({selectedLanguageOut, setSelectedLanguageOut, selectedLang
   const [isDropdownOut, setDropdownOut] = useState(false);
  
   const menuRef = useRef(null);
+  const selectLanguageRef = useRef(null);
   
 // handle menu visibility 
   const toggleMenu = () => {
@@ -31,6 +32,7 @@ const TranslateBox = ({selectedLanguageOut, setSelectedLanguageOut, selectedLang
     } else {
       setSelectedLanguageOut(languageCode);
     }
+    setDropdownOut(false);
   }
 
   // Close menu when clicking outside
@@ -41,9 +43,27 @@ const TranslateBox = ({selectedLanguageOut, setSelectedLanguageOut, selectedLang
       }
     };
 
-    // remove listener 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    window.addEventListener('mousedown', handleClickOutside, true);
+    window.addEventListener('touchstart', handleClickOutside, true);
+    return () => {
+      window.removeEventListener('mousedown', handleClickOutside, true);
+      window.removeEventListener('touchstart', handleClickOutside, true);
+    };
+  }, []);
+
+  // Close the output language dropdown if clicking outside its container
+  useEffect(() => {
+    const handleClickOutsideSelect = (event) => {
+      if (selectLanguageRef.current && !selectLanguageRef.current.contains(event.target)) {
+        setDropdownOut(false);
+      }
+    };
+    window.addEventListener('mousedown', handleClickOutsideSelect, true);
+    window.addEventListener('touchstart', handleClickOutsideSelect, true);
+    return () => {
+      window.removeEventListener('mousedown', handleClickOutsideSelect, true);
+      window.removeEventListener('touchstart', handleClickOutsideSelect, true);
+    };
   }, []);
 
 
@@ -73,30 +93,23 @@ const TranslateBox = ({selectedLanguageOut, setSelectedLanguageOut, selectedLang
           <img
             src="/Media/Arrow.png"
             alt="Arrow"
-            className="select-language translate-arrow"
+            className="translate-arrow"
           />
   
           {/* right language */}
-          <div className="language-dropdown-container">
+          <div className="language-dropdown-container" ref={selectLanguageRef}>
             <span className="select-language" onClick={() => toggleDropdown()}>
               {getLanguageName(selectedLanguageOut) ||
                 'Select Language'}
-              {isDropdownOut ? (
-                <img
-                  src="/Media/arrowUp.png"
-                  alt="Arrow"
-                  className="dropdown-arrow"
+                {/* rotating arrow */}
+                <img 
+                  src="/Media/arrowDown.png" 
+                  alt="Arrow" 
+                  className={`dropdown-arrow ${isDropdownOut ? 'open' : ''}`} 
                 />
-              ) : (
-                <img
-                  src="/Media/arrowDown.png"
-                  alt="Arrow"
-                  className="dropdown-arrow"
-                />
-              )}
-            </span>
+              </span>
             {isDropdownOut && (
-              <div className="language-dropdown">
+              <div className="Modal-language-dropdown">
                 <ul className="language-list">
                   {Languages.map((lang) => (
                     <li
