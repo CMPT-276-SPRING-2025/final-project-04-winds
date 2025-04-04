@@ -260,7 +260,6 @@ describe('Translation', () => {
       const result = await Translation.regularInstructions(instructions, 'es');
       
       expect(fetch).toHaveBeenCalled();
-      // Should return properly formatted HTML with translated content
       expect(result).toBe('<ol><li>\nPaso uno\nPaso dos con enlace</li></ol>');
     });
   });
@@ -283,7 +282,6 @@ describe('Translation', () => {
 
       await Translation.detailedInstructions(analyzedInstructions, 'fr');
       
-      // Verify correct API endpoint
       expect(fetch).toHaveBeenCalledWith(
         `https://translation.googleapis.com/language/translate/v2?key=test-api-key`,
         expect.anything()
