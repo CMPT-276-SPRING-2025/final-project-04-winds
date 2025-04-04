@@ -45,12 +45,12 @@ describe('InputBox', () => {
 
   test('Renders the white box', () => {
     render(<InputBox ingredients={[]} setIngredients={mockSetIngredients} />);
-    expect(screen.getByTestId('white-box')).toBeInTheDocument();
+    expect(screen.getByTestId('language-selector')).toBeInTheDocument();
   });
 
   test('Applies the correct styling to the white box', () => {
     render(<InputBox ingredients={[]} setIngredients={mockSetIngredients} />);
-    expect(screen.getByTestId('white-box')).toHaveClass('white-box');
+    expect(screen.getByTestId('language-selector')).toHaveClass('select-language');
   });
 
   test('Renders the input field with placeholder', () => {
