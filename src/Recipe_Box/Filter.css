@@ -159,7 +159,6 @@
 .exclude-input {
   /* Display & Box Model */
   position: relative;
-  width: 8vw;
   height: 6vh;
   padding: 1vh;
   margin: 1vh;
