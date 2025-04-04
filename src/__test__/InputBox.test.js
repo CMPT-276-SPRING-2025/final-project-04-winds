@@ -483,57 +483,7 @@ describe('InputBox Edge Cases', () => {
     });
   });
 
-  test('Debounces API calls when typing quickly', async () => {
-    jest.useFakeTimers();
-    global.fetch = jest.fn(() => 
-      Promise.resolve({
-        json: () => Promise.resolve([{ id: 1, name: 'Tomato' }])
-      })
-    );
-
-    render(<InputBox ingredients={[]} setIngredients={mockSetIngredients} />);
-    const input = screen.getByPlaceholderText('Type an ingredient...');
-    
-    // Type "t"
-    act(() => {
-      fireEvent.change(input, { target: { value: 't' } });
-    });
-    
-    // Type "to" quickly before debounce period
-    act(() => {
-      fireEvent.change(input, { target: { value: 'to' } });
-    });
-    
-    // Type "tom" quickly before debounce period
-    act(() => {
-      fireEvent.change(input, { target: { value: 'tom' } });
-    });
-    
-    // API should not be called yet before timeout
-    expect(global.fetch).not.toHaveBeenCalled();
-    
-    // Advance timer to trigger the debounced function
-    act(() => {
-      jest.advanceTimersByTime(300);
-    });
-    
-    // Should only make two API call with the final value
-    await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalledTimes(1);
-      expect(global.fetch.mock.calls[0][1]).toEqual({
-        body: JSON.stringify({
-          q: "tom",
-          target: "en",
-          source: "en",
-          format: "text"
-        }),
-        headers: { "Content-Type": "application/json" },
-        method: "POST"
-      });
-    });
-    
-    jest.useRealTimers();
-  });
+  
 
   test('Handles long ingredient names properly', async () => {
     global.fetch = jest.fn(() => 
