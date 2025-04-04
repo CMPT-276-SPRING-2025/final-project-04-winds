@@ -1,4 +1,5 @@
 const Languages = [
+  { code: 'en', name: 'English' },
   { code: 'ab', name: 'Abkhaz' },
   { code: 'ace', name: 'Acehnese' },
   { code: 'ach', name: 'Acholi' },
@@ -47,7 +48,6 @@ const Languages = [
   { code: 'dov', name: 'Dombe' },
   { code: 'nl', name: 'Dutch' },
   { code: 'dz', name: 'Dzongkha' },
-  { code: 'en', name: 'English' },
   { code: 'eo', name: 'Esperanto' },
   { code: 'et', name: 'Estonian' },
   { code: 'ee', name: 'Ewe' },
