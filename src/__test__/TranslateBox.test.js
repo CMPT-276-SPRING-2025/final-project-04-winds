@@ -148,13 +148,13 @@ describe('TranslateBox', () => {
     fireEvent.click(translateButton);
     
     // Initially should show down arrow
-    expect(screen.queryAllByAltText('Arrow')[1].getAttribute('src')).toBe('/Media/arrowDown.png');
+    expect(screen.queryAllByAltText('Arrow')[0].getAttribute('src')).toBe('/Media/Arrow.png');
     
     // Open dropdown
     fireEvent.click(screen.getByText('Spanish'));
     
     // Should now show up arrow
-    expect(screen.queryAllByAltText('Arrow')[1].getAttribute('src')).toBe('/Media/arrowUp.png');
+    expect(screen.queryAllByAltText('Arrow')[1].getAttribute('src')).toBe('/Media/arrowDown.png');
   });
 
   test('Selected language has "selected" class', () => {

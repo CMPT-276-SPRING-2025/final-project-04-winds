@@ -40,6 +40,7 @@ const TranslateToEnglish = ({ setSelectedLanguageIn }) => {
     <div className="translate-container" ref={containerRef}>
   <span 
     className="select-language" 
+    data-testid="language-selector"
     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
   >
     Input Language:

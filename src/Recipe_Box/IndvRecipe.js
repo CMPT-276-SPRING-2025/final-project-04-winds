@@ -9,11 +9,12 @@ const IndiviualBox = ({ recipe, onClick }) => {
     <button
       type="button"
       className="box"
+      data-testid='box'
       onClick={onClick}
     >
-      <div className="recipe-title">{recipe.title}</div>
+      <div className="recipe-title" data-testid="title">{recipe.title}</div>
       <div className="image-container">
-        <img
+        <img          
           src={recipe.image || "/Media/Logo.gif"}
           onError={(e) => {
             setImageError(true);
@@ -21,6 +22,7 @@ const IndiviualBox = ({ recipe, onClick }) => {
             e.target.src = "/Media/Logo.gif";
           }}
           alt={recipe.title}
+          data-testid="image"
           className="recipe-image"
         />
         {imageError && (
