@@ -1,4 +1,3 @@
-
 const Translation = {
     async detailedInstructions(analyzedInstructions, targetLanguage){
         const API_KEY = process.env.REACT_APP_GOOGLE_CLOUD_API_KEY;
@@ -48,6 +47,7 @@ const Translation = {
         } catch(error){
             // error handling: return original recipe if translation fails
             console.error('Translation error:', error);
+            showErrorModal({context:`Translation error 3: ${error.message}`, message: error.message});
             return analyzedInstructions;
         }
     },
@@ -92,6 +92,7 @@ const Translation = {
         } catch(error){
             // error handling: return original recipe if translation fails
             console.error('Translation error:', error);
+            showErrorModal({context:`Translation error 4: ${error.message}`, message: error.message});
             return instructions;
         }
         

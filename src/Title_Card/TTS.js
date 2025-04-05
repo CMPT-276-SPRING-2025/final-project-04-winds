@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import './TranslateTTSBox.css';
-
+import { useErrorModal } from '../ErrorModal';
 const TTS = ({analyzedInstructions}) => {
   // ===== STATE MANAGEMENT =====
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -25,6 +25,19 @@ const TTS = ({analyzedInstructions}) => {
   const API_KEY = process.env.REACT_APP_GOOGLE_CLOUD_API_KEY;
   const SPEECH_API_URL = `https://speech.googleapis.com/v1/speech:recognize?key=${API_KEY}`;
   const TEXT_API_URL = `https://texttospeech.googleapis.com/v1/text:synthesize`;
+
+
+  // ===== Error Handling =====
+  const { showErrorModal } = useErrorModal();
+
+  useEffect(() => {
+    if (!API_KEY) {
+      showErrorModal({
+        context: 'Missing API Key',
+        message: 'Google Cloud TTS API key is missing. Please check your configuration.'
+      });
+    }
+  }, [API_KEY, showErrorModal]);
 
   // ===== INSTRUCTION PROCESSING =====
   const processInstructions = useCallback(() => {
@@ -359,12 +372,6 @@ const TTS = ({analyzedInstructions}) => {
           autoPlay={isPlayingAudio}
           data-testId='audio-component'
         />
-      )}
-
-      {!API_KEY && (
-        <div className="error-message">
-          Google Cloud TTS API key is missing. Please check your configuration.
-        </div>
       )}
 
       <div className="tts-controls">

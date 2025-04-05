@@ -3,6 +3,7 @@ import './RecipeModal.css';
 import TTS from '../Title_Card/TTS';
 import TranslateBox from '../Title_Card/TranslateBox';
 import Translation from '../Title_Card/Translation';
+import { useErrorModal } from '../ErrorModal';
 
 const RecipeModal = ({ recipe, onClose }) => {
   const apiKey = process.env.REACT_APP_SPOONACULAR_API_KEY;
@@ -15,7 +16,7 @@ const RecipeModal = ({ recipe, onClose }) => {
   const [selectedLanguageIn, setSelectedLanguageIn] = useState('en');
   const [analyzedInstructions, setAnalyzedInstructions] = useState(null);
   const [regularInstructions, setRegularInstructions] = useState(null);
-  // const [isTranslating, setIsTranslating] = useState(false);
+  const { showErrorModal } = useErrorModal() || {};
 
   // update translation whenever recipe or selected language changes
   useEffect(() => {
@@ -50,6 +51,7 @@ const RecipeModal = ({ recipe, onClose }) => {
             }
           } catch (error) {
               console.error("Translation failed:", error);
+              showErrorModal({context:`Translation error 2`, message: "You're going too fast! Google Cloud Translation API is working very hard to provide you with the best translation. Please give it a few seconds to rest before translating again."});
               setAnalyzedInstructions(recipeInfo.analyzedInstructions);
               setRegularInstructions(recipeInfo.instructions);
           } 
@@ -64,10 +66,28 @@ const RecipeModal = ({ recipe, onClose }) => {
       try {
         const infoUrl = `https://api.spoonacular.com/recipes/${recipe.id}/information?apiKey=${apiKey}&includeNutrition=true`;
         const infoRes = await fetch(infoUrl);
+
+        if (!infoRes.ok) {
+          if (infoRes.status === 402) {
+            throw new Error("Daily API limit reached. Please try again tomorrow or upgrade your plan.");
+          } else {
+            throw new Error(`Error fetching recipe info: ${infoRes.statusText}`);
+          }
+        }
+
         const infoData = await infoRes.json();
 
         const stepsUrl = `https://api.spoonacular.com/recipes/${recipe.id}/analyzedInstructions?apiKey=${apiKey}`;
         const stepsRes = await fetch(stepsUrl);
+
+        if (!stepsRes.ok) {
+          if (stepsRes.status === 402) {
+            throw new Error("Daily API limit reached for instructions. Please try again tomorrow or upgrade your plan.");
+          } else {
+            throw new Error(`Error fetching recipe instructions: ${stepsRes.statusText}`);
+          }
+        }
+
         const stepsData = await stepsRes.json();
 
         setRecipeInfo({
@@ -78,13 +98,14 @@ const RecipeModal = ({ recipe, onClose }) => {
         setRegularInstructions(infoData.instructions);
       } catch (error) {
         console.error("Error fetching recipe info:", error);
+        showErrorModal({context:`Error fetching recipe info: ${error.message}`, message: error.message});
       }
     };
 
     if (recipe && recipe.id) {
       fetchRecipeInfo();
     }
-  }, [recipe, apiKey]);
+  }, [recipe, apiKey, showErrorModal]);
 
   const handleIngredientClick = (ingredientName) => {
     setCheckedIngredients((prevState) => ({

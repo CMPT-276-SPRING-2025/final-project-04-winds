@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import './Filter.css'
+import { useErrorModal } from '../ErrorModal';
 
 const Filter = ({isToggled, filterToggle, filterOptionToggle, selectedFilters, excludedIngredients, setExcludedIngredients}) => {
   
@@ -9,6 +10,7 @@ const Filter = ({isToggled, filterToggle, filterOptionToggle, selectedFilters, e
   const [ingredient, setIngredient] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1);
+  const { showErrorModal } = useErrorModal() || {};
 
   const dietOptions = ['Vegan', 'Vegetarian', 'Gluten Free', 'Ketogenic', 'Paleo'];
 
@@ -48,13 +50,25 @@ const Filter = ({isToggled, filterToggle, filterOptionToggle, selectedFilters, e
       const response = await fetch(
         `https://api.spoonacular.com/food/ingredients/autocomplete?apiKey=${apiKey}&query=${query}&number=5`
       );
+
+      // Check for errors, e.g. API limit reached
+      if (!response.ok) {
+        if (response.status === 402) {
+          throw new Error("Daily API limit reached. Please try again tomorrow.");
+        } else {
+          throw new Error(`Error fetching suggestions: ${response.statusText}`);
+        }
+      }
+
+
       const data = await response.json();
       setSuggestions(data);
       setSelectedSuggestionIndex(-1);
     } catch (error) {
       console.error("Error fetching suggestions:", error);
+      showErrorModal({context:`Error fetching suggestions`, message: 'Exclude ingredients is not working due to the Spoonacular API key being invalid or out of quota.'});
     }
-  }, [apiKey]);
+  }, [apiKey, showErrorModal]);
   
   useEffect(() => {
     const timer = setTimeout(() => {
