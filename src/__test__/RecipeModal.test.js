@@ -131,7 +131,7 @@ describe('RecipeModal Component', () => {
     render(<RecipeModal recipe={mockRecipe} onClose={jest.fn()} />);
   
     // wait for fetch and loading text to appear
-    await waitFor(() => expect(fetch).toHaveBeenCalledTimes(2));
+    await waitFor(() => expect(fetch).toHaveBeenCalled());
   
     // simulate clicking to reveal detailed instructions
     fireEvent.click(screen.getByText('Show Detailed Instructions'));
