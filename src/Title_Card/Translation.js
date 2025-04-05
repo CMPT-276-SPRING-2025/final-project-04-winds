@@ -28,7 +28,7 @@ const Translation = {
             );
 
             if (!response.ok) {
-                const errorData = await response.json().catch(() => ({}));
+                await response.json().catch(() => ({}));
                 throw new Error(`Translation failed: ${response.status} ${response.statusText}`);
             }
 
