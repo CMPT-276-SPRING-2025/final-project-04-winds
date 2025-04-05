@@ -52,7 +52,7 @@ const InputBox = ({ ingredients, setIngredients, onIngredientsChange }) => {
       return translatedText;
     } catch (error) {
       console.error('Translation error 1:', error);
-      showErrorModal({context:`Translation error 1`, message: "Multilingual Search Queries is not working at this moment. The Google Cloud Translation API is not responding."});
+      showErrorModal({context:`Translation error 1`, message: "Multilingual Search Queries is not working at the moment. The Google Cloud Translation API is not responding."});
       return text;
     }
   }, [googleApiKey, inputLang]);
