@@ -23,7 +23,7 @@ const RecipeModal = ({ recipe, onClose }) => {
     const translateRecipe = async () => {
       if (!recipeInfo?.analyzedInstructions) 
         {
-          console.log("No instructions to translate");
+          //console.log("No instructions to translate");
           return;
         };
       
