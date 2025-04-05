@@ -23,7 +23,6 @@ const RecipeModal = ({ recipe, onClose }) => {
     const translateRecipe = async () => {
       if (!recipeInfo?.analyzedInstructions) 
         {
-          //console.log("No instructions to translate");
           return;
         };
       
@@ -50,7 +49,6 @@ const RecipeModal = ({ recipe, onClose }) => {
               setRegularInstructions(regularTranslated);
             }
           } catch (error) {
-              console.error("Translation failed:", error);
               showErrorModal({context:`Translation error 2`, message: "You're going too fast! Google Cloud Translation API is working very hard to provide you with the best translation. Please give it a few seconds to rest before translating again."});
               setAnalyzedInstructions(recipeInfo.analyzedInstructions);
               setRegularInstructions(recipeInfo.instructions);
@@ -59,7 +57,7 @@ const RecipeModal = ({ recipe, onClose }) => {
         }         
     };
     translateRecipe();
-}, [recipeInfo, selectedLanguageOut, selectedLanguageIn]);
+}, [recipeInfo, selectedLanguageOut, selectedLanguageIn, showErrorModal]);
 
   useEffect(() => {
     const fetchRecipeInfo = async () => {
@@ -97,7 +95,6 @@ const RecipeModal = ({ recipe, onClose }) => {
         setAnalyzedInstructions(stepsData); //initialize with original info
         setRegularInstructions(infoData.instructions);
       } catch (error) {
-        console.error("Error fetching recipe info:", error);
         showErrorModal({context:`Error fetching recipe info: ${error.message}`, message: error.message});
       }
     };
