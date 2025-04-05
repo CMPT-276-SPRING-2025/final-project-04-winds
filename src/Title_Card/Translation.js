@@ -1,3 +1,4 @@
+/* global showErrorModal */ //For ESLint
 const Translation = {
     async detailedInstructions(analyzedInstructions, targetLanguage){
         const API_KEY = process.env.REACT_APP_GOOGLE_CLOUD_API_KEY;
