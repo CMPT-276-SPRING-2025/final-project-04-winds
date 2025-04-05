@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import TranslateToEnglish from './TranslateToEnglish'; // Import the language selector
 import './InputBox.css';
+import { useErrorModal } from '../ErrorModal';
 
 const InputBox = ({ ingredients, setIngredients, onIngredientsChange }) => {
   const apiKey = process.env.REACT_APP_SPOONACULAR_API_KEY;
@@ -11,13 +12,13 @@ const InputBox = ({ ingredients, setIngredients, onIngredientsChange }) => {
   const [suggestions, setSuggestions] = useState([]);
   const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1);
   const [inputLang, setInputLang] = useState('en'); // Default to English
+  const { showErrorModal } = useErrorModal() || {};
 
   // eslint-disable-next-line
   const translateText = useCallback(async (text) => {
     if (!text.trim()) return text;
     
     if (inputLang === 'en') {
-      // console.log(`Skipping translation, input is already in English: "${text}"`);
       return text;
     }
 
@@ -44,15 +45,12 @@ const InputBox = ({ ingredients, setIngredients, onIngredientsChange }) => {
       // let detectedLang = data.data.translations[0].detectedSourceLanguage;
       let translatedText = data.data.translations[0].translatedText;
 
-      //console.log(`Detected language: ${detectedLang} (User selected: ${inputLang})`);
-      //console.log(`Translated "${text}" to "${translatedText}"`);
-
       return translatedText;
     } catch (error) {
-      console.error('Translation error:', error);
+      showErrorModal({context:`Translation error 1`, message: "Multilingual Search Queries is not working at the moment. The Google Cloud Translation API is not responding."});
       return text;
     }
-  }, [googleApiKey, inputLang]);
+  }, [googleApiKey, inputLang, showErrorModal]);
   
 
   const fetchSuggestions = useCallback(async (query) => {
@@ -61,14 +59,24 @@ const InputBox = ({ ingredients, setIngredients, onIngredientsChange }) => {
       const response = await fetch(
         `https://api.spoonacular.com/food/ingredients/autocomplete?apiKey=${apiKey}&query=${translatedQuery}&number=5`
       );
+
+
+      // Check for error responses
+      if (!response.ok) {
+        if (response.status === 402) {
+          throw new Error("Daily API limit reached. Please try again tomorrow or upgrade your plan.");
+        } else {
+          throw new Error(`Error fetching suggestions: ${response.statusText}`);
+        }
+      }
+
       const data = await response.json();
-      //console.log('Suggestions received:', data);  // Debugging line
       setSuggestions(data);
       setSelectedSuggestionIndex(-1);
     } catch (error) {
-      console.error('Error fetching suggestions:', error);
+      showErrorModal({context:`Error fetching suggestions`, message: 'Ingredient input is not working due to the Spoonacular API key being invalid or out of quota.'});
     }
-  }, [apiKey, translateText ]);
+  }, [apiKey, translateText, showErrorModal ]);
 
   useEffect(() => {
     if (!inputValue.trim()) {
@@ -102,7 +110,6 @@ const InputBox = ({ ingredients, setIngredients, onIngredientsChange }) => {
       setIngredients(updatedIngredients);
       // Optionally, call the parent's onIngredientsChange callback if provided.
       onIngredientsChange && onIngredientsChange(updatedIngredients);
-      // console.log("Updated ingredients from InputBox:", updatedIngredients);
     }
     setInputValue('');
     setSuggestions([]);

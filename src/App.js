@@ -8,6 +8,8 @@ import Header from './Title_Card/Header';
 
 import RecipeModal from './Recipe_Box/RecipeModal';
 
+import { useErrorModal } from './ErrorModal';
+
 
 const App = () => {
 
@@ -18,21 +20,31 @@ const App = () => {
   const [isToggled, setFilterToggle] = useState(false); 
   const [selectedFilters, setSelectedFilter] = useState([]); 
   const [excludedIngredients, setExcludedIngredients] = useState([]);
+  const { showErrorModal } = useErrorModal() || {};
 
   // Trigger search using current ingredients list
   const handleSearchRecipes = async () => {
     const apiKey = process.env.REACT_APP_SPOONACULAR_API_KEY;
     const ingredientsQuery = ingredients.join(',');
-    const excludeQuery = excludedIngredients.join(',');
-    console.log("Ingredients:", ingredients);
-    console.log("Ingredients Query String:", ingredientsQuery);
-    console.log("Excluded Ingredients Query String:", excludeQuery);
+    //const excludeQuery = excludedIngredients.join(',');
+   
    
   
     try {
       const response = await fetch(
         `https://api.spoonacular.com/recipes/findByIngredients?apiKey=${apiKey}&ingredients=${ingredientsQuery}&number=30&ignorePantry=true`
       );
+
+      // Check if the response is not okay
+      if (!response.ok) {
+        // If the status code indicates your API limit is exceeded (e.g., 402)
+        if (response.status === 402) {
+          throw new Error("Daily API limit reached. Please try again tomorrow or upgrade your plan.");
+        } else {
+          throw new Error(`Error fetching recipes: ${response.statusText}`);
+        }
+      }
+
       let recipes = await response.json();
 
       if (excludedIngredients.length > 0 || selectedFilters.length > 0) {
@@ -55,7 +67,7 @@ const App = () => {
 
         // handle filtering for diets when selected
         if(selectedFilters.length > 0){
-          console.log("selected filters", selectedFilters)
+
 
           const dietMap = {
             'Vegan': 'vegan',
@@ -85,9 +97,10 @@ const App = () => {
 
 
       setRecipes(recipes);
-      console.log("Recipes fetched:", recipes);
     } catch (error) {
-      console.error("Error fetching recipes:", error);
+      showErrorModal({
+        context: "Error fetching recipes", message: "Spoonacular API may be down or you've reached your daily limit.",
+      });
     }
   };
 

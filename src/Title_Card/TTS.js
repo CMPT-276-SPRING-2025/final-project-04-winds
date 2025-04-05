@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import './TranslateTTSBox.css';
-
+import { useErrorModal } from '../ErrorModal';
 const TTS = ({analyzedInstructions}) => {
   // ===== STATE MANAGEMENT =====
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -26,6 +26,19 @@ const TTS = ({analyzedInstructions}) => {
   const SPEECH_API_URL = `https://speech.googleapis.com/v1/speech:recognize?key=${API_KEY}`;
   const TEXT_API_URL = `https://texttospeech.googleapis.com/v1/text:synthesize`;
 
+
+  // ===== Error Handling =====
+  const { showErrorModal } = useErrorModal();
+
+  useEffect(() => {
+    if (!API_KEY) {
+      showErrorModal({
+        context: 'Missing API Key',
+        message: 'Google Cloud TTS API key is missing. Please check your configuration.'
+      });
+    }
+  }, [API_KEY, showErrorModal]);
+
   // ===== INSTRUCTION PROCESSING =====
   const processInstructions = useCallback(() => {
     if (!analyzedInstructions || !analyzedInstructions[0]?.steps) return [];
@@ -40,13 +53,11 @@ const TTS = ({analyzedInstructions}) => {
     try {
       // Validate inputs
       if (!text) {
-        // console.error('No text provided for speech synthesis');
         return null;
       }
 
       // Ensure API key is correctly formatted
       if (!API_KEY) {
-        // console.error('Missing Google Cloud TTS API key');
         return null;
       }
 
@@ -69,12 +80,6 @@ const TTS = ({analyzedInstructions}) => {
 
       // Detailed error handling
       if (!response.ok) {
-        //const errorBody = await response.text();
-        /*console.error('Speech synthesis API error:', {
-          status: response.status,
-          statusText: response.statusText,
-          body: errorBody
-        });*/
         throw new Error(`Speech synthesis failed: ${response.status}`);
       }
 
@@ -82,7 +87,6 @@ const TTS = ({analyzedInstructions}) => {
       
       // Validate audio content
       if (!data.audioContent) {
-        // console.error('No audio content received');
         return null;
       }
 
@@ -100,7 +104,6 @@ const TTS = ({analyzedInstructions}) => {
       const audioUrl = URL.createObjectURL(blob);
       return audioUrl;
     } catch (error) {
-      // console.error('Comprehensive Text-to-Speech Error:', error);
       return null;
     }
   }, [API_KEY, TEXT_API_URL]);
@@ -121,10 +124,8 @@ const TTS = ({analyzedInstructions}) => {
         setAudioUrl(audioUrl);
         setIsPlayingAudio(true);
       } else {
-        //console.error('Failed to generate audio for step');
       }
     } catch (error) {
-      // console.error('Error playing current step:', error);
     }
   }, [currentStepIndex, processInstructions, synthesizeSpeech]);
 
@@ -279,7 +280,6 @@ const TTS = ({analyzedInstructions}) => {
         if (currentVolume > VOLUME_THRESHOLD) {
           if (!isSpeaking) {
             isSpeaking = true;
-            // console.log("Speech started");
           }
           silenceStart = 0;
         } else if (isSpeaking) {
@@ -287,7 +287,6 @@ const TTS = ({analyzedInstructions}) => {
           if (Date.now() - silenceStart > SPEECH_TIMEOUT) {
             isSpeaking = false;
             mediaRecorderRef.current?.requestData(); // Trigger processing
-            // console.log("Speech ended - processing");
           }
         }
   
@@ -301,7 +300,7 @@ const TTS = ({analyzedInstructions}) => {
             const transcript = await recognizeSpeech(event.data);
             if (transcript) handleVoiceCommand(transcript);
           } catch (error) {
-            // console.error('Speech recognition error:', error);
+
           } finally {
             setIsProcessing(false);
           }
@@ -313,7 +312,6 @@ const TTS = ({analyzedInstructions}) => {
       setIsListening(true);
   
     } catch (error) {
-      // console.error('Error starting microphone:', error);
       setIsListening(false);
     }
   }, [recognizeSpeech, handleVoiceCommand]);
@@ -359,12 +357,6 @@ const TTS = ({analyzedInstructions}) => {
           autoPlay={isPlayingAudio}
           data-testId='audio-component'
         />
-      )}
-
-      {!API_KEY && (
-        <div className="error-message">
-          Google Cloud TTS API key is missing. Please check your configuration.
-        </div>
       )}
 
       <div className="tts-controls">

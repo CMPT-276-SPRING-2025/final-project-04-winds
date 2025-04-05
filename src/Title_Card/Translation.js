@@ -1,10 +1,9 @@
-
+/* global showErrorModal */ //For ESLint
 const Translation = {
     async detailedInstructions(analyzedInstructions, targetLanguage){
         const API_KEY = process.env.REACT_APP_GOOGLE_CLOUD_API_KEY;
         try {
             if (!analyzedInstructions || !targetLanguage)  {
-                console.error("Missing parameters:", { analyzedInstructions, targetLanguage });
                 return analyzedInstructions;
             }
 
@@ -30,7 +29,6 @@ const Translation = {
 
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({}));
-                console.error('API Error Details:', errorData);
                 throw new Error(`Translation failed: ${response.status} ${response.statusText}`);
             }
 
@@ -47,7 +45,7 @@ const Translation = {
             return translatedInstructions;
         } catch(error){
             // error handling: return original recipe if translation fails
-            console.error('Translation error:', error);
+            showErrorModal({context:`Translation error 3: ${error.message}`, message: error.message});
             return analyzedInstructions;
         }
     },
@@ -91,7 +89,7 @@ const Translation = {
 
         } catch(error){
             // error handling: return original recipe if translation fails
-            console.error('Translation error:', error);
+            showErrorModal({context:`Translation error 4: ${error.message}`, message: error.message});
             return instructions;
         }
         

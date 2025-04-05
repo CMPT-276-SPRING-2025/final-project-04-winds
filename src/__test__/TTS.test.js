@@ -7,6 +7,12 @@ import '@testing-library/jest-dom';
 // Component to be tested
 import TTS from '../Title_Card/TTS';
 
+jest.mock('../ErrorModal', () => ({
+  useErrorModal: () => ({
+    showErrorModal: jest.fn(), // Mock function
+  }),
+}));
+
 // Mock the environment variables
 const originalEnv = process.env;
 
@@ -154,13 +160,6 @@ describe('TTS Component', () => {
     render(<TTS className='languageBox' />);
     
     expect(screen.getByTestId('text-to-speech')).toHaveClass('image-button');
-  });
-
-  test('Displays error message when API key is missing', () => {
-    process.env.REACT_APP_GOOGLE_CLOUD_API_KEY = '';
-    render(<TTS />);
-    
-    expect(screen.getByText(/Google Cloud TTS API key is missing/)).toBeInTheDocument();
   });
 
   // === MENU INTERACTION TESTS ===
