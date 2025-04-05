@@ -19,7 +19,6 @@ const InputBox = ({ ingredients, setIngredients, onIngredientsChange }) => {
     if (!text.trim()) return text;
     
     if (inputLang === 'en') {
-      // console.log(`Skipping translation, input is already in English: "${text}"`);
       return text;
     }
 
@@ -46,12 +45,8 @@ const InputBox = ({ ingredients, setIngredients, onIngredientsChange }) => {
       // let detectedLang = data.data.translations[0].detectedSourceLanguage;
       let translatedText = data.data.translations[0].translatedText;
 
-      //console.log(`Detected language: ${detectedLang} (User selected: ${inputLang})`);
-      //console.log(`Translated "${text}" to "${translatedText}"`);
-
       return translatedText;
     } catch (error) {
-      console.error('Translation error 1:', error);
       showErrorModal({context:`Translation error 1`, message: "Multilingual Search Queries is not working at the moment. The Google Cloud Translation API is not responding."});
       return text;
     }
@@ -79,7 +74,6 @@ const InputBox = ({ ingredients, setIngredients, onIngredientsChange }) => {
       setSuggestions(data);
       setSelectedSuggestionIndex(-1);
     } catch (error) {
-      console.error('Error fetching suggestions:', error);
       showErrorModal({context:`Error fetching suggestions`, message: 'Ingredient input is not working due to the Spoonacular API key being invalid or out of quota.'});
     }
   }, [apiKey, translateText, showErrorModal ]);
@@ -116,7 +110,6 @@ const InputBox = ({ ingredients, setIngredients, onIngredientsChange }) => {
       setIngredients(updatedIngredients);
       // Optionally, call the parent's onIngredientsChange callback if provided.
       onIngredientsChange && onIngredientsChange(updatedIngredients);
-      // console.log("Updated ingredients from InputBox:", updatedIngredients);
     }
     setInputValue('');
     setSuggestions([]);

@@ -67,7 +67,7 @@ const App = () => {
 
         // handle filtering for diets when selected
         if(selectedFilters.length > 0){
-          //console.log("selected filters", selectedFilters)
+
 
           const dietMap = {
             'Vegan': 'vegan',
@@ -97,9 +97,7 @@ const App = () => {
 
 
       setRecipes(recipes);
-      //console.log("Recipes fetched:", recipes);
     } catch (error) {
-      console.error("Error fetching recipes:", error);
       showErrorModal({
         context: "Error fetching recipes", message: "Spoonacular API may be down or you've reached your daily limit.",
       });

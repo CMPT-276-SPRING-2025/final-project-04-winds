@@ -4,6 +4,9 @@ import App from '../App';
 // Mock environment variables
 process.env.REACT_APP_SPOONACULAR_API_KEY = 'test-api-key';
 
+// Shared variables for tests
+const mockShowErrorModal = jest.fn();
+
 // Mock child components
 jest.mock('../GlobalStyle', () => () => <div data-testid="global-style"></div>);
 jest.mock('../Title_Card/Header', () => () => <div data-testid="header"></div>);
@@ -19,7 +22,7 @@ jest.mock('../Ingredient_Box/IngredientsBox', () => ({ onSearch, ingredients, se
 ));
 jest.mock('../ErrorModal', () => ({
   useErrorModal: () => ({
-    showErrorModal: jest.fn(), // Mock function
+    showErrorModal: mockShowErrorModal, // Mock function
   }),
 }));
 
@@ -74,8 +77,7 @@ describe('App Component', () => {
   beforeEach(() => {
     // Reset all mocks before each test
     jest.resetAllMocks();
-    global.console.error = jest.fn();
-    global.console.log = jest.fn();
+    mockShowErrorModal.mockClear();
   });
 
   // Basic Rendering Tests
@@ -129,10 +131,10 @@ describe('App Component', () => {
       fireEvent.click(screen.getByText('Search'))
       
       await waitFor(() => {
-        expect(console.error).toHaveBeenCalledWith(
-          "Error fetching recipes:", 
-          expect.any(Error)
-        )
+        expect(mockShowErrorModal).toHaveBeenCalledWith({
+          context: "Error fetching recipes",
+          message: "Spoonacular API may be down or you've reached your daily limit.",
+        })
       })
     });
   });
@@ -289,10 +291,10 @@ describe('App Component', () => {
       fireEvent.click(screen.getByText('Search'));
       
       await waitFor(() => {
-        expect(console.error).toHaveBeenCalledWith(
-          "Error fetching recipes:", 
-          expect.any(Error)
-        )
+        expect(mockShowErrorModal).toHaveBeenCalledWith({
+          context: "Error fetching recipes",
+          message: "Spoonacular API may be down or you've reached your daily limit.",
+        })
       });
     });
     
@@ -312,7 +314,7 @@ describe('App Component', () => {
       fireEvent.click(screen.getByText('Search'));
       
       await waitFor(() => {
-        expect(console.error).toHaveBeenCalled();
+        expect(mockShowErrorModal).toHaveBeenCalled();
       });
     });
   });
