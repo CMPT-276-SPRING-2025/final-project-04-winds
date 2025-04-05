@@ -55,7 +55,7 @@ const InputBox = ({ ingredients, setIngredients, onIngredientsChange }) => {
       showErrorModal({context:`Translation error 1`, message: "Multilingual Search Queries is not working at the moment. The Google Cloud Translation API is not responding."});
       return text;
     }
-  }, [googleApiKey, inputLang]);
+  }, [googleApiKey, inputLang, showErrorModal]);
   
 
   const fetchSuggestions = useCallback(async (query) => {

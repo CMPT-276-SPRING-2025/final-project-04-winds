@@ -26,9 +26,8 @@ const App = () => {
   const handleSearchRecipes = async () => {
     const apiKey = process.env.REACT_APP_SPOONACULAR_API_KEY;
     const ingredientsQuery = ingredients.join(',');
-    const excludeQuery = excludedIngredients.join(',');
-
-    
+    //const excludeQuery = excludedIngredients.join(',');
+   
    
   
     try {
