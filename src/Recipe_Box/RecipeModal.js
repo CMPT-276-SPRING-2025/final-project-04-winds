@@ -95,7 +95,7 @@ const RecipeModal = ({ recipe, onClose }) => {
         setAnalyzedInstructions(stepsData); //initialize with original info
         setRegularInstructions(infoData.instructions);
       } catch (error) {
-        showErrorModal({context:`Error fetching recipe info: ${error.message}`, message: error.message});
+        showErrorModal({context:`Error fetching recipe info`, message: error.message});
       }
     };
 

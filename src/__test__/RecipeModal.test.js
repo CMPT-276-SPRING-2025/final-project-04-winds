@@ -5,9 +5,11 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import RecipeModal from '../Recipe_Box/RecipeModal';
 
+
+const mockShowErrorModal = jest.fn();
 jest.mock('../ErrorModal', () => ({
   useErrorModal: () => ({
-    showErrorModal: jest.fn(), // Mock function
+    showErrorModal: mockShowErrorModal, // Mock function
   }),
 }));
 
@@ -146,14 +148,15 @@ describe('RecipeModal Component', () => {
   test('handles API fetch errors gracefully', async () => {
     global.fetch = jest.fn(() => Promise.reject(new Error('API Error')));
 
-    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-
     await act(async () => {
       render(<RecipeModal recipe={mockRecipe} onClose={jest.fn()} />);
     });
 
-    expect(consoleErrorSpy).toHaveBeenCalledWith("Error fetching recipe info:", expect.any(Error));
-    consoleErrorSpy.mockRestore();
+    await waitFor(() => expect(mockShowErrorModal).toHaveBeenCalledTimes(1));
+    expect(mockShowErrorModal).toHaveBeenCalledWith({
+      context: 'Error fetching recipe info',
+      message: 'API Error',
+    });
   });
 
   test('toggles ingredient selection', () => {
