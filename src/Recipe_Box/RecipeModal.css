@@ -116,6 +116,10 @@
     margin: 10px;
   }
   
+  .ingredient-measurement {
+    margin-right: 0.2em;
+  }
+
   .ingredient {
     display: flex;
     align-items: center;
