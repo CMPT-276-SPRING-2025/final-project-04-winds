@@ -16,31 +16,19 @@ const RecipeModal = ({ recipe, onClose }) => {
   const [selectedLanguageIn, setSelectedLanguageIn] = useState('en');
   const [analyzedInstructions, setAnalyzedInstructions] = useState(null);
   const [regularInstructions, setRegularInstructions] = useState(null);
+
   const { showErrorModal } = useErrorModal() || {};
 
   // update translation whenever recipe or selected language changes
   useEffect(() => {
     const translateRecipe = async () => {
-      if (!recipeInfo?.analyzedInstructions) 
-        {
-          return;
-        };
-      
+
       if (selectedLanguageOut === selectedLanguageIn) {
-        setAnalyzedInstructions(recipeInfo.analyzedInstructions);
-        setRegularInstructions(recipeInfo.instructions);
         return;
       }
       else {
-          // setIsTranslating(true);
+          
           try {
-            if(recipeInfo.analyzedInstructions){
-              const translated = await Translation.detailedInstructions(
-                recipeInfo.analyzedInstructions, 
-                selectedLanguageOut
-              );
-              setAnalyzedInstructions(translated);
-            }
             if(recipeInfo.instructions){
               const regularTranslated = await Translation.regularInstructions(
                 recipeInfo.instructions,
@@ -48,12 +36,19 @@ const RecipeModal = ({ recipe, onClose }) => {
               );
               setRegularInstructions(regularTranslated);
             }
+            if(recipeInfo.analyzedInstructions){
+              const translated = await Translation.detailedInstructions(
+                recipeInfo.analyzedInstructions, 
+                selectedLanguageOut
+              );
+              setAnalyzedInstructions(translated);
+            }
           } catch (error) {
               showErrorModal({context:`Translation error 2`, message: "You're going too fast! Google Cloud Translation API is working very hard to provide you with the best translation. Please give it a few seconds to rest before translating again."});
               setAnalyzedInstructions(recipeInfo.analyzedInstructions);
               setRegularInstructions(recipeInfo.instructions);
           } 
-          // setIsTranslating(false);
+    
         }         
     };
     translateRecipe();
