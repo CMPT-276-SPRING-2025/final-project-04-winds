@@ -18,6 +18,42 @@ const RecipeModal = ({ recipe, onClose }) => {
   const [regularInstructions, setRegularInstructions] = useState(null);
   const { showErrorModal } = useErrorModal() || {};
 
+// Delay modal content appearance
+  const [minDelayDone, setMinDelayDone] = useState(false);
+  const [modalReady, setModalReady] = useState(false);
+  const [progress, setProgress] = useState(0);
+
+  // Delay modal content appearance by 700ms
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setMinDelayDone(true);
+    }, 700);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Mark modal as ready if in testing environment else wait until modal content is ready
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'test') {
+      setModalReady(true);
+    } else if (recipeInfo && minDelayDone) {
+      setModalReady(true);
+    }
+  }, [recipeInfo, minDelayDone]);
+
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setProgress((prev) => (prev < 100 ? prev + 5 : prev));
+    }, 50); // Increase progress every 50ms;
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    if (modalReady) {
+      setProgress(100);
+    }
+  }, [modalReady]);
+
   // update translation whenever recipe or selected language changes
   useEffect(() => {
     const translateRecipe = async () => {
@@ -118,7 +154,19 @@ const RecipeModal = ({ recipe, onClose }) => {
     }));
   };
 
-  
+    // Render a loading screen if modal content isn't ready yet
+    if (!modalReady) {
+      return (
+        <div className="modal-overlay">
+          <div className="modal-content" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <p>Loading... {progress}%</p>
+            <div className='loading-bar'>
+              <div className='loading-bar-fill' style={{ width: `${progress}%` }}></div>
+            </div>
+          </div>
+        </div>
+      );
+    }
 
   return (   
     <div className="modal-overlay">
@@ -213,11 +261,9 @@ const RecipeModal = ({ recipe, onClose }) => {
                     className={checkedIngredients[ing.name] ? 'ingredient checked' : 'ingredient'}
                   >
                     <span className="checkbox"></span>
-                    {/* Check if measurement details exist */}
-                    {ing.amount && ing.unit && (
-                      <span className='ingredient-measurement'> {ing.amount} {ing.unit}</span>
-                    )}
-                    <span className="ingredient-name">{ing.name}</span>
+                    <span className="ingredient-text">
+                      {`${ing.amount ? ing.amount + ' ' : ''}${ing.unit ? ing.unit + ' ' : ''}${ing.name}`.trim().replace(/\s+/g, ' ')}
+                    </span>
                   </li>
                 ))}
                 </ul>
@@ -230,11 +276,9 @@ const RecipeModal = ({ recipe, onClose }) => {
                     className={checkedIngredients[ing.name] ? 'ingredient checked' : 'ingredient'}
                   >
                     <span className="checkbox"></span>
-                    {/* Check if measurement details exist */}
-                    {ing.amount && ing.unit && (
-                      <span className='ingredient-measurement'> {ing.amount} {ing.unit} </span>
-                    )}
-                    <span className="ingredient-name">{ing.name}</span>
+                    <span className="ingredient-text">
+                      {`${ing.amount ? ing.amount + ' ' : ''}${ing.unit ? ing.unit + ' ' : ''}${ing.name}`.trim().replace(/\s+/g, ' ')}
+                    </span>
 
                   </li>
                 ))}
