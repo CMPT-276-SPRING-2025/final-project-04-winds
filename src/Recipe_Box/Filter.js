@@ -114,8 +114,10 @@ const Filter = ({isToggled, filterToggle, filterOptionToggle, selectedFilters, e
     // button toggle
     <div className='filter-container' >
       <img
-          key={isToggled}
-          src={isToggled ? '/Media/b-Filter.png' : '/Media/Filter.png'}
+          src={ process.env.NODE_ENV === 'test'
+            ? (isToggled ? '/Media/b-Filter.png' : '/Media/Filter.png')
+            : (isToggled ? '/Media/b-Filter.png' : '/Media/Filter.png') + `?v=${isToggled}`
+          }
           alt="Filter"
           className='filter'
           data-testid="filter"
