@@ -1,15 +1,18 @@
+// Import testing utilities from React Testing Library
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import App from '../App';
 
-// Mock environment variables
+// Set mock API key for Spoonacular API
 process.env.REACT_APP_SPOONACULAR_API_KEY = 'test-api-key';
 
-// Shared variables for tests
+// Shared mock function for error modal
 const mockShowErrorModal = jest.fn();
 
-// Mock child components
+// Mock child components to isolate App component testing
 jest.mock('../GlobalStyle', () => () => <div data-testid="global-style"></div>);
 jest.mock('../Title_Card/Header', () => () => <div data-testid="header"></div>);
+
+// Mock IngredientsBox with simplified implementation
 jest.mock('../Ingredient_Box/IngredientsBox', () => ({ onSearch, ingredients, setIngredients }) => (
   <div data-testid="ingredients-box">
     <button onClick={onSearch}>Search</button>
@@ -20,12 +23,15 @@ jest.mock('../Ingredient_Box/IngredientsBox', () => ({ onSearch, ingredients, se
     <div>{ingredients.join(',')}</div>
   </div>
 ));
+
+// Mock ErrorModal with controlled error display
 jest.mock('../ErrorModal', () => ({
   useErrorModal: () => ({
-    showErrorModal: mockShowErrorModal, // Mock function
+    showErrorModal: mockShowErrorModal, // Mock function for testing error cases
   }),
 }));
 
+// Mock RecipeBox with filter and recipe display functionality
 jest.mock('../Recipe_Box/RecipeBox', () => ({ 
   recipes, 
   onRecipeClick, 
@@ -64,6 +70,7 @@ jest.mock('../Recipe_Box/RecipeBox', () => ({
   </div>
 ));
 
+// Mock RecipeModal with basic open/close functionality
 jest.mock('../Recipe_Box/RecipeModal', () => ({ recipe, onClose }) => (
   recipe ? (
     <div data-testid="recipe-modal">
@@ -75,15 +82,16 @@ jest.mock('../Recipe_Box/RecipeModal', () => ({ recipe, onClose }) => (
 
 describe('App Component', () => {
   beforeEach(() => {
-    // Reset all mocks before each test
+    // Reset all mocks before each test to ensure clean state
     jest.resetAllMocks();
     mockShowErrorModal.mockClear();
   });
 
-  // Basic Rendering Tests
+  // === BASIC RENDERING TESTS ===
   describe('Basic Rendering', () => {
     test('All components are loaded', () => {
       render(<App />)
+      // Verify all main components render
       expect(screen.getByTestId('global-style')).toBeInTheDocument()
       expect(screen.getByTestId('ingredients-box')).toBeInTheDocument()
       expect(screen.getByTestId('recipe-box')).toBeInTheDocument()
@@ -93,15 +101,16 @@ describe('App Component', () => {
     test('Logo renders correctly', () => {
       render(<App />)
       const logo = screen.getByAltText('Logo')
+      // Verify logo image properties
       expect(logo).toBeInTheDocument()
       expect(logo).toHaveAttribute('src', '/Media/Logo.gif')
     });
   });
 
-  // Recipe Search Functionality Tests
+  // === RECIPE SEARCH FUNCTIONALITY TESTS ===
   describe('Recipe Search Functionality', () => {
     test('handles basic recipe search successfully', async () => {
-      // Mock successful API responses
+      // Mock successful API response with sample recipe
       global.fetch = jest.fn()
         .mockResolvedValueOnce({
           ok: true,
@@ -112,24 +121,27 @@ describe('App Component', () => {
 
       render(<App />)
       
-      // Add an ingredient
+      // Simulate user adding ingredient
       const ingredientInput = screen.getByTestId('ingredient-input');
       fireEvent.change(ingredientInput, { target: { value: 'tomato' } });
 
       // Trigger search
       fireEvent.click(screen.getByText('Search'))
 
+      // Verify recipe appears in results
       await waitFor(() => {
         expect(screen.getByText('Pasta Dish')).toBeInTheDocument()
       })
     });
 
     test('handles empty ingredients search', async () => {
+      // Mock API failure
       global.fetch = jest.fn(() => Promise.reject(new Error('API Error')))
       
       render(<App />);
       fireEvent.click(screen.getByText('Search'))
       
+      // Verify error modal is shown with appropriate message
       await waitFor(() => {
         expect(mockShowErrorModal).toHaveBeenCalledWith({
           context: "Error fetching recipes",
@@ -139,24 +151,28 @@ describe('App Component', () => {
     });
   });
 
-  // Filter Functionality Tests
+  // === FILTER FUNCTIONALITY TESTS ===
   describe('Filter Functionality', () => {
     test('toggles diet filters correctly', () => {
       render(<App />);
+      // Open filters section
       fireEvent.click(screen.getByText('Toggle Filters'));
       
       const diets = ['Vegan', 'Vegetarian', 'Gluten Free', 'Ketogenic', 'Paleo'];
       diets.forEach(diet => {
         const dietFilter = screen.getByText(diet);
+        // Toggle each filter on
         fireEvent.click(dietFilter);
         expect(dietFilter).toHaveAttribute('data-selected', 'true');
         
+        // Toggle each filter off
         fireEvent.click(dietFilter);
         expect(dietFilter).toHaveAttribute('data-selected', 'false');
       });
     });
 
     test('applies multiple diet filters', async () => {
+      // Mock API responses for initial search and filtered results
       global.fetch = jest.fn()
         .mockResolvedValueOnce({
           ok: true,
@@ -179,24 +195,25 @@ describe('App Component', () => {
       // Open filters
       fireEvent.click(screen.getByText('Toggle Filters'));
       
-      // Select multiple filters
+      // Select multiple diet filters
       fireEvent.click(screen.getByText('Vegetarian'));
       fireEvent.click(screen.getByText('Gluten Free'));
       
-      // Add an ingredient to enable search
+      // Add ingredient to enable search
       const ingredientInput = screen.getByTestId('ingredient-input');
       fireEvent.change(ingredientInput, { target: { value: 'tomato' } });
       
       // Trigger search
       fireEvent.click(screen.getByText('Search'));
       
+      // Verify filtered recipe appears
       await waitFor(() => {
         expect(screen.getByText('Filtered Vegetarian Recipe')).toBeInTheDocument();
       });
     });
   });
 
-  // Recipe Modal Tests
+  // === RECIPE MODAL TESTS ===
   describe('Recipe Modal Interaction', () => {
     test('opens and closes recipe modal correctly', async () => {
       // Mock successful API response
@@ -210,19 +227,19 @@ describe('App Component', () => {
 
       render(<App />);
       
-      // Add an ingredient to enable search
+      // Add ingredient to enable search
       const ingredientInput = screen.getByTestId('ingredient-input');
       fireEvent.change(ingredientInput, { target: { value: 'tomato' } });
       
       // Trigger search
       fireEvent.click(screen.getByText('Search'));
       
-      // Wait for the recipe to be rendered
+      // Wait for recipe to load
       await waitFor(() => {
         expect(screen.getByText('Test Recipe')).toBeInTheDocument();
       });
       
-      // Click on the recipe to open the modal
+      // Open modal by clicking recipe
       fireEvent.click(screen.getByText('Test Recipe'));
       
       // Verify modal opened
@@ -238,9 +255,10 @@ describe('App Component', () => {
     });
   });
 
-  // Excluded Ingredients Tests
+  // === EXCLUDED INGREDIENTS TESTS ===
   describe('Excluded Ingredients Functionality', () => {
     test('filters out recipes with excluded ingredients', async () => {
+      // Mock API responses for initial search and detailed recipe
       global.fetch = jest.fn()
         .mockResolvedValueOnce({
           ok: true,
@@ -259,7 +277,7 @@ describe('App Component', () => {
       
       render(<App />);
       
-      // Add an ingredient to enable search
+      // Add ingredient to enable search
       const ingredientInput = screen.getByTestId('ingredient-input');
       fireEvent.change(ingredientInput, { target: { value: 'tomato' } });
       
@@ -270,26 +288,28 @@ describe('App Component', () => {
       // Trigger search
       fireEvent.click(screen.getByText('Search'));
       
-      // Since the recipe with egg is filtered out, we should not find it
+      // Verify excluded recipe is filtered out
       await waitFor(() => {
         expect(screen.queryByText('Recipe with Egg')).not.toBeInTheDocument();
       });
     });
   });
 
-  // Error Handling Tests
+  // === ERROR HANDLING TESTS ===
   describe('Error Handling', () => {
     test('handles network errors gracefully', async () => {
+      // Mock network failure
       global.fetch = jest.fn(() => Promise.reject(new Error('Network Error')));
       
       render(<App />);
       
-      // Add an ingredient to trigger search
+      // Add ingredient to trigger search
       const ingredientInput = screen.getByTestId('ingredient-input');
       fireEvent.change(ingredientInput, { target: { value: 'tomato' } });
       
       fireEvent.click(screen.getByText('Search'));
       
+      // Verify error modal is shown
       await waitFor(() => {
         expect(mockShowErrorModal).toHaveBeenCalledWith({
           context: "Error fetching recipes",
@@ -299,6 +319,7 @@ describe('App Component', () => {
     });
     
     test('handles API errors correctly', async () => {
+      // Mock API error response
       global.fetch = jest.fn().mockResolvedValueOnce({
         ok: false,
         status: 402,
@@ -307,31 +328,32 @@ describe('App Component', () => {
       
       render(<App />);
       
-      // Add an ingredient to trigger search
+      // Add ingredient to trigger search
       const ingredientInput = screen.getByTestId('ingredient-input');
       fireEvent.change(ingredientInput, { target: { value: 'tomato' } });
       
       fireEvent.click(screen.getByText('Search'));
       
+      // Verify error modal is shown
       await waitFor(() => {
         expect(mockShowErrorModal).toHaveBeenCalled();
       });
     });
   });
 
-  // Performance and Interaction Tests
+  // === PERFORMANCE AND INTERACTION TESTS ===
   describe('Performance and Interaction', () => {
     test('handles rapid filter toggles', () => {
       render(<App />);
       const toggleButton = screen.getByText('Toggle Filters');
       
-      // Quickly toggle filters multiple times
+      // Simulate rapid user interaction
       fireEvent.click(toggleButton);
       fireEvent.click(toggleButton);
       fireEvent.click(toggleButton);
       fireEvent.click(toggleButton);
       
-      // Verify final state
+      // Verify component handles rapid state changes
       expect(screen.queryByTestId('filters-section')).not.toBeInTheDocument();
     });
   });
