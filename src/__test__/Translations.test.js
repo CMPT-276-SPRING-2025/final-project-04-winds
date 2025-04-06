@@ -1,21 +1,23 @@
+// Import the Translation module to be tested
 import Translation from '../Title_Card/Translation';
 
-// Mock fetch API
+// Mock the global fetch API for all tests
 global.fetch = jest.fn();
 
-
-
 describe('Translation', () => {
-  // Setup and teardown
+  // Setup and teardown for each test
   beforeEach(() => {
+    // Clear all mock calls and instances before each test
     jest.clearAllMocks();
+    // Set up test API key
     process.env.REACT_APP_GOOGLE_CLOUD_API_KEY = 'test-api-key';
   });
 
+  // Test suite for detailedInstructions method
   describe('detailedInstructions', () => {
-    // Successful translation test
+    // Test successful translation scenario
     test('should translate detailed instructions successfully', async () => {
-      // Mock data
+      // Mock input data with cooking steps
       const analyzedInstructions = [
         {
           steps: [
@@ -25,7 +27,7 @@ describe('Translation', () => {
         }
       ];
       
-      // Mock successful API response
+      // Mock successful API response with French translation
       fetch.mockResolvedValueOnce({
         ok: true,
         json: async () => ({
@@ -37,9 +39,10 @@ describe('Translation', () => {
         })
       });
 
+      // Call the method being tested
       const result = await Translation.detailedInstructions(analyzedInstructions, 'fr');
       
-      // Verify the API was called correctly
+      // Verify the API was called with correct parameters
       expect(fetch).toHaveBeenCalledWith(
         `https://translation.googleapis.com/language/translate/v2?key=test-api-key`,
         expect.objectContaining({
@@ -52,7 +55,7 @@ describe('Translation', () => {
         })
       );
       
-      // Verify the result
+      // Verify the translated result matches expected format
       expect(result).toEqual([
         {
           steps: [
@@ -63,10 +66,11 @@ describe('Translation', () => {
       ]);
     });
 
-    // Missing parameter tests
+    // Test missing parameters scenarios
     test('should return original data when analyzedInstructions is missing', async () => {
       const result = await Translation.detailedInstructions(null, 'fr');
       expect(result).toBeNull();
+      // Verify no API call was made
       expect(fetch).not.toHaveBeenCalled();
     });
 
@@ -74,45 +78,15 @@ describe('Translation', () => {
       const analyzedInstructions = [{ steps: [{ step: 'Test step' }] }];
       const result = await Translation.detailedInstructions(analyzedInstructions, null);
       expect(result).toEqual(analyzedInstructions);
+      // Verify no API call was made
       expect(fetch).not.toHaveBeenCalled();
     });
 
-    // API error handling tests
-    /*
-    test('should handle API errors gracefully', async () => {
-      const analyzedInstructions = [{ steps: [{ step: 'Test step' }] }];
-      
-      // Mock failed API response
-      fetch.mockResolvedValueOnce({
-        ok: false,
-        status: 400,
-        statusText: 'Bad Request',
-        json: async () => ({ error: { message: 'Invalid request' } })
-      });
-
-      const result = await Translation.detailedInstructions(analyzedInstructions, 'fr');
-      
-      expect(fetch).toHaveBeenCalled();
-      expect(result).toEqual(analyzedInstructions); // Should return original on error
-    });
-
-    test('should handle network errors gracefully', async () => {
-      const analyzedInstructions = [{ steps: [{ step: 'Test step' }] }];
-      
-      // Mock network error
-      fetch.mockRejectedValueOnce(new Error('Network error'));
-
-      const result = await Translation.detailedInstructions(analyzedInstructions, 'fr');
-      
-      expect(fetch).toHaveBeenCalled();
-      expect(result).toEqual(analyzedInstructions); // Should return original on error
-    });*/
-
-    // Edge case: Empty steps array
+    // Test edge case: Empty steps array
     test('should handle empty steps array', async () => {
       const analyzedInstructions = [{ steps: [] }];
       
-      // Mock successful API response
+      // Mock successful API response with empty translation
       fetch.mockResolvedValueOnce({
         ok: true,
         json: async () => ({
@@ -126,11 +100,12 @@ describe('Translation', () => {
 
       const result = await Translation.detailedInstructions(analyzedInstructions, 'fr');
       
+      // Verify API was called but returns empty steps
       expect(fetch).toHaveBeenCalled();
       expect(result).toEqual([{ steps: [] }]);
     });
 
-    // Edge case: Split count mismatch
+    // Test edge case: Split count mismatch between original and translated steps
     test('should handle translation split count not matching original steps count', async () => {
       const analyzedInstructions = [
         {
@@ -156,19 +131,20 @@ describe('Translation', () => {
 
       const result = await Translation.detailedInstructions(analyzedInstructions, 'fr');
       
-      // Third step should keep original text
+      // Verify first two steps are translated, third remains original
       expect(result[0].steps[0].step).toBe('Étape 1: Mélanger les ingrédients');
       expect(result[0].steps[1].step).toBe('Étape 2: Cuire pendant 20 minutes');
       expect(result[0].steps[2].step).toBe('Step 3: Serve hot');
     });
   });
 
+  // Test suite for regularInstructions method
   describe('regularInstructions', () => {
-    // Successful translation test
+    // Test successful HTML instructions translation
     test('should translate regular HTML instructions successfully', async () => {
       const instructions = '<ol><li>Preheat oven to 350°F</li><li>Bake for 20 minutes</li></ol>';
       
-      // Mock successful API response
+      // Mock successful API response with Spanish translation
       fetch.mockResolvedValueOnce({
         ok: true,
         json: async () => ({
@@ -182,7 +158,7 @@ describe('Translation', () => {
 
       const result = await Translation.regularInstructions(instructions, 'es');
       
-      // Verify the API was called correctly
+      // Verify API call with correct parameters
       expect(fetch).toHaveBeenCalledWith(
         `https://translation.googleapis.com/language/translate/v2?key=test-api-key`,
         expect.objectContaining({
@@ -195,39 +171,23 @@ describe('Translation', () => {
         })
       );
       
-      // Verify result has proper HTML format
+      // Verify result maintains HTML structure with translated content
       expect(result).toBe('<ol><li>\nPrecalentar el horno a 350°F\nHornear durante 20 minutos</li></ol>');
     });
 
-    // Missing parameter test
+    // Test missing parameters scenario
     test('should return original instructions when instructions are missing', async () => {
       const result = await Translation.regularInstructions(null, 'es');
       expect(result).toBeNull();
+      // Verify no API call was made
       expect(fetch).not.toHaveBeenCalled();
     });
 
-    // API error handling test
-    /*
-    test('should handle API errors gracefully for regularInstructions', async () => {
-      const instructions = '<ol><li>Test instruction</li></ol>';
-      
-      // Mock failed API response
-      fetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => { throw new Error('Parsing error'); }
-      });
-
-      const result = await Translation.regularInstructions(instructions, 'es');
-      
-      expect(fetch).toHaveBeenCalled();
-      expect(result).toEqual(instructions); // Should return original on error
-    });*/
-
-    // Edge case: Empty HTML
+    // Test edge case: Empty HTML instructions
     test('should handle empty HTML instructions', async () => {
       const instructions = '<ol></ol>';
       
-      // Mock successful API response
+      // Mock successful API response with empty translation
       fetch.mockResolvedValueOnce({
         ok: true,
         json: async () => ({
@@ -241,15 +201,16 @@ describe('Translation', () => {
 
       const result = await Translation.regularInstructions(instructions, 'es');
       
+      // Verify API was called but returns empty list item
       expect(fetch).toHaveBeenCalled();
       expect(result).toBe('<ol><li></li></ol>');
     });
 
-    // Edge case: Complex HTML
+    // Test edge case: Complex HTML structure
     test('should handle complex HTML structure', async () => {
       const instructions = '<ol><li>Step <b>one</b></li><li>Step <i>two</i> with <a href="#">link</a></li></ol>';
       
-      // Mock successful API response
+      // Mock successful API response with Spanish translation
       fetch.mockResolvedValueOnce({
         ok: true,
         json: async () => ({
@@ -263,16 +224,19 @@ describe('Translation', () => {
 
       const result = await Translation.regularInstructions(instructions, 'es');
       
+      // Verify API was called and HTML structure is preserved
       expect(fetch).toHaveBeenCalled();
       expect(result).toBe('<ol><li>\nPaso uno\nPaso dos con enlace</li></ol>');
     });
   });
 
-  // Implementation tests
+  // Test suite for implementation details
   describe('Implementation details', () => {
+    // Test correct API endpoint usage
     test('should use the correct API endpoint', async () => {
       const analyzedInstructions = [{ steps: [{ step: 'Test step' }] }];
       
+      // Mock successful API response
       fetch.mockResolvedValueOnce({
         ok: true,
         json: async () => ({
@@ -286,18 +250,21 @@ describe('Translation', () => {
 
       await Translation.detailedInstructions(analyzedInstructions, 'fr');
       
+      // Verify correct Google Translate API endpoint is called
       expect(fetch).toHaveBeenCalledWith(
         `https://translation.googleapis.com/language/translate/v2?key=test-api-key`,
         expect.anything()
       );
     });
 
+    // Test handling of missing environment variable
     test('should handle missing environment variable', async () => {
-      // Clear the environment variable
+      // Clear the environment variable for this test
       delete process.env.REACT_APP_GOOGLE_CLOUD_API_KEY;
       
       const analyzedInstructions = [{ steps: [{ step: 'Test step' }] }];
       
+      // Mock successful API response
       fetch.mockResolvedValueOnce({
         ok: true,
         json: async () => ({
@@ -311,7 +278,7 @@ describe('Translation', () => {
 
       await Translation.detailedInstructions(analyzedInstructions, 'fr');
       
-      // Should call API with undefined key
+      // Verify API is called with undefined key
       expect(fetch).toHaveBeenCalledWith(
         'https://translation.googleapis.com/language/translate/v2?key=undefined',
         expect.anything()

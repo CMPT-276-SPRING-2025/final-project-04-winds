@@ -208,9 +208,16 @@ const RecipeModal = ({ recipe, onClose }) => {
                     className={checkedIngredients[ing.name] ? 'ingredient checked' : 'ingredient'}
                   >
                     <span className="checkbox"></span>
+                    {/* Check if measurement details exist */}
+                    {ing.amount && ing.unit && (
+                      <span className='ingredient-measurement'> {ing.amount} {ing.unit}</span>
+                    )}
                     <span className="ingredient-name">{ing.name}</span>
                   </li>
                 ))}
+                </ul>
+              <h3>Missing Ingredients:</h3>
+              <ul>
                 {recipe.missedIngredients?.map((ing, idx) => (
                   <li
                     key={`missed-${idx}`}
@@ -218,7 +225,12 @@ const RecipeModal = ({ recipe, onClose }) => {
                     className={checkedIngredients[ing.name] ? 'ingredient checked' : 'ingredient'}
                   >
                     <span className="checkbox"></span>
+                    {/* Check if measurement details exist */}
+                    {ing.amount && ing.unit && (
+                      <span className='ingredient-measurement'> {ing.amount} {ing.unit} </span>
+                    )}
                     <span className="ingredient-name">{ing.name}</span>
+
                   </li>
                 ))}
               </ul>
