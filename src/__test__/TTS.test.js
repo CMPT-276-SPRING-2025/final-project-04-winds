@@ -168,7 +168,7 @@ describe('TTS Component', () => {
   test('applies the correct styling to the TTS', () => {
     render(<TTS className='languageBox' />);
     
-    expect(screen.getByTestId('text-to-speech')).toHaveClass('image-button');
+    expect(screen.getByTestId('text-to-speech')).toHaveClass('img-button');
   });
 
   // === MENU INTERACTION TESTS ===

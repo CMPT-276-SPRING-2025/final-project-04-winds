@@ -418,14 +418,12 @@ const TTS = ({analyzedInstructions}) => {
       <div className="tts-controls">
         {/* Toggle menu button with active state styling */}
         <button className={`image-button ${isMenuOpen ? 'active' : ''}`} onClick={toggleMenu}>
-          <div className='image-container'>
             <img
+              className='img-button'
               src={'/Media/Text-To-Speech.png'}
               alt="TTS"
-              className='image-button'
               data-testid='text-to-speech'
             />
-          </div>
         </button>
         
         {/* Voice listening control button */}
@@ -448,14 +446,35 @@ const TTS = ({analyzedInstructions}) => {
             onClick={() => setShowCommands(!showCommands)}
             onMouseEnter={() => setShowCommands(true)}
             onMouseLeave={() => setShowCommands(false)}
+            
           >
-            ℹ️
+            
+            <svg
+              viewBox="0 0 24 24"
+              width="32"
+              height="32"
+              className="info-icon-svg"
+            >
+              <rect x="2" y="2" width="20" height="20" rx="4" ry="4" fill="currentColor" stroke="#36395A" strokeWidth="1"/>
+              <text
+                x="12"
+                y="16"
+                dy="2"
+                textAnchor="middle"
+                fontFamily="Inria Sans, sans-serif"
+                fontSize="18"
+                fill="white"
+                fontWeight="bold"
+              >
+                i
+              </text>
+            </svg>
           </div>
   
           {/* Tooltip showing available voice commands */}
           {showCommands && (
             <div className="commands-tooltip">
-              <h4>Available Commands</h4>
+              <h4>Available Voice Commands</h4>
               <ul>
                 <li>"Play"</li>
                 <li>"Pause"</li>
@@ -516,9 +535,9 @@ const TTS = ({analyzedInstructions}) => {
                 onClick={nextStep}
                 disabled={currentStepIndex === processInstructions().length - 1}  // Disable if on last step
               >
-                <svg className="menu-icon" viewBox="0 0 24 24" width="16" height="16">
-                  <path fill="currentColor" d="M8,5.14V19.14L19,12.14L8,5.14Z" />
-                  <path fill="currentColor" d="M15,5.14V19.14L19,12.14L15,5.14Z" />
+                <svg className="menu-icon skip-icon" viewBox="0 0 24 24" width="16" height="16">
+                <path fill="currentColor" d="M6,18.14V5.14H8V18.14H6Z" />
+                <path fill="currentColor" d="M9.5,12.14L16,5.64V18.64L9.5,12.14Z" />
                 </svg>
                 Skip
               </button>

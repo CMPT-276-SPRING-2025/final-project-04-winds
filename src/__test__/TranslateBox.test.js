@@ -39,7 +39,7 @@ describe('TranslateBox Component', () => {
       expect(translate).toBeInTheDocument();
       expect(translate).toHaveAttribute('src', '/Media/Translate.png');
       expect(translate).toHaveAttribute('alt', 'Translate');
-      expect(translate).toHaveClass('image-button');
+      expect(translate).toHaveClass('translate-icon');
     });
   });
 
