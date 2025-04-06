@@ -73,14 +73,12 @@ const TranslateBox = ({selectedLanguageOut, setSelectedLanguageOut, selectedLang
     <div className="translate-button" ref={menuRef} style={{ position: 'relative', display:'inline-block'}}>
       {/* translate icon button */}
       <button className={`image-button ${isMenuOpen ? 'active' : ''}`} onClick={toggleMenu}>
-        <div className='image-container'>
           <img
+            className="translate-icon"
             src={'/Media/Translate.png'}
             alt="Translate"
             data-testid="translate"
-            className='image-button'
           />
-        </div>
       </button>
   
       {/* translate menu */}
