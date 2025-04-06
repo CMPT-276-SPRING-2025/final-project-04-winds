@@ -65,7 +65,6 @@ const Filter = ({isToggled, filterToggle, filterOptionToggle, selectedFilters, e
       setSuggestions(data);
       setSelectedSuggestionIndex(-1);
     } catch (error) {
-      console.error("Error fetching suggestions:", error);
       showErrorModal({context:`Error fetching suggestions`, message: 'Exclude ingredients is not working due to the Spoonacular API key being invalid or out of quota.'});
     }
   }, [apiKey, showErrorModal]);
@@ -115,6 +114,7 @@ const Filter = ({isToggled, filterToggle, filterOptionToggle, selectedFilters, e
     // button toggle
     <div className='filter-container' >
       <img
+          key={isToggled}
           src={isToggled ? '/Media/b-Filter.png' : '/Media/Filter.png'}
           alt="Filter"
           className='filter'
