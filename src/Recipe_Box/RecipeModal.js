@@ -5,18 +5,22 @@ import TranslateBox from '../Title_Card/TranslateBox';
 import Translation from '../Title_Card/Translation';
 import { useErrorModal } from '../ErrorModal';
 
+// component to display recipe information in modal
+// recipe - recipe data object
+// onClose - function to close modal
 const RecipeModal = ({ recipe, onClose }) => {
   const apiKey = process.env.REACT_APP_SPOONACULAR_API_KEY;
+
   const [recipeInfo, setRecipeInfo] = useState(null);
   const [checkedIngredients, setCheckedIngredients] = useState({});
   const [showDetailed, setShowDetailed] = useState(false);
   const [completedSteps, setCompletedSteps] = useState({});
-  
-  const [selectedLanguageOut, setSelectedLanguageOut] = useState('en');
-  const [selectedLanguageIn, setSelectedLanguageIn] = useState('en');
-  const [analyzedInstructions, setAnalyzedInstructions] = useState(null);
-  const [regularInstructions, setRegularInstructions] = useState(null);
-
+  // translation states
+  const [selectedLanguageOut, setSelectedLanguageOut] = useState('en'); // Output language
+  const [selectedLanguageIn, setSelectedLanguageIn] = useState('en'); // Input language
+  const [analyzedInstructions, setAnalyzedInstructions] = useState(null); // step by step/detailed instructions
+  const [regularInstructions, setRegularInstructions] = useState(null); //regular instructions
+  // error handling
   const { showErrorModal } = useErrorModal() || {};
 
 // Delay modal content appearance
@@ -58,12 +62,12 @@ const RecipeModal = ({ recipe, onClose }) => {
   // update translation whenever recipe or selected language changes
   useEffect(() => {
     const translateRecipe = async () => {
-
+      // skip if same language selected
       if (selectedLanguageOut === selectedLanguageIn) {
         return;
       }
       else {
-          
+          // translate regular instructions first
           try {
             if(recipeInfo.instructions){
               const regularTranslated = await Translation.regularInstructions(
@@ -72,6 +76,7 @@ const RecipeModal = ({ recipe, onClose }) => {
               );
               setRegularInstructions(regularTranslated);
             }
+            // translate detailed instructions
             if(recipeInfo.analyzedInstructions){
               const translated = await Translation.detailedInstructions(
                 recipeInfo.analyzedInstructions, 
@@ -80,6 +85,7 @@ const RecipeModal = ({ recipe, onClose }) => {
               setAnalyzedInstructions(translated);
             }
           } catch (error) {
+            // revert to original instructions if translation fails
               showErrorModal({context:`Translation error 2`, message: "You're going too fast! Google Cloud Translation API is working very hard to provide you with the best translation. Please give it a few seconds to rest before translating again."});
               setAnalyzedInstructions(recipeInfo.analyzedInstructions);
               setRegularInstructions(recipeInfo.instructions);
@@ -93,9 +99,11 @@ const RecipeModal = ({ recipe, onClose }) => {
   useEffect(() => {
     const fetchRecipeInfo = async () => {
       try {
+        // fetch basic recipe information
         const infoUrl = `https://api.spoonacular.com/recipes/${recipe.id}/information?apiKey=${apiKey}&includeNutrition=true`;
         const infoRes = await fetch(infoUrl);
 
+        // handle API errors
         if (!infoRes.ok) {
           if (infoRes.status === 402) {
             throw new Error("Daily API limit reached. Please try again tomorrow or upgrade your plan.");
@@ -105,10 +113,10 @@ const RecipeModal = ({ recipe, onClose }) => {
         }
 
         const infoData = await infoRes.json();
-
+        // fetch detailed instructions
         const stepsUrl = `https://api.spoonacular.com/recipes/${recipe.id}/analyzedInstructions?apiKey=${apiKey}`;
         const stepsRes = await fetch(stepsUrl);
-
+        // handle API errors
         if (!stepsRes.ok) {
           if (stepsRes.status === 402) {
             throw new Error("Daily API limit reached for instructions. Please try again tomorrow or upgrade your plan.");
@@ -119,11 +127,13 @@ const RecipeModal = ({ recipe, onClose }) => {
 
         const stepsData = await stepsRes.json();
 
+        // update state with fetched data
         setRecipeInfo({
           ...infoData,
           analyzedInstructions: stepsData
         });
-        setAnalyzedInstructions(stepsData); //initialize with original info
+        // initialize translation states with original data
+        setAnalyzedInstructions(stepsData); 
         setRegularInstructions(infoData.instructions);
       } catch (error) {
         showErrorModal({context:`Error fetching recipe info`, message: error.message});
@@ -174,7 +184,8 @@ const RecipeModal = ({ recipe, onClose }) => {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', maxWidth: '600px' }}>
               <h1>{recipe.title}</h1>
             </div>
-            <div className="languageBox">              
+            <div className="languageBox">       
+             {/* link translation component */}
               <TranslateBox 
                 selectedLanguageOut = {selectedLanguageOut}
                 setSelectedLanguageOut = {setSelectedLanguageOut}

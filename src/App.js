@@ -5,7 +5,6 @@ import GlobalStyle from './GlobalStyle';
 import IngredientsBox from './Ingredient_Box/IngredientsBox';
 import RecipeBox from './Recipe_Box/RecipeBox';
 import Header from './Title_Card/Header';
-
 import RecipeModal from './Recipe_Box/RecipeModal';
 
 import { useErrorModal } from './ErrorModal';
@@ -17,6 +16,7 @@ const App = () => {
   const [ingredients, setIngredients] = useState([]);
   const [recipes, setRecipes] = useState([]);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
+  // state variables for filter feature
   const [isToggled, setFilterToggle] = useState(false); 
   const [selectedFilters, setSelectedFilter] = useState([]); 
   const [excludedIngredients, setExcludedIngredients] = useState([]);
@@ -25,9 +25,7 @@ const App = () => {
   // Trigger search using current ingredients list
   const handleSearchRecipes = async () => {
     const apiKey = process.env.REACT_APP_SPOONACULAR_API_KEY;
-    const ingredientsQuery = ingredients.join(',');
-    //const excludeQuery = excludedIngredients.join(',');
-   
+    const ingredientsQuery = ingredients.join(',');   
    
   
     try {
@@ -46,15 +44,17 @@ const App = () => {
       }
 
       let recipes = await response.json();
-
+      // if any filters are selected, run the fetched recipes from API through for filtering
       if (excludedIngredients.length > 0 || selectedFilters.length > 0) {
+        // get diet specification details from recipes for details 
         const recipeIds = recipes.map(recipe => recipe.id).join(',');
         const informationResponse = await fetch(
           `https://api.spoonacular.com/recipes/informationBulk?apiKey=${apiKey}&ids=${recipeIds}`
         );
         let detailedRecipes = await informationResponse.json();
   
-        // Apply excluded ingredients filter if needed
+        // Apply excluded ingredients filter if selected
+        // filter out recipes containing excluded ingredients and return filtered list of recipes
         if (excludedIngredients.length > 0) {
           detailedRecipes = detailedRecipes.filter(recipe => {
             return !recipe.extendedIngredients.some(ingredient => 
@@ -67,8 +67,7 @@ const App = () => {
 
         // handle filtering for diets when selected
         if(selectedFilters.length > 0){
-
-
+          // map diet names in UI to names in API
           const dietMap = {
             'Vegan': 'vegan',
             'Vegetarian': 'vegetarian',
@@ -77,12 +76,13 @@ const App = () => {
             'Paleo': 'paleo'
           };
 
-          // filter recipes with selected diets
+          // filter for recipes with selected diets
           detailedRecipes = detailedRecipes.filter(recipe => {
             return selectedFilters.every(diet => recipe[dietMap[diet]])
           });
         }
-
+        
+        // insert key information from original recipe back into filtered list for render
         recipes = detailedRecipes.map(detailedRecipe => {
           let originalRecipe = recipes.find(r => r.id === detailedRecipe.id);
           return {
@@ -94,7 +94,6 @@ const App = () => {
           };
         });
       }
-
 
       setRecipes(recipes);
     } catch (error) {
@@ -119,7 +118,7 @@ const App = () => {
     setFilterToggle((prev) => !prev);
   };
 
-  // toggle diet filters
+  // handle toggle of diet filters
   const filterOptionToggle = (option, event) => {
     event.stopPropagation();    
     setSelectedFilter((prev) => {
