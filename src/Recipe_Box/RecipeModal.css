@@ -107,6 +107,7 @@
     background-color: #90D184;
     border-radius: 10px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    overflow-wrap: anywhere;
   }
 
 
@@ -127,7 +128,19 @@
     margin-bottom: 0.5rem;
     padding: 5px;
     transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+
+  .ingredient-measurement,
+  .ingredient-name {
+    white-space: normal;
     
+  }
+
+  .ingredient-text {
+    flex: 1;
+    min-width: 0;         /* Allows the text container to shrink properly */
+    white-space: normal;  /* Allow text to wrap */
+    word-wrap: break-word;
   }
   
   .ingredient:hover {
@@ -136,7 +149,7 @@
   }
   
   .checkbox {
-    flex: 0 0 20px;
+    flex: 0 0 auto;
     width: 20px;
     height: 20px;
     border: 2px solid #ccc;
@@ -208,4 +221,21 @@
   .completed-step {
     text-decoration: line-through;
     color: gray;
+  }
+
+
+  .loading-bar {
+    width: 80%;
+    height: 10px;
+    background-color: #ddd;
+    margin: 0 auto;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 50px;
+  }
+  
+  .loading-bar-fill {
+    height: 100%;
+    background-color: #85A573;
+    transition: width 0.2s;
   }
