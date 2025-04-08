@@ -8,9 +8,13 @@ const TranslateBox = ({selectedLanguageOut, setSelectedLanguageOut, selectedLang
   // states for translation UI 
   const [isMenuOpen, setMenuOpen] = useState(false); // control menu visibility
   const [isDropdownOut, setDropdownOut] = useState(false); // control language dropdown visibility
-//  refs for detecting clicks outside components
+  //  refs for detecting clicks outside components
   const menuRef = useRef(null); // translation menu ref
   const selectLanguageRef = useRef(null); // language dropdown ref
+
+  // state refs for keyboard navigation
+  const [highlightedIndex, setHighlightedIndex] = useState(-1); // index of highlighted language in dropdown
+  const languageRefs = useRef([]); // refs for each language in dropdown
   
 // handle menu visibility 
   const toggleMenu = () => {
@@ -58,6 +62,27 @@ const TranslateBox = ({selectedLanguageOut, setSelectedLanguageOut, selectedLang
     };
   }, []);
 
+  // Reset highlighted index when the dropdown is opened
+  useEffect(() => {
+    if (isDropdownOut) {
+      setHighlightedIndex(0);
+    }
+  }, [isDropdownOut]);
+
+  // Scroll to the highlighted language when it changes
+  useEffect(() => {
+    if (
+      highlightedIndex >= 0 &&
+      languageRefs.current[highlightedIndex]
+    ) {
+      languageRefs.current[highlightedIndex].scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+      });
+    }
+  }, [highlightedIndex]);
+  
+
   // Close the output language dropdown if clicking outside its container
   // event - mouse event
   useEffect(() => {
@@ -103,7 +128,31 @@ const TranslateBox = ({selectedLanguageOut, setSelectedLanguageOut, selectedLang
   
           {/* output language render that triggers langauge dropdown for selection*/}
           <div className="language-dropdown-container" ref={selectLanguageRef}>
-            <span className="select-language" onClick={() => toggleDropdown()}> 
+            <span 
+              className="select-language" 
+              onClick={() => toggleDropdown()}
+              tabIndex="0"
+              onKeyDown={(e) => {
+                if (!isDropdownOut) return;
+            
+                if (e.key === 'ArrowDown') {
+                  e.preventDefault();
+                  setHighlightedIndex((prev) => (prev + 1) % Languages.length);
+                } else if (e.key === 'ArrowUp') {
+                  e.preventDefault();
+                  setHighlightedIndex((prev) =>
+                    prev <= 0 ? Languages.length - 1 : prev - 1
+                  );
+                } else if (e.key === 'Enter') {
+                  e.preventDefault();
+                  if (highlightedIndex >= 0) {
+                    handleLanguageSelect(Languages[highlightedIndex].code, 'out');
+                  }
+                } else if (e.key === 'Escape') {
+                  setDropdownOut(false);
+                }
+              }}
+            > 
               {getLanguageName(selectedLanguageOut) ||
                 'Select Language'}
                 {/* dropdown arrow icon - rotating arrow on open and close */}
@@ -118,12 +167,13 @@ const TranslateBox = ({selectedLanguageOut, setSelectedLanguageOut, selectedLang
               <div className="Modal-language-dropdown">
                 <ul className="language-list">
                   {/* map through all supported languages */}
-                  {Languages.map((lang) => (
+                  {Languages.map((lang, index) => (
                     <li
                       key={lang.code}
+                      ref={(el) => (languageRefs.current[index] = el)}
                       className={`language-item ${
                         selectedLanguageOut === lang.code ? 'selected' : ''
-                      }`}
+                      } ${highlightedIndex === index ? 'highlighted' : ''}`}
                       onClick={() => handleLanguageSelect(lang.code, 'out')}
                     >
                       <span className="language-name">{lang.name}</span>
