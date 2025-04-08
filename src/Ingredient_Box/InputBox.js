@@ -17,7 +17,7 @@ const InputBox = ({ ingredients, setIngredients, onIngredientsChange }) => {
   const apiKey = process.env.REACT_APP_SPOONACULAR_API_KEY;
   const googleApiKey = process.env.REACT_APP_GOOGLE_CLOUD_API_KEY;
   const containerRef = useRef(null);
-  
+
   // Local state for user input and autocomplete
   const [inputValue, setInputValue] = useState('');
   const [suggestions, setSuggestions] = useState([]);
@@ -107,7 +107,10 @@ const InputBox = ({ ingredients, setIngredients, onIngredientsChange }) => {
     if (selectedSuggestionIndex !== -1) {
       const activeItem = document.querySelector('.suggestions-list li.active');
       if (activeItem) {
-        activeItem.scrollIntoView({ block: 'nearest' });
+        activeItem.scrollIntoView({ 
+          behavior: 'smooth',
+          block: 'nearest', 
+        });
       }
     }
   }, [selectedSuggestionIndex]);
