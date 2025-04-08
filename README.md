@@ -28,11 +28,15 @@ Ensure the following are installed:
   - Go to https://git-scm.com/downloads and install Git.
 
 ## 2. Clone the Repository
-```git@github.com:CMPT-276-SPRING-2025/final-project-04-winds.git```
+```
+git@github.com:CMPT-276-SPRING-2025/final-project-04-winds.git
+```
 
 ## 3. Install Dependencies
 - Navigate to your root directory
-```cd final-project-04-winds```
+```
+cd final-project-04-winds
+```
 
 - Run ```npm install``` 
 
@@ -45,7 +49,9 @@ REACT_APP_GOOGLE_CLOUD_API_KEY= your_google_cloud_api_key
 
 ## 5. Run the Development Server
 - In your terminal, run the following:
-```npm start```
+```
+npm start
+```
 
 - If successful, in your terminal you should see:
 `Compiled successfully!
@@ -60,10 +66,11 @@ You can now view cook-compass in the browser.
 
 
 # Tech Stack
-- Frontend:
-- APIs: Spoonacular API, Google Cloud Translate API
+- Frontend: React
+- Styling: CSS
+- APIs: Spoonacular API, Google Cloud Translate API, Google Cloud Text-to-Speech API
 - Deployment: Netlify
-- Testing: 
+- Testing: Jest
 
 # File Structure
 ```
