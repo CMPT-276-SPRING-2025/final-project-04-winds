@@ -56,8 +56,8 @@ cd final-project-04-winds
 ## 4. Set Up Environment Variables
 - Create a file named `.env` in the root directory and add your API keys
 ```
-REACT_APP_SPOONACULAR_API_KEY= your_spoonacular_api_key
-REACT_APP_GOOGLE_CLOUD_API_KEY= your_google_cloud_api_key
+REACT_APP_SPOONACULAR_API_KEY=your_spoonacular_api_key
+REACT_APP_GOOGLE_CLOUD_API_KEY=your_google_cloud_api_key
 ```
 
 ## 5. Run the Development Server
@@ -76,8 +76,7 @@ You can now view cook-compass in the browser.
   ...
 ```
 
-- Open your browser and navigate to `http://localhost:3000`!
-
+- Open your browser and navigate to http://localhost:3000!
 
 # Tech Stack
 - Frontend: React
@@ -85,7 +84,6 @@ You can now view cook-compass in the browser.
 - APIs: Spoonacular API, Google Cloud Translate API, Google Cloud Text-to-Speech API
 - Deployment: Netlify
 - Testing: Jest
-
 
 # License
 This project is licensed under the MIT License. It is intended for educational and training purposes.
