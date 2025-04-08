@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import './Filter.css'
 import { useErrorModal } from '../ErrorModal';
 
@@ -18,7 +18,7 @@ const Filter = ({isToggled, filterToggle, filterOptionToggle, selectedFilters, e
   const [suggestions, setSuggestions] = useState([]); //autocomplete suggestions
   const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1); //track selected suggestion
   const { showErrorModal } = useErrorModal() || {};  // Error modal display function
-
+  const suggestionRefs = useRef([]); // refs for suggestions to handle focus
   // available diet filter options
   const dietOptions = ['Vegan', 'Vegetarian', 'Gluten Free', 'Ketogenic', 'Paleo'];
 
@@ -128,6 +128,18 @@ const Filter = ({isToggled, filterToggle, filterOptionToggle, selectedFilters, e
       setSuggestions([]); //clear suggestions
     }
   };
+  // scroll the selected suggestion into view
+  useEffect(() => {
+    if (
+      selectedSuggestionIndex >= 0 &&
+      suggestionRefs.current[selectedSuggestionIndex]
+    ) {
+      suggestionRefs.current[selectedSuggestionIndex].scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+      });
+    }
+  }, [selectedSuggestionIndex]);
   
   // handle clicking on autocomplete suggestion
   // suggestion - Selected suggestion object
@@ -217,6 +229,7 @@ const Filter = ({isToggled, filterToggle, filterOptionToggle, selectedFilters, e
                             key={sugg.id || index}
                             onClick={() => handleSuggestionClick(sugg)}
                             className={index === selectedSuggestionIndex ? 'active' : ''}
+                            ref={(el) => (suggestionRefs.current[index] = el)}
                           >
                             {sugg.name}
                           </li>

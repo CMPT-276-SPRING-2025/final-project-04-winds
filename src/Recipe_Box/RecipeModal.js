@@ -144,7 +144,7 @@ const RecipeModal = ({ recipe, onClose }) => {
       fetchRecipeInfo();
     }
   }, [recipe, apiKey, showErrorModal]);
-
+  // Handler for toggling the checked state of an ingredient when clicked
   const handleIngredientClick = (ingredientName) => {
     setCheckedIngredients((prevState) => ({
       ...prevState,

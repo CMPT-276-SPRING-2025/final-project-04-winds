@@ -4,7 +4,7 @@ const Translation = {
     // analyzedInstructions - Array of instruction objects with steps
     // targetLanguage - language code to translate to (e.g. 'es')
     // returns translated instructions in same format as input (array)
-    async detailedInstructions(analyzedInstructions, targetLanguage){
+    async detailedInstructions(analyzedInstructions, targetLanguage, showErrorModal){
         const API_KEY = process.env.REACT_APP_GOOGLE_CLOUD_API_KEY;
         try {
             // return original instructions if there are no instructions or language 
@@ -54,7 +54,9 @@ const Translation = {
             return translatedInstructions;
         } catch(error){
             // error handling: return original recipe if translation fails
-            showErrorModal({context:`Translation error 3: ${error.message}`, message: error.message});
+            if (showErrorModal) {
+                showErrorModal({context:`Translation error 3: ${error.message}`, message: error.message});
+            }
             return analyzedInstructions;
         }
     },
@@ -63,7 +65,7 @@ const Translation = {
     // instructions - HTML string of instructions
     // targetLanguage - language code to translate to
     // returns translated instructions in HTML format
-    async regularInstructions(instructions, targetLanguage){
+    async regularInstructions(instructions, targetLanguage, showErrorModal){
         const API_KEY = process.env.REACT_APP_GOOGLE_CLOUD_API_KEY;
         
         try{
@@ -105,7 +107,9 @@ const Translation = {
 
         } catch(error){
             // error handling: return original recipe if translation fails
-            showErrorModal({context:`Translation error 4: ${error.message}`, message: error.message});
+            if (showErrorModal) {
+                showErrorModal({context:`Translation error 4: ${error.message}`, message: error.message});
+            }
             return instructions;
         }
         
