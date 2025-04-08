@@ -115,7 +115,7 @@ const InputBox = ({ ingredients, setIngredients, onIngredientsChange }) => {
     }
   }, [selectedSuggestionIndex]);
   
-
+  // Update input value state when user types
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
   };
@@ -179,8 +179,9 @@ const InputBox = ({ ingredients, setIngredients, onIngredientsChange }) => {
   };
 
   return (
-    <>
-      <TranslateToEnglish setSelectedLanguageIn={setInputLang} />
+    <> 
+      {/* Language selector component to support multilingual ingredient input */}
+      <TranslateToEnglish setSelectedLanguageIn={setInputLang} /> 
       {/* Main input container */}
       <div className="white-box" data-testid="white-box" ref={containerRef}>
         <input

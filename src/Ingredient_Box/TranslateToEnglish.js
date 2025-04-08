@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Languages from '../data/LanguagesforQ';
 import './TranslateToEnglish.css';
 
+// Component for selecting the input language 
 const TranslateToEnglish = ({ setSelectedLanguageIn }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState('auto');
@@ -16,10 +17,10 @@ const TranslateToEnglish = ({ setSelectedLanguageIn }) => {
         setIsDropdownOpen(false);
       }
     };
-  
+    // Add event listeners for both mouse and touch events
     window.addEventListener('mousedown', handleClickOutside, true);
     window.addEventListener('touchstart', handleClickOutside, true);
-  
+    // Cleanup on unmount
     return () => {
       window.removeEventListener('mousedown', handleClickOutside, true);
       window.removeEventListener('touchstart', handleClickOutside, true);
@@ -45,17 +46,17 @@ const TranslateToEnglish = ({ setSelectedLanguageIn }) => {
       });
     }
   }, [highlightedIndex]);
-
+  // Get the display name of a language from its code
   const getLanguageName = (code) => {
     if (code === 'auto') return 'Auto-detect';
     const language = Languages.find((lang) => lang.code === code);
     return language ? language.name : 'Unknown';
   };
-
+  // When a language is selected from the dropdown
   const handleLanguageSelect = (languageCode) => {
-    setSelectedLanguage(languageCode);
-    setSelectedLanguageIn(languageCode);
-    setIsDropdownOpen(false);
+    setSelectedLanguage(languageCode); // update local state
+    setSelectedLanguageIn(languageCode); // inform parent component
+    setIsDropdownOpen(false); // close dropdown
   };
 
   return (
@@ -65,7 +66,7 @@ const TranslateToEnglish = ({ setSelectedLanguageIn }) => {
         data-testid="language-selector"
         tabIndex="0"
         onClick={() => {
-          setIsDropdownOpen(!isDropdownOpen);
+          setIsDropdownOpen(!isDropdownOpen); // toggle dropdown
         }}
         onKeyDown={(e) => { // Handle keyboard navigation
           if (!isDropdownOpen) return;
@@ -98,7 +99,7 @@ const TranslateToEnglish = ({ setSelectedLanguageIn }) => {
         <img 
           src="/Media/arrowDown.png" 
           alt="Arrow" 
-          className={`dropdown-arrow ${isDropdownOpen ? 'open' : ''}`} 
+          className={`dropdown-arrow ${isDropdownOpen ? 'open' : ''}`}  // rotate arrow if open
         />
       </span>
       {isDropdownOpen && (
