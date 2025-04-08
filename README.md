@@ -86,21 +86,6 @@ You can now view cook-compass in the browser.
 - Deployment: Netlify
 - Testing: Jest
 
-# File Structure
-```
-.
-├── docs                    # Documentation files (alternatively `doc`)
-│   ├── propsal             # Proposal
-│   ├── design              # Design Documentation
-│   ├── final               # Final Documentation
-│   ├── communication       # Communication Logs
-│   ├── ai-disclosure       # AI Disclosures
-│   └── ...          
-├── src                     # Source files (alternatively `lib` or `app`)
-├── test                    # Automated tests (alternatively `spec` or `tests`)
-├── tools                   # Tools and utilities
-└── README.md
-```
 
 # License
 This project is licensed under the MIT License. It is intended for educational and training purposes.
