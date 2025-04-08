@@ -3,17 +3,29 @@ import TranslateToEnglish from './TranslateToEnglish'; // Import the language se
 import './InputBox.css';
 import { useErrorModal } from '../ErrorModal';
 
+/*
+InputBox.js
+
+Component manages the input for entering ingredients.
+  - Handles user input and keystrokes.
+  - Fetches autocomplete suggestions via the Spoonacular API.
+  - Adds or removes ingredients from the list.
+  - Integrates a translation feature (TranslateToEnglish) for multilingual search queries.
+*/
+
 const InputBox = ({ ingredients, setIngredients, onIngredientsChange }) => {
   const apiKey = process.env.REACT_APP_SPOONACULAR_API_KEY;
   const googleApiKey = process.env.REACT_APP_GOOGLE_CLOUD_API_KEY;
   const containerRef = useRef(null);
-
+  
+  // Local state for user input and autocomplete
   const [inputValue, setInputValue] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1);
-  const [inputLang, setInputLang] = useState('en'); // Default to English
+  const [inputLang, setInputLang] = useState('en'); // Default language is English
   const { showErrorModal } = useErrorModal() || {};
 
+  // Function to translate non-English text to English for searching
   // eslint-disable-next-line
   const translateText = useCallback(async (text) => {
     if (!text.trim()) return text;
@@ -42,7 +54,6 @@ const InputBox = ({ ingredients, setIngredients, onIngredientsChange }) => {
         throw new Error('Invalid translation response');
       }
 
-      // let detectedLang = data.data.translations[0].detectedSourceLanguage;
       let translatedText = data.data.translations[0].translatedText;
 
       return translatedText;
@@ -52,7 +63,7 @@ const InputBox = ({ ingredients, setIngredients, onIngredientsChange }) => {
     }
   }, [googleApiKey, inputLang, showErrorModal]);
   
-
+  // Fetch suggestions from Spoonacular using the (translated) query
   const fetchSuggestions = useCallback(async (query) => {
     try {
       const translatedQuery = await translateText(query);
@@ -78,6 +89,8 @@ const InputBox = ({ ingredients, setIngredients, onIngredientsChange }) => {
     }
   }, [apiKey, translateText, showErrorModal ]);
 
+
+  // Update suggestions after user stops typing (300ms debounce)
   useEffect(() => {
     if (!inputValue.trim()) {
       setSuggestions([]);
@@ -89,6 +102,7 @@ const InputBox = ({ ingredients, setIngredients, onIngredientsChange }) => {
     return () => clearTimeout(timer);
   }, [inputValue, fetchSuggestions]);
 
+  // Scroll the active suggestion into view if necessary
   useEffect(() => {
     if (selectedSuggestionIndex !== -1) {
       const activeItem = document.querySelector('.suggestions-list li.active');
@@ -103,19 +117,19 @@ const InputBox = ({ ingredients, setIngredients, onIngredientsChange }) => {
     setInputValue(e.target.value);
   };
 
-  // Use the parent's ingredients state instead of local state.
+  // Add a new ingredient to the list if not already present
   const addIngredient = (ingredientName) => {
     if (ingredientName && !ingredients.includes(ingredientName)) {
       const updatedIngredients = [...ingredients, ingredientName];
       setIngredients(updatedIngredients);
-      // Optionally, call the parent's onIngredientsChange callback if provided.
       onIngredientsChange && onIngredientsChange(updatedIngredients);
     }
+    // Reset input and suggestions
     setInputValue('');
     setSuggestions([]);
     setSelectedSuggestionIndex(-1);
   };
-
+  // Handle key events for navigation and selection of suggestions
   const handleKeyDown = (e) => {
     if (e.key === 'ArrowDown') {
       e.preventDefault();
@@ -137,23 +151,23 @@ const InputBox = ({ ingredients, setIngredients, onIngredientsChange }) => {
       }
     }
   };
-
+  // Handle click on a suggestion item
   const handleSuggestionClick = (suggestion) => {
     addIngredient(suggestion.name);
   };
-
+  // Remove an ingredient from the list
   const removeIngredient = (ingredientToRemove) => {
     const updatedIngredients = ingredients.filter(ing => ing !== ingredientToRemove);
     setIngredients(updatedIngredients);
     onIngredientsChange && onIngredientsChange(updatedIngredients);
   };
-
+  // Fetch suggestions when the input gains focus, if there is text
   const handleFocus = () => {
     if (inputValue.trim()) {
       fetchSuggestions(inputValue);
     }
   };
-
+  // Hide suggestions shortly after the input loses focus
   const handleBlur = () => {
     setTimeout(() => {
       setSuggestions([]);
@@ -164,6 +178,7 @@ const InputBox = ({ ingredients, setIngredients, onIngredientsChange }) => {
   return (
     <>
       <TranslateToEnglish setSelectedLanguageIn={setInputLang} />
+      {/* Main input container */}
       <div className="white-box" data-testid="white-box" ref={containerRef}>
         <input
           type="text"
@@ -174,6 +189,7 @@ const InputBox = ({ ingredients, setIngredients, onIngredientsChange }) => {
           onKeyDown={handleKeyDown}
           placeholder="Type an ingredient..."
         />
+        {/* Display autocomplete suggestions */}
         {suggestions.length > 0 && (
           <ul className="suggestions-list">
             {suggestions.map((sugg, index) => (
@@ -188,6 +204,7 @@ const InputBox = ({ ingredients, setIngredients, onIngredientsChange }) => {
           </ul>
         )}
       </div>
+      {/* Display the list of added ingredients as "chips" */}
       <div className="ingredient-list">
         {ingredients.map((ingredient, index) => (
           <div key={ingredient + index} className="ingredient-item">

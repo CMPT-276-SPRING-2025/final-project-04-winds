@@ -1,7 +1,11 @@
 import React, { createContext, useState, useContext, useCallback, useMemo } from 'react';
 import './ErrorModal.css'; 
 
-// Modal Component
+// ErrorModal Component
+// Displays the modal overlay and its content.
+// Props:
+// - error: An object that contains details about the error (e.g., context and message).
+// - onClose: A callback function to dismiss the modal.
 const ErrorModal = ({ error, onClose }) => (
   <div
     className="error-modal-overlay"
@@ -26,18 +30,22 @@ const ErrorModal = ({ error, onClose }) => (
 
 // Context Setup
 const ErrorModalContext = createContext();
-
+// ErrorModalProvider Component
+// Wraps the application components to provide access to modal control functions via context.
 export const ErrorModalProvider = ({ children }) => {
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(null); // State variable to hold current error object; if null, no error modal is shown.
 
+   // Function to show an error modal by setting the error state.
   const showErrorModal = useCallback((error) => {
     setError(error);
   }, []);
 
+   // Function to close the error modal by clearing the error state.
   const closeErrorModal = useCallback(() => {
     setError(null);
   }, []);
 
+  // Memoize context value to stop re-renders.
   const contextValue = useMemo(() => ({
     showErrorModal,
     closeErrorModal,
