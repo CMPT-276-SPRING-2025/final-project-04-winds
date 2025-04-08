@@ -13,13 +13,13 @@ Website: https://cookcompassapp.netlify.app/
 Project Video: TO BE ADDED
 
 ## Features
-### - Recipe Finder
+### Recipe Finder
 Users can input ingredients they have or want to use, and the app returns recipes that minimize missing ingredients. The ingredient input includes autocomplete suggestions to streamline the process. For example, entering bread, butter, garlic may return garlic bread. This helps busy users quickly find suitable recipes—even for picky eaters.
 
-### - Simplify Recipes
+### Simplify Recipes
 Recipes are presented in a step-by-step format with the click of a button, transforming dense recipe text into a more digestible structure. This helps users follow instructions easily without needing to search through large blocks of text.
 
-### - Filtered Recipes
+### Filtered Recipes
 Users can filter recipes by dietary preferences (e.g., vegetarian, keto) or exclude specific ingredients (e.g., nuts, gluten). This flexible filtering supports diverse dietary needs without overwhelming users with irrelevant recipes.
 
 ### Text-To-Speech
