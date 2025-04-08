@@ -5,6 +5,7 @@ Provide whatever leftover ingredients you currently have on hand and CookCompass
 
 # Project Links
 Website: https://cookcompassapp.netlify.app/
+
 Project Video: TO BE ADDED
 
 ## Features
@@ -25,15 +26,14 @@ Ensure the following are installed:
 - npm (Node package manager)
 - Git
   - Go to https://git-scm.com/downloads and install Git.
-### Verify Installation
-- 
 
 ## 2. Clone the Repository
 ```git@github.com:CMPT-276-SPRING-2025/final-project-04-winds.git```
 
 ## 3. Install Dependencies
 - Navigate to your root directory
-  - ```cd final-project-04-winds```
+```cd final-project-04-winds```
+
 - Run ```npm install``` 
 
 ## 4. Set Up Environment Variables
