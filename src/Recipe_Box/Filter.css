@@ -80,6 +80,7 @@
   border-radius: 30px;
   font-size: 20px;
   cursor: pointer;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 
@@ -139,7 +140,8 @@
   border-radius: 15px;
   display: flex;
   align-items: center;
-  font-size: 14px
+  font-size: 14px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 .excludedIngredient-list {
@@ -147,6 +149,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  
 }
 
 .excludedIngredient-item button {
@@ -154,6 +157,12 @@
   border: none;
   background: none;
   cursor: pointer;
+  
+}
+
+.excludedIngredient-item button:hover {
+  transform: scale(1.2);
+  transition: transform 0.3s ease;
 }
 
 .exclude-input {

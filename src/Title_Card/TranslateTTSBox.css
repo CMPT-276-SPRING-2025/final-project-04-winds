@@ -34,6 +34,8 @@
   padding: 0;
   margin: 0%;
   align-items: center;
+  justify-content: center;
+  position: relative;
 }
 
 /* .translate-menu: dropdown menu that appears when the translation button is toggled.
@@ -47,18 +49,16 @@ gap: 1vw;
 height: 10vh;
 width: 35vh;
 right: 0;
-margin-top: -4px;
 background-color: white;
 border: none;
 border-radius: 10px 10px 10px 10px;
-
 z-index: 1002;
 align-items: center;
 justify-content: center;
 text-align: center;
-
 color:black;
 box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+border: #85A573 1px solid;
 }
 
 /* .language-dropdown-container
@@ -91,7 +91,7 @@ text-align: center;
 padding: 10px 5px;
 background-color: white;
 border-radius: 10px;
-box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px,#D6D6E7 0 -3px 0 inset;
 }
 
 .translate-arrow{
@@ -117,6 +117,11 @@ overflow-y: auto;
 background-color: rgb(238, 238, 238);
 cursor: pointer;
 border-radius: 10px;
+}
+/* keyboard highlight */
+.language-item.highlighted { 
+  background-color: #f0f0f0;
+  outline: none;
 }
 
 /* ======================
@@ -185,7 +190,7 @@ border-radius: 10px;
   box-sizing: border-box;
   color: #36395A;
   cursor: pointer;
-  display: inline-flex;
+  display: block;
   height: 52px;
   width: 52px;
   min-height: 50px;
@@ -307,14 +312,14 @@ border-radius: 10px;
   align-items: center;
   appearance: none;
   background-color: white;
-  border-radius: 4px;
+  border-radius: 10px;
   border-width: 0;
   box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px,#D6D6E7 0 -3px 0 inset;
   box-sizing: border-box;
   color: #36395A;
   cursor: pointer;
   display: inline-flex;
-  height: 48px;
+  height: 52px;
   justify-content: center;
   line-height: 1;
   list-style: none;
