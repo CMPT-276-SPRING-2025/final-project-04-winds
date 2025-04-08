@@ -34,6 +34,7 @@
   padding: 0;
   margin: 0%;
   align-items: center;
+  justify-content: center;
 }
 
 /* .translate-menu: dropdown menu that appears when the translation button is toggled.
@@ -190,7 +191,7 @@ border-radius: 10px;
   box-sizing: border-box;
   color: #36395A;
   cursor: pointer;
-  display: inline-flex;
+  display: block;
   height: 52px;
   width: 52px;
   min-height: 50px;
@@ -319,7 +320,7 @@ border-radius: 10px;
   color: #36395A;
   cursor: pointer;
   display: inline-flex;
-  height: 48px;
+  height: 52px;
   justify-content: center;
   line-height: 1;
   list-style: none;
