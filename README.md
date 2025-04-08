@@ -5,7 +5,7 @@ Provide whatever leftover ingredients you currently have on hand and CookCompass
 
 # Group Information
 - Group Name: Winds
-- Group Number: 1
+- Group Number: 4
 
 # Project Links
 Website: https://cookcompassapp.netlify.app/
