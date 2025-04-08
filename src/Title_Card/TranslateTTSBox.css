@@ -118,6 +118,11 @@ background-color: rgb(238, 238, 238);
 cursor: pointer;
 border-radius: 10px;
 }
+/* keyboard highlight */
+.language-item.highlighted { 
+  background-color: #f0f0f0;
+  outline: none;
+}
 
 /* ======================
    TTS STYLING
