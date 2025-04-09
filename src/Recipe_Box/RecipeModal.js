@@ -63,8 +63,14 @@ const RecipeModal = ({ recipe, onClose }) => {
   useEffect(() => {
     const translateRecipe = async () => {
       // skip if same language selected
-      if (selectedLanguageOut === selectedLanguageIn) {
-        return;
+      if (!recipeInfo || selectedLanguageOut === selectedLanguageIn) {
+        if(recipeInfo?.analyzedInstructions ){
+          setAnalyzedInstructions(recipeInfo.analyzedInstructions);
+        }
+        if(recipeInfo?.instructions ){
+          setRegularInstructions(recipeInfo.instructions);
+        }  
+        return ;
       }
       else {
           // translate regular instructions first
@@ -92,7 +98,6 @@ const RecipeModal = ({ recipe, onClose }) => {
               setAnalyzedInstructions(recipeInfo.analyzedInstructions);
               setRegularInstructions(recipeInfo.instructions);
           } 
-    
         }         
     };
     translateRecipe();

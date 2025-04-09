@@ -42,6 +42,7 @@ const Translation = {
                         message: 'Network error occurred while translating recipe instructions.'
                     });
                 }
+
                 return analyzedInstructions;
             }
 
@@ -54,6 +55,7 @@ const Translation = {
                         message: errorMessage,
                     });
                 }
+
                 return analyzedInstructions;
             }
 
@@ -71,10 +73,10 @@ const Translation = {
             });
 
             return translatedInstructions;
-        } catch(error){
+        } catch{
             // error handling: return original recipe if translation fails
             if (showErrorModal) {
-                showErrorModal({context:`Translation error 3: ${error.message}`, message: error.message});
+                showErrorModal({context:`Translation error 2`, message: "You're going too fast! Google Cloud Translation API is working very hard to provide you with the best translation. Please give it a few seconds to rest before translating again."});
             }
             return analyzedInstructions;
         }
@@ -121,6 +123,7 @@ const Translation = {
                         message: 'Network error occurred while translating instructions.'
                     });
                 }
+          
                 return instructions;
             }
 
@@ -136,6 +139,7 @@ const Translation = {
                 return instructions;
             }
 
+
             // convert translated text back to HTML format for display
             const data = await response.json();
             let translatedText = data.data.translations[0].translatedText;
@@ -148,10 +152,10 @@ const Translation = {
 
             return htmlOutput;
 
-        } catch(error){
+        } catch(error) {
             // error handling: return original recipe if translation fails
             if (showErrorModal) {
-                showErrorModal({context:`Translation error 4: ${error.message}`, message: error.message});
+                showErrorModal({context:`Translation error 2`, message: "You're going too fast! Google Cloud Translation API is working very hard to provide you with the best translation. Please give it a few seconds to rest before translating again."});
             }
             return instructions;
         }
