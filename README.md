@@ -10,7 +10,7 @@ Provide whatever leftover ingredients you currently have on hand and CookCompass
 # Project Links
 Website: https://cookcompassapp.netlify.app/
 
-Project Video: TO BE ADDED
+Project Video: https://www.youtube.com/watch?v=tfTF-Vxc0tM
 
 ## Features
 ### Recipe Finder
