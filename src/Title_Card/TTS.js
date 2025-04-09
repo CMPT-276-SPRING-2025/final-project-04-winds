@@ -55,65 +55,74 @@ const TTS = ({analyzedInstructions}) => {
   const synthesizeSpeech = useCallback(async (text) => {
     try {
       // Ensure valid text
-      if (!text) {
+      if (!text || !API_KEY) {
         return null;
       }
-
-      // Ensure API key exists
-      if (!API_KEY) {
+  
+      let response;
+      try {
+        // attempt fetch safely, suppressing network-level errors from logging
+        response = await fetch(`${TEXT_API_URL}?key=${API_KEY}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            input: { text: text },
+            voice: {
+              languageCode: 'en-US',
+              name: 'en-US-Standard-C'
+            },
+            audioConfig: {
+              audioEncoding: 'MP3'
+            }
+          })
+        });
+      } catch (_) {
+        if (showErrorModal) {
+          showErrorModal({
+            context: 'Text-to-Speech Error',
+            message: 'Network error occurred while requesting speech audio.'
+          });
+        }
         return null;
       }
-
-      // get the audio
-      const response = await fetch(`${TEXT_API_URL}?key=${API_KEY}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          input: { text: text },
-          voice: {
-            languageCode: 'en-US',
-            name: 'en-US-Standard-C'
-          },
-          audioConfig: {
-            audioEncoding: 'MP3'
-          }
-        })
-      });
-
-      // Ensure it didn't fail
-      if (!response.ok) {
-        throw new Error(`Speech synthesis failed: ${response.status}`);
+  
+      // Handle bad response (e.g., 429)
+      if (!response || !response.ok) {
+        if (showErrorModal) {
+          showErrorModal({
+            context: 'Text-to-Speech Error',
+            message: `Speech synthesis failed with status ${response?.status || 'unknown'}. The Text-To-Speech reached its quota limit for the minute.`,
+          });
+        }
+        return null;
       }
-
-      // Grab the data
+  
       const data = await response.json();
-      
-      // Validate audio content
       if (!data.audioContent) {
         return null;
       }
-
+  
       // Decode base64 audio content
-      const audioContent = data.audioContent;
-      
-      // turns the audio string into a playable link
-      const binaryString = atob(audioContent);
+      const binaryString = atob(data.audioContent);
       const bytes = new Uint8Array(binaryString.length);
       for (let i = 0; i < binaryString.length; i++) {
         bytes[i] = binaryString.charCodeAt(i);
       }
+  
       const blob = new Blob([bytes], { type: 'audio/mp3' });
-      
       const audioUrl = URL.createObjectURL(blob);
-
       return audioUrl;
-
+  
     } catch (error) {
+      if (showErrorModal) {
+        showErrorModal({
+          context: 'Text-to-Speech Error',
+          message: error.message || 'An unexpected error occurred during speech synthesis.',
+        });
+      }
       return null;
     }
-  }, [API_KEY, TEXT_API_URL]);
+  }, [API_KEY, TEXT_API_URL, showErrorModal]);
 
   const playCurrentStep = useCallback(async () => {
     const steps = processInstructions();
