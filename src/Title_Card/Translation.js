@@ -48,7 +48,7 @@ const Translation = {
 
             // handle API errors (e.g. 403 Forbidden)
             if (!response || !response.ok) {
-                const errorMessage = `Translation failed with status ${response?.status || 'unknown'}. Translation was spammed to much too fast.`;
+                const errorMessage = `Translation failed with status ${response?.status || 'unknown'}. You're going too fast! Google Cloud Translation API is working very hard to provide you with the best translation. Please give it a few seconds to rest before translating again.`;
                 if (showErrorModal) {
                     showErrorModal({
                         context: 'Translation Error',
@@ -129,7 +129,7 @@ const Translation = {
 
             // handle API errors (e.g. 403 Forbidden)
             if (!response || !response.ok) {
-                const errorMessage = `Translation failed with status ${response?.status || 'unknown'}. The Translation was spammed too much to fast.`;
+                const errorMessage = `Translation failed with status ${response?.status || 'unknown'}. You're going too fast! Google Cloud Translation API is working very hard to provide you with the best translation. Please give it a few seconds to rest before translating again.`;
                 if (showErrorModal) {
                     showErrorModal({
                         context: 'Translation Error',
