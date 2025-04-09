@@ -167,7 +167,7 @@ const TranslateBox = ({selectedLanguageOut, setSelectedLanguageOut, selectedLang
                   {/* map through all supported languages */}
                   {Languages.map((lang, index) => (
                     <li
-                      key={lang.code}
+                      key={`${lang.code}-${index}`}
                       ref={(el) => (languageRefs.current[index] = el)}
                       className={`language-item ${
                         selectedLanguageOut === lang.code ? 'selected' : ''

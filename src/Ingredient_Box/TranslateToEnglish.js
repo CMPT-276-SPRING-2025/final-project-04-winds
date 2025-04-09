@@ -106,7 +106,7 @@ const TranslateToEnglish = ({ setSelectedLanguageIn }) => {
           <ul className="language-list">
             {Languages.map((lang, index) => (
               <li 
-                key={lang.code} 
+                key={`${lang.code}-${index}`} 
                 onClick={() => handleLanguageSelect(lang.code)} 
                 ref={(el) => (languageRefs.current[index] = el)}
                 className={highlightedIndex === index ? 'highlighted' : ''}
