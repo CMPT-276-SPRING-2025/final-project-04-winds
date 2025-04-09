@@ -12,6 +12,8 @@ Website: https://cookcompassapp.netlify.app/
 
 Project Video: https://www.youtube.com/watch?v=tfTF-Vxc0tM
 
+Figma Prototype: https://www.figma.com/design/bVthL5zff5znRcw2O2n1ZN/276-CookCompass?node-id=112-226&t=raGmSWQGeutHst3C-1
+
 ## Features
 ### Recipe Finder
 Users can input ingredients they have or want to use, and the app returns recipes that minimize missing ingredients. The ingredient input includes autocomplete suggestions to streamline the process. For example, entering bread, butter, garlic may return garlic bread. This helps busy users quickly find suitable recipes—even for picky eaters.
