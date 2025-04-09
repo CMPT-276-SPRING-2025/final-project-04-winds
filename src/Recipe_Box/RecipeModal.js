@@ -63,9 +63,13 @@ const RecipeModal = ({ recipe, onClose }) => {
   useEffect(() => {
     const translateRecipe = async () => {
       // skip if same language selected
-      if (selectedLanguageOut === selectedLanguageIn) {
-        setAnalyzedInstructions(recipeInfo.analyzedInstructions);
-        setRegularInstructions(recipeInfo.instructions);
+      if (!recipeInfo || selectedLanguageOut === selectedLanguageIn) {
+        if(recipeInfo?.analyzedInstructions ){
+          setAnalyzedInstructions(recipeInfo.analyzedInstructions);
+        }
+        if(recipeInfo?.instructions ){
+          setRegularInstructions(recipeInfo.instructions);
+        }  
         return ;
       }
       else {
