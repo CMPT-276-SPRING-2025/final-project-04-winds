@@ -34,8 +34,9 @@ const Translation = {
             );
             // handle API errors
             if (!response.ok) {
-                await response.json().catch(() => ({}));
-                throw new Error(`Translation failed: ${response.status} ${response.statusText}`);
+                // await response.json().catch(() => ({}));
+                // throw new Error(`Translation failed: ${response.status} ${response.statusText}`);
+                return analyzedInstructions;
             }
 
             // process translated text for step by step display
@@ -52,10 +53,10 @@ const Translation = {
             });
 
             return translatedInstructions;
-        } catch(error){
+        } catch{
             // error handling: return original recipe if translation fails
             if (showErrorModal) {
-                showErrorModal({context:`Translation error 3: ${error.message}`, message: error.message});
+                showErrorModal({context:`Translation error 2`, message: "You're going too fast! Google Cloud Translation API is working very hard to provide you with the best translation. Please give it a few seconds to rest before translating again."});
             }
             return analyzedInstructions;
         }
@@ -91,8 +92,9 @@ const Translation = {
                       format: 'text'
                     })
                 }
-            );  
-
+            );
+            
+            
             // convert translated text back to HTML format for display
             const data = await response.json();
             let translatedText = data.data.translations[0].translatedText;
@@ -105,10 +107,10 @@ const Translation = {
 
             return htmlOutput;
 
-        } catch(error){
+        } catch(error) {
             // error handling: return original recipe if translation fails
             if (showErrorModal) {
-                showErrorModal({context:`Translation error 4: ${error.message}`, message: error.message});
+                showErrorModal({context:`Translation error 2`, message: "You're going too fast! Google Cloud Translation API is working very hard to provide you with the best translation. Please give it a few seconds to rest before translating again."});
             }
             return instructions;
         }

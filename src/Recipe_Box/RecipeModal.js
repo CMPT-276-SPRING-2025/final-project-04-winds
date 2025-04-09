@@ -64,7 +64,9 @@ const RecipeModal = ({ recipe, onClose }) => {
     const translateRecipe = async () => {
       // skip if same language selected
       if (selectedLanguageOut === selectedLanguageIn) {
-        return;
+        setAnalyzedInstructions(recipeInfo.analyzedInstructions);
+        setRegularInstructions(recipeInfo.instructions);
+        return ;
       }
       else {
           // translate regular instructions first
@@ -72,7 +74,8 @@ const RecipeModal = ({ recipe, onClose }) => {
             if(recipeInfo.instructions){
               const regularTranslated = await Translation.regularInstructions(
                 recipeInfo.instructions,
-                selectedLanguageOut
+                selectedLanguageOut,
+                showErrorModal
               );
               setRegularInstructions(regularTranslated);
             }
@@ -80,7 +83,8 @@ const RecipeModal = ({ recipe, onClose }) => {
             if(recipeInfo.analyzedInstructions){
               const translated = await Translation.detailedInstructions(
                 recipeInfo.analyzedInstructions, 
-                selectedLanguageOut
+                selectedLanguageOut,
+                showErrorModal
               );
               setAnalyzedInstructions(translated);
             }
@@ -90,7 +94,6 @@ const RecipeModal = ({ recipe, onClose }) => {
               setAnalyzedInstructions(recipeInfo.analyzedInstructions);
               setRegularInstructions(recipeInfo.instructions);
           } 
-    
         }         
     };
     translateRecipe();

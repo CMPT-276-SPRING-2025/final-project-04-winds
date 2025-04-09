@@ -410,7 +410,7 @@ const TTS = ({analyzedInstructions}) => {
           src={audioUrl}
           onEnded={() => setIsPlayingAudio(false)}  // Handle audio end
           autoPlay={isPlayingAudio}  // Auto-plays when isPlayingAudio is true
-          data-testId='audio-component'
+          data-testid='audio-component'
         />
       )}
   
